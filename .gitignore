@@ -12,6 +12,7 @@
 *.pyc
 *.log
 *.dat
+**/*__init__.py
 PhiAnalyzer/crab/crab_dir/HLT*
 PhiAnalyzer/crab/IDs
 PhiAnalyzer/crab/crab_dir_12_26_17/
