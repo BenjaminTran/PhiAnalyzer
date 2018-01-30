@@ -56,7 +56,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using reco::TrackCollection;
 
     Handle<TrackCollection> tracks;
-    iEvent.getByLabel(_trkSrc,tracks);
+    iEvent.getByToken(_trkSrc,tracks);
     for(TrackCollection::const_iterator itTrack = tracks->begin();
         itTrack != tracks->end();                      
         ++itTrack) {
