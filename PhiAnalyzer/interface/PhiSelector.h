@@ -1,3 +1,5 @@
+#ifndef PHIANALYZER__PHISELECTOR_H
+#define PHIANALYZER__PHISELECTOR_H
 // system include files
 #include <memory>
 #include <TH1D.h>
@@ -47,6 +49,9 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
 #include "DataFormats/CaloTowers/interface/CaloTowerCollection.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "DataFormats/TrackReco/interface/DeDxData.h"
 
 #include <Math/Functions.h>
 #include <Math/SVector.h>
@@ -78,3 +83,5 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        edm::InputTag trackTags_; //used to select what tracks to read from configuration file
        TH1D * histo; 
 };
+
+#endif
