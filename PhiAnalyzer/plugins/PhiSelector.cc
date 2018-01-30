@@ -23,15 +23,13 @@
 // constructors and destructor
 //
 PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
- :
+{
+   //now do what ever initialization is needed
+   usesResource("TFileService");
   _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
   _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
   _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Harmonic2"));
   _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Trunc40"));
-
-{
-   //now do what ever initialization is needed
-   usesResource("TFileService");
 
 }
 
