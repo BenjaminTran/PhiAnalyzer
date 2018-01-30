@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    PhiAnalyzer/PhiAnalyzer
-// Class:      PhiAnalyzer
+// Package:    PhiSelector/PhiSelector
+// Class:      PhiSelector
 // 
-/**\class PhiAnalyzer PhiAnalyzer.cc PhiAnalyzer/PhiAnalyzer/plugins/PhiAnalyzer.cc
+/**\class PhiSelector PhiSelector.cc PhiSelector/PhiSelector/plugins/PhiSelector.cc
 
  Description: [one line class summary]
 
@@ -16,26 +16,24 @@
 //
 //
 
-#include $CMSSW_BASE/src/PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h
+#include "/afs/cern.ch/user/b/btran/work/CMSSW_8_0_24/src/PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
 
 
 //
 // constructors and destructor
 //
-PhiAnalyzer::PhiAnalyzer(const edm::ParameterSet& iConfig)
+PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
  :
   trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks"))
 
 {
    //now do what ever initialization is needed
    usesResource("TFileService");
-@example_histo   edm::Service<TFileService> fs;
-@example_histo   histo = fs->make<TH1D>("charge" , "Charges" , 200 , -2 , 2 );
 
 }
 
 
-PhiAnalyzer::~PhiAnalyzer()
+PhiSelector::~PhiSelector()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -50,7 +48,7 @@ PhiAnalyzer::~PhiAnalyzer()
 
 // ------------ method called for each event  ------------
 void
-PhiAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
 
@@ -63,7 +61,7 @@ PhiAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         ++itTrack) {
        int charge = 0;
        charge = itTrack->charge();  
-@example_histo       histo->Fill( charge );
+       histo->Fill(charge);
     }
 
 #ifdef THIS_IS_AN_EVENT_EXAMPLE
@@ -80,19 +78,23 @@ PhiAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-PhiAnalyzer::beginJob()
+PhiSelector::beginJob()
 {
+    TH1::SetDefaultSumw2();
+    edm::Service<TFileService> fs;
+
+    fs->make<TH1D>("Charges","",10,-5,5);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-PhiAnalyzer::endJob() 
+PhiSelector::endJob() 
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-PhiAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   //edm::ParameterSetDescription desc;
@@ -101,11 +103,11 @@ PhiAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 
   //Specify that only 'tracks' is allowed
   //To use, remove the default given above and uncomment below
-  ParameterSetDescription desc;
-  desc.addUntracked<edm::InputTag>("tracks","ctfWithMaterialTracks");
-  desc.addUntracked<bool>("test","False");
-  descriptions.addDefault(desc);
+  edm::ParameterSetDescription desc;
+  desc.addUntracked<edm::InputTag>("tracks",edm::InputTag("generalTracks"));
+  desc.addUntracked<bool>("test",false);
+  descriptions.add("PhiSelector",desc);
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(PhiAnalyzer);
+DEFINE_FWK_MODULE(PhiSelector);
