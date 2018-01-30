@@ -80,8 +80,11 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void endJob() override;
 
       // ----------member data ---------------------------
-       edm::InputTag trackTags_; //used to select what tracks to read from configuration file
-       TH1D * histo; 
+       edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
+       edm::EDGetTokenT<reco::VertexCollection> _vtxSrc;
+       edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
+       edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Trunc40;
+       TH1D * histo;
 };
 
 #endif

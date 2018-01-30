@@ -24,7 +24,10 @@
 //
 PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
  :
-  trackTags_(iConfig.getUntrackedParameter<edm::InputTag>("tracks"))
+  _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
+  _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
+  _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Harmonic2"));
+  _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Trunc40"));
 
 {
    //now do what ever initialization is needed
@@ -104,8 +107,10 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //Specify that only 'tracks' is allowed
   //To use, remove the default given above and uncomment below
   edm::ParameterSetDescription desc;
-  desc.addUntracked<edm::InputTag>("tracks",edm::InputTag("generalTracks"));
-  desc.addUntracked<bool>("test",false);
+  desc.addUntracked<edm::InputTag>("trkSrc",edm::InputTag("generalTracks"));
+  desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
+  desc.addUntracked<edm::InputTag>("Dedx_Harmonic2",edm::InputTag("dedxHarmonic2"));
+  desc.addUntracked<edm::InputTag>("Dedx_Trunc40",edm::InputTag("dedxTruncated40"));
   descriptions.add("PhiSelector",desc);
 }
 
