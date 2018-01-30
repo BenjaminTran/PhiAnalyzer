@@ -95,15 +95,16 @@ void
 PhiAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
+  //edm::ParameterSetDescription desc;
+  //desc.setUnknown();
+  //descriptions.addDefault(desc);
 
   //Specify that only 'tracks' is allowed
   //To use, remove the default given above and uncomment below
-  //ParameterSetDescription desc;
-  //desc.addUntracked<edm::InputTag>("tracks","ctfWithMaterialTracks");
-  //descriptions.addDefault(desc);
+  ParameterSetDescription desc;
+  desc.addUntracked<edm::InputTag>("tracks","ctfWithMaterialTracks");
+  desc.addUntracked<bool>("test","False");
+  descriptions.addDefault(desc);
 }
 
 //define this as a plug-in
