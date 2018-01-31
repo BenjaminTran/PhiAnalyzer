@@ -93,8 +93,8 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        }
 
        //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
-       std::vector<kaon> PKp; //Positive charged
-       std::vector<kaon> PKm; //Negative charged
+       std::vector<PhiSelector::kaon> PKp; //Positive charged
+       std::vector<PhiSelector::kaon> PKm; //Negative charged
 
        int multMin;
        int multHigh;

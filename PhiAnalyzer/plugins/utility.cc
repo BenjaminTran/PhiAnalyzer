@@ -20,7 +20,7 @@ namespace utility
         bestvyError = vtx.yError();
         bestvzError = vtx.zError();
 
-        for(TrackCollection::const_iterator it = tracks->begin();
+        for(reco::TrackCollection::const_iterator it = tracks->begin();
                 it != tracks->end();
                 ++it)
         {
@@ -44,6 +44,6 @@ namespace utility
             Multiplicty++;
         }
 
-        return Multiplicty;
+        return Multiplicity;
     }
 }

@@ -112,8 +112,8 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<edm::InputTag>("Dedx_Harmonic2",edm::InputTag("dedxHarmonic2"));
   desc.addUntracked<edm::InputTag>("Dedx_Trunc40",edm::InputTag("dedxTruncated40"));
-  desc.addUntracked<int32>("multMin",0);
-  desc.addUntracked<int32>("multMax",999);
+  desc.addUntracked<int>("multMin",0);
+  desc.addUntracked<int>("multMax",999);
   descriptions.add("PhiSelector",desc);
 }
 
