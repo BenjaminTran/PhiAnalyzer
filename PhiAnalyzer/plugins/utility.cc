@@ -41,7 +41,7 @@ namespace utility
 
             if(fabs(eta)>2.4) continue;
             if(pt<=0.4) continue;
-            Multiplicty++;
+            Multiplicity++;
         }
 
         return Multiplicity;
