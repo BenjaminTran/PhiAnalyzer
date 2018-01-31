@@ -17,6 +17,7 @@
 //
 
 #include "/afs/cern.ch/user/b/btran/work/CMSSW_8_0_24/src/PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 
 
 //
@@ -25,18 +26,19 @@
 PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
 {
    //now do what ever initialization is needed
-   usesResource("TFileService");
-  _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
-  _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
-  _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Harmonic2"));
-  _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Trunc40"));
+
+    multMin_ = iConfig.getUntrackedParameter<int>("multMin");
+    multMax_ = iConfig.getUntrackedParameter<int>("multMax");
+    _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
+    _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
+    _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Harmonic2"));
+    _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Trunc40"));
 
 }
 
 
 PhiSelector::~PhiSelector()
 {
- 
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
 
@@ -53,43 +55,44 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
 
-   using reco::TrackCollection;
+   h_nEvt->Fill(1);
 
-    Handle<TrackCollection> tracks;
-    iEvent.getByToken(_trkSrc,tracks);
-    for(TrackCollection::const_iterator itTrack = tracks->begin();
-        itTrack != tracks->end();                      
-        ++itTrack) {
-       int charge = 0;
-       charge = itTrack->charge();  
-       histo->Fill(charge);
-    }
+   edm::Handle<reco::TrackCollection> tracks;
+   iEvent.getByToken(_trkSrc,tracks);
 
-#ifdef THIS_IS_AN_EVENT_EXAMPLE
-   Handle<ExampleData> pIn;
-   iEvent.getByLabel("example",pIn);
-#endif
-   
-#ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
-   ESHandle<SetupData> pSetup;
-   iSetup.get<SetupRecord>().get(pSetup);
-#endif
+   edm::Handle<reco::VertexCollection> vertices;
+   iEvent.getByToken(_vtxSrc,vertices);
+
+   int mult = utility::trackFilter(tracks,vertices);
+   h_mult->Fill(mult);
+
+   edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Harm;
+   iEvent.getByToken(_Dedx_Harmonic2,DeDx_Harm);
+
+   edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
+   iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
+
+
+
 }
 
 
 // ------------ method called once each job just before starting event loop  ------------
-void 
+void
 PhiSelector::beginJob()
 {
     TH1::SetDefaultSumw2();
     edm::Service<TFileService> fs;
 
-    fs->make<TH1D>("Charges","",10,-5,5);
+    h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
+    h_mult = fs->make<TH1D>("mult","",400,0,400);
+    h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm","",200,0,20,1500,0,15);
+    h_Dedx_p_Trun = fs->make<TH2D>("Dedx_Trun","",200,0,20,1500,0,15);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
-PhiSelector::endJob() 
+void
+PhiSelector::endJob()
 {
 }
 
@@ -109,6 +112,8 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<edm::InputTag>("Dedx_Harmonic2",edm::InputTag("dedxHarmonic2"));
   desc.addUntracked<edm::InputTag>("Dedx_Trunc40",edm::InputTag("dedxTruncated40"));
+  desc.addUntracked<int32>("multMin",0);
+  desc.addUntracked<int32>("multMax",999);
   descriptions.add("PhiSelector",desc);
 }
 

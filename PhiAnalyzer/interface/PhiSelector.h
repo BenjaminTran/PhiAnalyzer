@@ -3,6 +3,7 @@
 // system include files
 #include <memory>
 #include <TH1D.h>
+#include <TH2D.h>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -84,7 +85,24 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        edm::EDGetTokenT<reco::VertexCollection> _vtxSrc;
        edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
        edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Trunc40;
-       TH1D * histo;
+
+       struct kaon{
+           double p = -999;
+           double dedx = -999;
+           double charge = -999;
+       }
+
+       //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
+       std::vector<kaon> PKp; //Positive charged
+       std::vector<kaon> PKm; //Negative charged
+
+       int multMin;
+       int multHigh;
+
+       TH1D* h_nEvt;
+       TH1D* h_mult;
+       TH2D* h_Dedx_p_Harm;
+       TH2D* h_Dedx_p_Trun;
 };
 
 #endif
