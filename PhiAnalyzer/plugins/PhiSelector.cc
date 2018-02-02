@@ -55,6 +55,9 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
 
+   H2dedx = -999.9;
+   T2dedx = -999.9;
+
    h_nEvt->Fill(1);
 
    edm::Handle<reco::TrackCollection> tracks;
@@ -71,6 +74,13 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
    iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
+
+   if(DeDx_Harm.isValid())
+   {
+       const edm::ValueMap<reco::DeDxData> DeDxTrack = *DeDx_Harm.product();
+       H2dedx = DeDxTrack[trk].dEdx();
+   }
+
 
 
 
@@ -94,6 +104,27 @@ PhiSelector::beginJob()
 void
 PhiSelector::endJob()
 {
+}
+
+// ------------ custom defined methods  --------------------------------------------------
+
+void
+PhiSelector::DeDxFiller(edm::Handle<reco::TrackCollection> tracks
+        , edm::ValueMap<reco::DeDxData> DeDxTrack
+        , TH2D* dedx_p)
+{
+    for(reco::TrackCollection::const_iterator it = tracks.begin();
+            it != tracks.end();
+            ++it)
+    {
+        double dedx = -999.9;
+        if(DeDxTrack.isValid())
+        {
+            const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
+            dedx = dedxTrack[it].dEdx();
+        }
+        dedx_p->Fill(dedx);
+    }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------

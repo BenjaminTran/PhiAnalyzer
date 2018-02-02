@@ -79,6 +79,9 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
+      void DeDxFiller(edm::Handle<reco::TrackCollection> tracks, edm::ValueMap<reco::DeDxData> DeDxTrack, TH2D* dedx_p);
+
+      const double kaonMass = 0.493677;
 
       // ----------member data ---------------------------
        edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
@@ -98,6 +101,9 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        int multMin_;
        int multMax_;
+
+       float H2dedx;
+       float T2dedx;
 
        TH1D* h_nEvt;
        TH1D* h_mult;
