@@ -75,14 +75,8 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
    iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
 
-   if(DeDx_Harm.isValid())
-   {
-       const edm::ValueMap<reco::DeDxData> DeDxTrack = *DeDx_Harm.product();
-       H2dedx = DeDxTrack[trk].dEdx();
-   }
-
-
-
+   DeDxFiller(tracks,DeDx_Harm,h_Dedx_p_Harm);
+   DeDxFiller(tracks,DeDx_Trun,h_Dedx_p_Trun);
 
 }
 
@@ -118,26 +112,20 @@ PhiSelector::DeDxFiller(edm::Handle<reco::TrackCollection> tracks
             ++it)
     {
         double dedx = -999.9;
+        double momentum = it->p();
         if(DeDxTrack.isValid())
         {
             const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
             dedx = dedxTrack[it].dEdx();
         }
-        dedx_p->Fill(dedx);
+        dedx_p->Fill(dedx,momentum);
     }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
 PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  //edm::ParameterSetDescription desc;
-  //desc.setUnknown();
-  //descriptions.addDefault(desc);
 
-  //Specify that only 'tracks' is allowed
-  //To use, remove the default given above and uncomment below
   edm::ParameterSetDescription desc;
   desc.addUntracked<edm::InputTag>("trkSrc",edm::InputTag("generalTracks"));
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
