@@ -107,14 +107,14 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<reco::VertexCollection> vertices;
    iEvent.getByToken(_vtxSrc,vertices);
 
-   int mult = utility::trackFilter(tracks,vertices);
-   h_mult->Fill(mult);
-
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Harm;
    iEvent.getByToken(_Dedx_Harmonic2,DeDx_Harm);
 
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
    iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
+
+   int mult = utility::trackFilter(tracks,vertices);
+   h_mult->Fill(mult);
 
    for(reco::TrackCollection::const_iterator it = tracks.begin();
            it != tracks.end();
@@ -122,9 +122,9 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    {
        DeDxFiller(it,DeDx_Harm,h_Dedx_p_Harm);
        DeDxFiller(it,DeDx_Trun,h_Dedx_p_Trun);
-       FillKaonContainer(it,DeDx_Harm,PKp,PKm);
+       FillKaonContainer(it,DeDx_Harm,PKp_Harm,PKm_Harm);
+       FillKaonContainer(it,DeDx_Trun,PKp_Trun,PKm_Trun);
    }
-
 }
 
 

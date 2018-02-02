@@ -80,6 +80,8 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
       void DeDxFiller(edm::Handle<reco::TrackCollection> tracks, edm::ValueMap<reco::DeDxData> DeDxTrack, TH2D* dedx_p);
+      void getDeDx(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack);
+      void FillKaonContainer(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack, std::vector<PhiSelector::kaon> &pkp, std::vector<PhiSelector::kaon> &pkm);
 
       const double kaonMass = 0.493677;
 
@@ -99,8 +101,10 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        };
 
        //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
-       std::vector<PhiSelector::kaon> PKp; //Positive charged
-       std::vector<PhiSelector::kaon> PKm; //Negative charged
+       std::vector<PhiSelector::kaon> PKp_Harm; //Positive charged
+       std::vector<PhiSelector::kaon> PKm_Harm; //Negative charged
+       std::vector<PhiSelector::kaon> PKp_Trun; //Positive charged
+       std::vector<PhiSelector::kaon> PKm_Trun; //Negative charged
 
        int multMin_;
        int multMax_;
