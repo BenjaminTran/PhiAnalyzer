@@ -50,7 +50,7 @@ PhiSelector::~PhiSelector()
 //
 
 void
-PhiSelector::DeDxFiller(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack, TH2D* dedx_p)
+PhiSelector::DeDxFiller(reco::TrackCollection::const_iterator &track, edm::ValueMap<reco::DeDxData> DeDxTrack, TH2D* dedx_p)
 {
         double dedx     = -999.9;
         double momentum = track->p();
@@ -59,7 +59,7 @@ PhiSelector::DeDxFiller(reco::TrackCollection *track, edm::ValueMap<reco::DeDxDa
 }
 
 double
-PhiSelector::getDeDx(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack)
+PhiSelector::getDeDx(reco::TrackCollection::const_iterator &track, edm::ValueMap<reco::DeDxData> DeDxTrack)
 {
     double dedx = -999;
     if(DeDxTrack.isValid())
@@ -72,7 +72,7 @@ PhiSelector::getDeDx(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData>
 }
 
 void
-PhiSelector::FillKaonContainer(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack, std::vector<PhiSelector::kaon> &pkp, std::vector<PhiSelector::kaon> &pkm)
+PhiSelector::FillKaonContainer(reco::TrackCollection::const_iterator &track, edm::ValueMap<reco::DeDxData> DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
         //positive kaons
         if(track->charge() == 1)
@@ -95,9 +95,6 @@ void
 PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
-
-   H2dedx = -999.9;
-   T2dedx = -999.9;
 
    h_nEvt->Fill(1);
 
