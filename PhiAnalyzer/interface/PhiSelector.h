@@ -76,6 +76,14 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
 
    private:
+      struct kaon{
+          kaon(double p_, double dedx_, double charge_) :
+              p(p_), dedx(dedx_), charge(charge_) {}
+
+          double p;
+          double dedx;
+          double charge;
+      };
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
@@ -91,14 +99,6 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
        edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Trunc40;
 
-       struct kaon{
-           kaon(double p_, double dedx_, double charge_) :
-               p(p_), dedx(dedx_), charge(charge_) {}
-
-           double p;
-           double dedx;
-           double charge;
-       };
 
        //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
        std::vector<PhiSelector::kaon> PKp_Harm; //Positive charged
