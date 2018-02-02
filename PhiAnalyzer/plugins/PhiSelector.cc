@@ -75,8 +75,13 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
    iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
 
-   DeDxFiller(tracks,DeDx_Harm,h_Dedx_p_Harm);
-   DeDxFiller(tracks,DeDx_Trun,h_Dedx_p_Trun);
+   for(reco::TrackCollection::const_iterator it = tracks.begin();
+           it != tracks.end();
+           ++it)
+   {
+       DeDxFiller(it,DeDx_Harm,h_Dedx_p_Harm);
+       DeDxFiller(it,DeDx_Trun,h_Dedx_p_Trun);
+   }
 
 }
 
@@ -103,19 +108,14 @@ PhiSelector::endJob()
 // ------------ custom defined methods  --------------------------------------------------
 
 void
-PhiSelector::DeDxFiller(edm::Handle<reco::TrackCollection> tracks
+PhiSelector::DeDxFiller(reco::TrackCollection *track
         , edm::ValueMap<reco::DeDxData> DeDxTrack
         , TH2D* dedx_p)
 {
-    for(reco::TrackCollection::const_iterator it = tracks.begin();
-            it != tracks.end();
-            ++it)
-    {
         double dedx     = -999.9;
-        double momentum = it->p();
-        dedx = getDeDx(it,DeDxTrack,dedx);
+        double momentum = track->p();
+        dedx = getDeDx(track,DeDxTrack);
         dedx_p->Fill(dedx,momentum);
-    }
 }
 
 double
@@ -132,41 +132,25 @@ PhiSelector::getDeDx(reco::TrackCollection *track
     return dedx;
 }
 
-PhiSelector::kaon
-PhiSelector::ConstructKaon(reco::TrackCollection *track)
-{
-    kaon pk;
-    double p      = -999;
-    double dedx   = -999;
-    double charge = -999;
-
-
-}
-
 void
-PhiSelector::KaonContainer(edm::Handle<reco::TrackCollection> tracks
+PhiSelector::KaonContainer(reco::TrackCollection *track
         , edm::ValueMap<reco::DeDxData> DeDxTrack
         , std::vector<PhiSelector::kaon> &pkp
         , std::vector<PhiSelector::kaon> &pkm)
 {
-    for(reco::TrackCollection::const_iterator it = tracks.begin();
-            it != tracks.end();
-            ++it)
-    {
         //positive kaons
-        if(it->charge() == 1)
+        if(track->charge() == 1)
         {
-            kaon pk(it->p(), getDeDx(it,DeDxTrack), it->charge());
+            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
             &pkp.push_back(pk);
         }
 
         //negative kaons
-        if(it->charge() == -1)
+        if(track->charge() == -1)
         {
-            kaon pk(it->p(), getDeDx(it,DeDxTrack), it->charge());
+            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
             &pkm.push_back(pk);
         }
-    }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
