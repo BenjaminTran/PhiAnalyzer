@@ -49,6 +49,47 @@ PhiSelector::~PhiSelector()
 // member functions
 //
 
+void
+PhiSelector::DeDxFiller(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack, TH2D* dedx_p)
+{
+        double dedx     = -999.9;
+        double momentum = track->p();
+        dedx = getDeDx(track,DeDxTrack);
+        dedx_p->Fill(dedx,momentum);
+}
+
+double
+PhiSelector::getDeDx(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack)
+{
+    double dedx = -999;
+    if(DeDxTrack.isValid())
+    {
+        const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
+        dedx = dedxTrack[it].dEdx();
+    }
+
+    return dedx;
+}
+
+void
+PhiSelector::FillKaonContainer(reco::TrackCollection *track, edm::ValueMap<reco::DeDxData> DeDxTrack, std::vector<PhiSelector::kaon> &pkp, std::vector<PhiSelector::kaon> &pkm)
+{
+        //positive kaons
+        if(track->charge() == 1)
+        {
+            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
+            &pkp.push_back(pk);
+        }
+
+        //negative kaons
+        if(track->charge() == -1)
+        {
+            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
+            &pkm.push_back(pk);
+        }
+}
+
+
 // ------------ method called for each event  ------------
 void
 PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
@@ -81,6 +122,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    {
        DeDxFiller(it,DeDx_Harm,h_Dedx_p_Harm);
        DeDxFiller(it,DeDx_Trun,h_Dedx_p_Trun);
+       FillKaonContainer(it,DeDx_Harm,PKp,PKm);
    }
 
 }
@@ -103,54 +145,6 @@ PhiSelector::beginJob()
 void
 PhiSelector::endJob()
 {
-}
-
-// ------------ custom defined methods  --------------------------------------------------
-
-void
-PhiSelector::DeDxFiller(reco::TrackCollection *track
-        , edm::ValueMap<reco::DeDxData> DeDxTrack
-        , TH2D* dedx_p)
-{
-        double dedx     = -999.9;
-        double momentum = track->p();
-        dedx = getDeDx(track,DeDxTrack);
-        dedx_p->Fill(dedx,momentum);
-}
-
-double
-PhiSelector::getDeDx(reco::TrackCollection *track
-        , edm::ValueMap<reco::DeDxData> DeDxTrack)
-{
-    double dedx = -999;
-    if(DeDxTrack.isValid())
-    {
-        const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
-        dedx = dedxTrack[it].dEdx();
-    }
-
-    return dedx;
-}
-
-void
-PhiSelector::KaonContainer(reco::TrackCollection *track
-        , edm::ValueMap<reco::DeDxData> DeDxTrack
-        , std::vector<PhiSelector::kaon> &pkp
-        , std::vector<PhiSelector::kaon> &pkm)
-{
-        //positive kaons
-        if(track->charge() == 1)
-        {
-            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
-            &pkp.push_back(pk);
-        }
-
-        //negative kaons
-        if(track->charge() == -1)
-        {
-            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
-            &pkm.push_back(pk);
-        }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
