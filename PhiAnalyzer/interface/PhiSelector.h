@@ -90,9 +90,12 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Trunc40;
 
        struct kaon{
-           double p = -999;
-           double dedx = -999;
-           double charge = -999;
+           kaon(double p_, double dedx_, double charge_) :
+               p(p_), dedx(dedx_), charge(charge_) {}
+
+           double p;
+           double dedx;
+           double charge;
        };
 
        //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
@@ -102,8 +105,10 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
        int multMin_;
        int multMax_;
 
-       float H2dedx;
-       float T2dedx;
+       /* If you want to create a TTree
+        */
+       //float H2dedx;
+       //float T2dedx;
 
        TH1D* h_nEvt;
        TH1D* h_mult;
