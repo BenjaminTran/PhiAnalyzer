@@ -62,7 +62,7 @@ namespace utility
         //bestvyError = vtx.yError();
         //bestvzError = vtx.zError();
 
-        myVertex myVtx = myVertexBuild(vertices);
+        myVertex myVtx = MyVertexBuild(vertices);
 
         for(reco::TrackCollection::const_iterator it = tracks->begin();
                 it != tracks->end();
