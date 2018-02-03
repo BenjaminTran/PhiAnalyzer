@@ -117,7 +117,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        return;
    }
 
-   utility::myVertex vertex = utility::myVertexBuild(vertices);
+   utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
    // Multiplicity selection
    int mult = utility::TrackFilter(tracks,vertices);
