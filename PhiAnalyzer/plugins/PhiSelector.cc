@@ -19,6 +19,7 @@
 #include "/afs/cern.ch/user/b/btran/work/CMSSW_8_0_24/src/PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 
+using namespace std;
 
 //
 // constructors and destructor
@@ -49,7 +50,7 @@ PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
         dedx = getDeDx(track_combo_,DeDxTrack);
-        dedx_p->Fill(dedx,momentum);
+        dedx_p->Fill(momentum,dedx);
 }
 
 double
@@ -61,6 +62,8 @@ PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::D
         const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
         dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
     }
+    else
+        cout << "Bad dedx" << endl;
 
     return dedx_;
 }
