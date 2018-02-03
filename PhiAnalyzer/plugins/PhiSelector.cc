@@ -50,41 +50,41 @@ PhiSelector::~PhiSelector()
 //
 
 void
-PhiSelector::DeDxFiller(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p)
+PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p)
 {
         double dedx     = -999.9;
-        double momentum = track->p();
-        dedx = getDeDx(track,DeDxTrack);
+        double momentum = track_combo_.track->p();
+        dedx = getDeDx(track_combo_,DeDxTrack);
         dedx_p->Fill(dedx,momentum);
 }
 
 double
-PhiSelector::getDeDx(reco::TrackRef track_ref_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
+PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
     double dedx_ = -999;
     if(DeDxTrack.isValid())
     {
         const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
-        dedx_ = dedxTrack[track_ref_].dEdx();
+        dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
     }
 
     return dedx_;
 }
 
 void
-PhiSelector::FillKaonContainer(reco::TrackRef track_ref_, reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
+PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
         //positive kaons
-        if(track->charge() == 1)
+        if(track_combo_.track->charge() == 1)
         {
-            kaon pk(track->p(), getDeDx(track_ref_,tracks,DeDxTrack), track->charge());
+            kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), track_combo_.track->charge());
             pkp.push_back(pk);
         }
 
         //negative kaons
-        if(track->charge() == -1)
+        if(track_combo_.track->charge() == -1)
         {
-            kaon pk(track->p(), getDeDx(track_ref_,tracks,DeDxTrack), track->charge());
+            kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), track_combo_.track->charge());
             pkm.push_back(pk);
         }
 }
@@ -118,10 +118,11 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
            ++it)
    {
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
-       DeDxFiller(it,DeDx_Harm,h_Dedx_p_Harm);
-       DeDxFiller(it,DeDx_Trun,h_Dedx_p_Trun);
-       FillKaonContainer(it - tracks->begin(),tracks,DeDx_Harm,PKp_Harm,PKm_Harm);
-       FillKaonContainer(it - tracks->begin(),tracks,DeDx_Trun,PKp_Trun,PKm_Trun);
+       track_combo track_bundle(it,track_ref);
+       DeDxFiller(track_bundle,DeDx_Harm,h_Dedx_p_Harm);
+       DeDxFiller(track_bundle,DeDx_Trun,h_Dedx_p_Trun);
+       FillKaonContainer(track_bundle,DeDx_Harm,PKp_Harm,PKm_Harm);
+       FillKaonContainer(track_bundle,DeDx_Trun,PKp_Trun,PKm_Trun);
    }
 }
 

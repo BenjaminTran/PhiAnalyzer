@@ -86,19 +86,19 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       };
 
       struct track_combo{
-          reco::TrackCollection::const_iterator &track;
+          reco::TrackCollection::const_iterator track;
           reco::TrackRef track_ref;
 
           track_combo(reco::TrackCollection::const_iterator &track_, reco::TrackRef track_ref_) :
-            track(track_), track_ref(track_ref_)
+            track(track_), track_ref(track_ref_) {}
       };
 
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
-      void DeDxFiller(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p);
-      double getDeDx(reco::TrackRef track_ref_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
-      void FillKaonContainer(reco::TrackRef track_ref_, reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
+      void DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p);
+      double getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
+      void FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
 
       const double kaonMass = 0.493677;
 
