@@ -30,8 +30,8 @@ PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
     multMax_ = iConfig.getUntrackedParameter<int>("multMax");
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
-    _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Harmonic2"));
-    _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Trunc40"));
+    _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxHarmonic2"));
+    _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxTruncated40"));
 }
 
 
@@ -178,8 +178,6 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
   desc.addUntracked<edm::InputTag>("trkSrc",edm::InputTag("generalTracks"));
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
-  desc.addUntracked<edm::InputTag>("Dedx_Harmonic2",edm::InputTag("generic"));
-  desc.addUntracked<edm::InputTag>("Dedx_Trunc40",edm::InputTag("truncated"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
   descriptions.add("PhiSelector",desc);
