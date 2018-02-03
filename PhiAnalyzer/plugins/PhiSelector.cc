@@ -113,8 +113,8 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    int mult = utility::trackFilter(tracks,vertices);
    h_mult->Fill(mult);
 
-   for(reco::TrackCollection::const_iterator it = tracks.begin();
-           it != tracks.end();
+   for(reco::TrackCollection::const_iterator it = tracks->begin();
+           it != tracks->end();
            ++it)
    {
        DeDxFiller(it,DeDx_Harm,h_Dedx_p_Harm);
