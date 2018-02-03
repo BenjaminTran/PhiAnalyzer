@@ -120,6 +120,7 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        TH1D* h_nEvt;
        TH1D* h_mult;
+       TH1D* h_charge;
        TH1D* h_mass_Harm;
        TH1D* h_mass_Trun;
        TH2D* h_Dedx_p_Harm;
