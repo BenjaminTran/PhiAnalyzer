@@ -72,7 +72,7 @@ void
 PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
     double energy = sqrt(TMath::Power(kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
-    kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), track_combo_.track->charge(), energy);
+    kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
 
     //positive kaons
     if(track_combo_.track->charge() == 1)
@@ -178,8 +178,8 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
   desc.addUntracked<edm::InputTag>("trkSrc",edm::InputTag("generalTracks"));
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
-  desc.addUntracked<edm::InputTag>("Dedx_Harmonic2",edm::InputTag("dedxHarmonic2"));
-  desc.addUntracked<edm::InputTag>("Dedx_Trunc40",edm::InputTag("dedxTruncated40"));
+  desc.addUntracked<edm::InputTag>("Dedx_Harmonic2",edm::InputTag("generic"));
+  desc.addUntracked<edm::InputTag>("Dedx_Trunc40",edm::InputTag("truncated"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
   descriptions.add("PhiSelector",desc);
