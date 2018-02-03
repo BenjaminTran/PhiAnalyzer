@@ -60,7 +60,24 @@
 
 namespace utility
 {
-    int trackFilter(edm::Handle<reco::TrackCollection> tracks,
+    struct myVertex{
+        double bestvx = -999;
+        double bestvy = -999;
+        double bestvz = -999;
+        double bestvxError = -999;
+        double bestvyError = -999;
+        double bestvzError = -999;
+
+        const reco::Vertex &vtx;
+        math::XYZPoint bestvtx;
+
+        myVertex(double vx, double vy, double vz, double vxErr, double vyErr, double vzErr, const reco::Vertex &vtx_, math::XYZPoint bestvtx_) :
+            bestvx(vx), bestvy(vy), bestvz(vz), bestvxError(vxErr), bestvyError(vyErr), bestvzError(vzErr), vtx(vtx_), bestvtx(bestvtx_) {}
+    };
+
+    myVertex MyVertexBuild(edm::Handle<reco::VertexCollection> vertices);
+    bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx);
+    int TrackFilter(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices);
 }
 
