@@ -1,10 +1,12 @@
-import v0casanalyzerheader as phi
+import phianalyzerheader as phi
 
 collID = 'pPb'
 #collID = 'Pbp'
 #collID = 'pPbMB'
 #collID = 'PbpMB'
 #collID = 'PbPb'
+
+phi.config.JobType.priority = 15
 
 if __name__ == '__main__':
 
