@@ -65,7 +65,7 @@ PhiSelector::getDeDx(reco::TrackCollection::const_iterator &track, edm::Handle<e
     if(DeDxTrack.isValid())
     {
         const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
-        dedx_ = dedxTrack[track].dEdx();
+        dedx_ = dedxTrack[(reco::TrackRef)track].dEdx();
     }
 
     return dedx_;
