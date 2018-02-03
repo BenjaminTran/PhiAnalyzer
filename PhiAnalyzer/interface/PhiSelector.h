@@ -79,11 +79,11 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       struct kaon{
           double p;
           double dedx;
-          double energy;
           int charge;
+          double energy;
 
-          kaon(double p_, double dedx_, int charge_, double energy_) :
-              p(p_), dedx(dedx_), charge(charge_), energy(energy_) {}
+          kaon(double p_, double dedx_, double energy_, int charge_) :
+              p(p_), dedx(dedx_), energy(energy_), charge(charge_)  {}
       };
 
       struct track_combo{
@@ -112,10 +112,10 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
 
        //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
-       std::vector<PhiSelector::kaon> PKp_Harm; //Positive charged
-       std::vector<PhiSelector::kaon> PKm_Harm; //Negative charged
-       std::vector<PhiSelector::kaon> PKp_Trun; //Positive charged
-       std::vector<PhiSelector::kaon> PKm_Trun; //Negative charged
+       std::vector<PhiSelector::kaon> *PKp_Harm; //Positive charged
+       std::vector<PhiSelector::kaon> *PKm_Harm; //Negative charged
+       std::vector<PhiSelector::kaon> *PKp_Trun; //Positive charged
+       std::vector<PhiSelector::kaon> *PKm_Trun; //Negative charged
 
        int multMin_;
        int multMax_;

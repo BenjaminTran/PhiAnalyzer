@@ -87,7 +87,7 @@ PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<P
     {
         for(PhiSelector::kaon Pkm : PKm)
         {
-            double mass = sqrt(2*TMath::Power(kaonMass,2) + 2*(Pkp.energy*pkm.energy - Pkp.p*pkm.p));
+            double mass = sqrt(2*TMath::Power(kaonMass,2) + 2*(Pkp.energy*Pkm.energy - Pkp.p*Pkm.p));
             h_mass_->Fill(mass);
         }
     }
@@ -153,10 +153,10 @@ PhiSelector::beginJob()
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm","",200,0,20,1500,0,15);
     h_Dedx_p_Trun = fs->make<TH2D>("Dedx_Trun","",200,0,20,1500,0,15);
 
-    PKp_Harm = new std::vector<PhiSelector::kaon>;
-    PKm_Harm = new std::vector<PhiSelector::kaon>;
-    PKp_Trun = new std::vector<PhiSelector::kaon>;
-    PKm_Trun = new std::vector<PhiSelector::kaon>;
+    PKp_Harm = std::vector<PhiSelector::kaon>();
+    PKm_Harm = std::vector<PhiSelector::kaon>();
+    PKp_Trun = std::vector<PhiSelector::kaon>();
+    PKm_Trun = std::vector<PhiSelector::kaon>();
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
