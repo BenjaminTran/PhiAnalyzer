@@ -14,7 +14,7 @@ namespace utility
         double bestvyError = -999;
         double bestvzError = -999;
 
-        const reco::Vertex vtx;
+        const reco::Vertex &vtx;
         math::XYZPoint bestvtx;
 
         myVertex(double vx, double vy, double vz, double vxErr, double vyErr, double vzErr, reco::Vertex &vtx_, math::XYZPoint bestvtx_) :
