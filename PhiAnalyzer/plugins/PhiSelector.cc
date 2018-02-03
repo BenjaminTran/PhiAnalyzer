@@ -100,6 +100,12 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
 
+   //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
+   std::vector<PhiSelector::kaon> PKp_Harm; //Positive charged
+   std::vector<PhiSelector::kaon> PKm_Harm; //Negative charged
+   std::vector<PhiSelector::kaon> PKp_Trun; //Positive charged
+   std::vector<PhiSelector::kaon> PKm_Trun; //Negative charged
+
    h_nEvt->Fill(1);
 
    edm::Handle<reco::TrackCollection> tracks;
@@ -136,6 +142,8 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        FillKaonContainer(track_bundle,DeDx_Harm,PKp_Harm,PKm_Harm);
        FillKaonContainer(track_bundle,DeDx_Trun,PKp_Trun,PKm_Trun);
    }
+   CombinatorialMass(PKp_Harm,PKm_Harm,h_mass_Harm);
+   CombinatorialMass(PKp_Trun,PKm_Trun,h_mass_Trun);
 }
 
 
@@ -158,8 +166,6 @@ PhiSelector::beginJob()
 void
 PhiSelector::endJob()
 {
-    CombinatorialMass(PKp_Harm,PKm_Harm,h_mass_Harm);
-    CombinatorialMass(PKp_Trun,PKm_Trun,h_mass_Trun);
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
