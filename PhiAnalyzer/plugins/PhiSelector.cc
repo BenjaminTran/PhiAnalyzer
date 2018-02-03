@@ -152,11 +152,6 @@ PhiSelector::beginJob()
     h_mass_Trun = fs->make<TH1D>("mass_trun","",150,0.945,1.095);
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm","",200,0,20,1500,0,15);
     h_Dedx_p_Trun = fs->make<TH2D>("Dedx_Trun","",200,0,20,1500,0,15);
-
-    PKp_Harm = std::vector<PhiSelector::kaon>();
-    PKm_Harm = std::vector<PhiSelector::kaon>();
-    PKp_Trun = std::vector<PhiSelector::kaon>();
-    PKm_Trun = std::vector<PhiSelector::kaon>();
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
