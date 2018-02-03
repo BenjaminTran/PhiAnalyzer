@@ -79,10 +79,11 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       struct kaon{
           double p;
           double dedx;
+          double energy;
           int charge;
 
-          kaon(double p_, double dedx_, int charge_) :
-              p(p_), dedx(dedx_), charge(charge_) {}
+          kaon(double p_, double dedx_, int charge_, double energy_) :
+              p(p_), dedx(dedx_), charge(charge_), energy(energy_) {}
       };
 
       struct track_combo{
@@ -125,6 +126,7 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        TH1D* h_nEvt;
        TH1D* h_mult;
+       TH1D* h_mass;
        TH2D* h_Dedx_p_Harm;
        TH2D* h_Dedx_p_Trun;
 };

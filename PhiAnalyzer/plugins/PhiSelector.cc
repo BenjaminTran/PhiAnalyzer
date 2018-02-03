@@ -2,7 +2,7 @@
 //
 // Package:    PhiSelector/PhiSelector
 // Class:      PhiSelector
-// 
+//
 /**\class PhiSelector PhiSelector.cc PhiSelector/PhiSelector/plugins/PhiSelector.cc
 
  Description: [one line class summary]
@@ -25,23 +25,17 @@
 //
 PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
 {
-   //now do what ever initialization is needed
-
     multMin_ = iConfig.getUntrackedParameter<int>("multMin");
     multMax_ = iConfig.getUntrackedParameter<int>("multMax");
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
     _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Harmonic2"));
     _Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("Dedx_Trunc40"));
-
 }
 
 
 PhiSelector::~PhiSelector()
 {
-   // do anything here that needs to be done at desctruction time
-   // (e.g. close files, deallocate resources etc.)
-
 }
 
 
@@ -74,19 +68,16 @@ PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::D
 void
 PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
-        //positive kaons
-        if(track_combo_.track->charge() == 1)
-        {
-            kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), track_combo_.track->charge());
-            pkp.push_back(pk);
-        }
+    double energy = sqrt(TMath::Power(kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
+    kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), track_combo_.track->charge(), energy);
 
-        //negative kaons
-        if(track_combo_.track->charge() == -1)
-        {
-            kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), track_combo_.track->charge());
-            pkm.push_back(pk);
-        }
+    //positive kaons
+    if(track_combo_.track->charge() == 1)
+        pkp.push_back(pk);
+
+    //negative kaons
+    if(track_combo_.track->charge() == -1)
+        pkm.push_back(pk);
 }
 
 
@@ -110,6 +101,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
    iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
 
+   // Multiplicity selection
    int mult = utility::trackFilter(tracks,vertices);
    h_mult->Fill(mult);
 
@@ -117,10 +109,17 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
            it != tracks->end();
            ++it)
    {
+       //Use only high purity tracks
+       if(!it->quality(reco::TrackBase::highPurity)) continue;
+
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
        track_combo track_bundle(it,track_ref);
+
+       //Fill in the dEdx histograms
        DeDxFiller(track_bundle,DeDx_Harm,h_Dedx_p_Harm);
        DeDxFiller(track_bundle,DeDx_Trun,h_Dedx_p_Trun);
+
+       // Make the vector of kaons to calculate invariant mass at the end
        FillKaonContainer(track_bundle,DeDx_Harm,PKp_Harm,PKm_Harm);
        FillKaonContainer(track_bundle,DeDx_Trun,PKp_Trun,PKm_Trun);
    }
@@ -136,8 +135,14 @@ PhiSelector::beginJob()
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
     h_mult = fs->make<TH1D>("mult","",400,0,400);
+    h_mass = fs->make<TH1D>("mass","",150,0.945,1.095);
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm","",200,0,20,1500,0,15);
     h_Dedx_p_Trun = fs->make<TH2D>("Dedx_Trun","",200,0,20,1500,0,15);
+
+    PKp_Harm = new std::vector<PhiSelector::kaon>;
+    PKm_Harm = new std::vector<PhiSelector::kaon>;
+    PKp_Trun = new std::vector<PhiSelector::kaon>;
+    PKm_Trun = new std::vector<PhiSelector::kaon>;
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
