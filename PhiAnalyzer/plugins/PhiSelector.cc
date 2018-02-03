@@ -61,12 +61,12 @@ PhiSelector::DeDxFiller(reco::TrackCollection::const_iterator &track, edm::Handl
 double
 PhiSelector::getDeDx(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
-    reco::TrackRef track_ref = reco::TrackRef(track);
+    reco::TrackRef track_ref = reco::TrackRef(&track);
     double dedx_ = -999;
     if(DeDxTrack.isValid())
     {
         const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
-        dedx_ = dedxTrack[track].dEdx();
+        dedx_ = dedxTrack[track_ref].dEdx();
     }
 
     return dedx_;
