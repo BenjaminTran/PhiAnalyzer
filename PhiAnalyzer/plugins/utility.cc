@@ -17,7 +17,7 @@ namespace utility
         const reco::Vertex &vtx;
         math::XYZPoint bestvtx;
 
-        myVertex(double vx, double vy, double vz, double vxErr, double vyErr, double vzErr, reco::Vertex &vtx_, math::XYZPoint bestvtx_) :
+        myVertex(double vx, double vy, double vz, double vxErr, double vyErr, double vzErr, const reco::Vertex &vtx_, math::XYZPoint bestvtx_) :
             bestvx(vx), bestvy(vy), bestvz(vz), bestvxError(vxErr), bestvyError(vyErr), bestvzError(vzErr), vtx(vtx_), bestvtx(bestvtx_) {}
 
     };
