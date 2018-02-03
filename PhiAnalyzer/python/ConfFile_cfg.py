@@ -2,10 +2,16 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("PhiAnalyzer")
 
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
+
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiSelector_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.load("FWCore.MessageService.MessageLogger_cfi")
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
+process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(40000))
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
