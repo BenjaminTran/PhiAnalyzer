@@ -117,16 +117,18 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        return;
    }
 
+   utility::myVertex vertex = utility::myVertexBuild(vertices);
+
    // Multiplicity selection
-   int mult = utility::trackFilter(tracks,vertices);
+   int mult = utility::TrackFilter(tracks,vertices);
    h_mult->Fill(mult);
 
    for(reco::TrackCollection::const_iterator it = tracks->begin();
            it != tracks->end();
            ++it)
    {
-       //Use only high purity tracks
-       if(!it->quality(reco::TrackBase::highPurity)) continue;
+       //Use only tracks good enough to pass utility::TrackFilter
+       if(!utility::isTrackGood(it,vertex)) continue;
 
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
        track_combo track_bundle(it,track_ref);
