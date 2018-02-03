@@ -79,8 +79,8 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       struct kaon{
           double p;
           double dedx;
-          int charge;
           double energy;
+          int charge;
 
           kaon(double p_, double dedx_, double energy_, int charge_) :
               p(p_), dedx(dedx_), energy(energy_), charge(charge_)  {}
