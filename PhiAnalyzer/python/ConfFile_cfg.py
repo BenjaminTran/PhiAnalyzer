@@ -15,7 +15,7 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-     fileName = cms.string('histo.root')
+     fileName = cms.string('Phi_dedx_v1.root')
 )
 
 process.test = cms.Sequence(process.PhiSelector)
