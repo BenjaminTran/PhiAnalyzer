@@ -100,6 +100,7 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       void DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p);
       double getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
       void FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
+      void CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_);
 
       const double kaonMass = 0.493677;
 
@@ -126,7 +127,8 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        TH1D* h_nEvt;
        TH1D* h_mult;
-       TH1D* h_mass;
+       TH1D* h_mass_Harm;
+       TH1D* h_mass_Trun;
        TH2D* h_Dedx_p_Harm;
        TH2D* h_Dedx_p_Trun;
 };

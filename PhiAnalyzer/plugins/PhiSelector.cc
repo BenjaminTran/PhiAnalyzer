@@ -80,6 +80,19 @@ PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueM
         pkm.push_back(pk);
 }
 
+void
+PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_)
+{
+    for(PhiSelector::kaon Pkp : PKp)
+    {
+        for(PhiSelector::kaon Pkm : PKm)
+        {
+            double mass = sqrt(2*TMath::Power(kaonMass,2) + 2*(Pkp.energy*pkm.energy - Pkp.p*pkm.p));
+            h_mass_->Fill(mass);
+        }
+    }
+}
+
 
 // ------------ method called for each event  ------------
 void
@@ -135,7 +148,8 @@ PhiSelector::beginJob()
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
     h_mult = fs->make<TH1D>("mult","",400,0,400);
-    h_mass = fs->make<TH1D>("mass","",150,0.945,1.095);
+    h_mass_Harm = fs->make<TH1D>("mass_harm","",150,0.945,1.095);
+    h_mass_Trun = fs->make<TH1D>("mass_trun","",150,0.945,1.095);
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm","",200,0,20,1500,0,15);
     h_Dedx_p_Trun = fs->make<TH2D>("Dedx_Trun","",200,0,20,1500,0,15);
 
@@ -149,6 +163,8 @@ PhiSelector::beginJob()
 void
 PhiSelector::endJob()
 {
+    CombinatorialMass(PKp_Harm,PKm_Harm,h_mass_Harm);
+    CombinatorialMass(PKp_Trun,PKm_Trun,h_mass_Trun);
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
