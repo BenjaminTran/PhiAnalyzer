@@ -6,7 +6,7 @@
 
 namespace utility
 {
-    struct myVertex{
+    struct utility::myVertex{
         double bestvx = -999;
         double bestvy = -999;
         double bestvz = -999;
