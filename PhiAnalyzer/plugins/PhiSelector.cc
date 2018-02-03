@@ -31,7 +31,6 @@ PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
     _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxHarmonic2"));
-    //_Dedx_Trunc40 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxTruncated40"));
 }
 
 
@@ -101,8 +100,6 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
    std::vector<PhiSelector::kaon> PKp_Harm; //Positive charged
    std::vector<PhiSelector::kaon> PKm_Harm; //Negative charged
-   //std::vector<PhiSelector::kaon> PKp_Trun; //Positive charged
-   //std::vector<PhiSelector::kaon> PKm_Trun; //Negative charged
 
    h_nEvt->Fill(1);
 
@@ -114,11 +111,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Harm;
    iEvent.getByToken(_Dedx_Harmonic2,DeDx_Harm);
-   if(DeDx_Harm.isValid()) cout << "GOODZ" << endl;
-   else cout << "BADZ" << endl;
-
-   //edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Trun;
-   //iEvent.getByToken(_Dedx_Trunc40,DeDx_Trun);
+   if(!DeDx_Harm.isValid()) return;
 
    // Multiplicity selection
    int mult = utility::trackFilter(tracks,vertices);
@@ -136,16 +129,11 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
        //Fill in the dEdx histograms
        DeDxFiller(track_bundle,DeDx_Harm,h_Dedx_p_Harm);
-       //DeDxFiller(track_bundle,DeDx_Trun,h_Dedx_p_Trun);
 
        // Make the vector of kaons to calculate invariant mass at the end
        FillKaonContainer(track_bundle,DeDx_Harm,PKp_Harm,PKm_Harm);
-       //FillKaonContainer(track_bundle,DeDx_Trun,PKp_Trun,PKm_Trun);
-
-       h_charge->Fill(track_bundle.track->charge());
    }
    CombinatorialMass(PKp_Harm,PKm_Harm,h_mass_Harm);
-   //CombinatorialMass(PKp_Trun,PKm_Trun,h_mass_Trun);
 }
 
 
@@ -158,11 +146,8 @@ PhiSelector::beginJob()
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
     h_mult = fs->make<TH1D>("mult","",400,0,400);
-    h_charge = fs->make<TH1D>("charge","",10,-5,5);
-    h_mass_Harm = fs->make<TH1D>("mass_harm","",150,0.945,1.095);
-    h_mass_Trun = fs->make<TH1D>("mass_trun","",150,0.945,1.095);
+    h_mass_Harm = fs->make<TH1D>("mass_harm","",300,0.945,1.095);
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm","",200,0,20,1500,0,15);
-    h_Dedx_p_Trun = fs->make<TH2D>("Dedx_Trun","",200,0,20,1500,0,15);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
