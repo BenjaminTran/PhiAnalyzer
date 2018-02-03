@@ -55,7 +55,7 @@ PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco
 double
 PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
-    double dedx_ = -999;
+    double dedx_ = 1;
     if(DeDxTrack.isValid())
     {
         const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
