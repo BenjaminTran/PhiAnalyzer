@@ -59,9 +59,9 @@ PhiSelector::DeDxFiller(reco::TrackCollection::const_iterator &track, edm::Handl
 }
 
 double
-PhiSelector::getDeDx(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
+PhiSelector::getDeDx(int index, edm::Handle<reco::TrackCollection> tracks, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
-    reco::TrackRef track_ref = track->get<reco::TrackRef>();
+    reco::TrackRef track_ref = reco::TrackRef(tracks,index);
     double dedx_ = -999;
     if(DeDxTrack.isValid())
     {
@@ -73,19 +73,19 @@ PhiSelector::getDeDx(reco::TrackCollection::const_iterator &track, edm::Handle<e
 }
 
 void
-PhiSelector::FillKaonContainer(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
+PhiSelector::FillKaonContainer(int index, edm::Handle<reco::TrackCollection> tracks, reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
         //positive kaons
         if(track->charge() == 1)
         {
-            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
+            kaon pk(track->p(), getDeDx(index,tracks,DeDxTrack), track->charge());
             pkp.push_back(pk);
         }
 
         //negative kaons
         if(track->charge() == -1)
         {
-            kaon pk(track->p(), getDeDx(track,DeDxTrack), track->charge());
+            kaon pk(track->p(), getDeDx(index,tracks,DeDxTrack), track->charge());
             pkm.push_back(pk);
         }
 }
@@ -120,8 +120,8 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    {
        DeDxFiller(it,DeDx_Harm,h_Dedx_p_Harm);
        DeDxFiller(it,DeDx_Trun,h_Dedx_p_Trun);
-       FillKaonContainer(it,DeDx_Harm,PKp_Harm,PKm_Harm);
-       FillKaonContainer(it,DeDx_Trun,PKp_Trun,PKm_Trun);
+       FillKaonContainer(it - tracks->begin(),tracks,DeDx_Harm,PKp_Harm,PKm_Harm);
+       FillKaonContainer(it - tracks->begin(),tracks,DeDx_Trun,PKp_Trun,PKm_Trun);
    }
 }
 

@@ -88,8 +88,8 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
       void DeDxFiller(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p);
-      double getDeDx(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
-      void FillKaonContainer(reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
+      double getDeDx(int index, edm::Handle<reco::TrackCollection> tracks, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
+      void FillKaonContainer(int index, edm::Handle<reco::TrackCollection> tracks, reco::TrackCollection::const_iterator &track, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
 
       const double kaonMass = 0.493677;
 
