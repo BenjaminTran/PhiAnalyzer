@@ -111,7 +111,11 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Harm;
    iEvent.getByToken(_Dedx_Harmonic2,DeDx_Harm);
-   if(!DeDx_Harm.isValid()) return;
+   if(!DeDx_Harm.isValid())
+   {
+       cout << "Bad DeDx collection" << endl;
+       return;
+   }
 
    // Multiplicity selection
    int mult = utility::trackFilter(tracks,vertices);
