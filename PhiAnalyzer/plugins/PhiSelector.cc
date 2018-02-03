@@ -57,13 +57,8 @@ double
 PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
     double dedx_ = 1;
-    if(DeDxTrack.isValid())
-    {
-        const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
-        dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
-    }
-    else
-        cout << "Bad dedx" << endl;
+    const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
+    dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
 
     return dedx_;
 }
