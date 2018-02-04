@@ -21,7 +21,6 @@ config.Data.outLFNDirBase = '/store/group/phys_heavyions/btran/Phi'
 config.Data.useParent = True
 config.Data.publication = False
 config.Data.publishDBS = 'phys03'
-config.Data.outputDatasetTag = 'PhiDeDx_Mass'
 
 config.section_("Site")
 config.Site.storageSite = 'T2_CH_CERN'

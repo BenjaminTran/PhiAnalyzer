@@ -1,10 +1,12 @@
 import phianalyzerheader as phi
 
+version = 2
 collID = 'pPb'
 #collID = 'Pbp'
 #collID = 'pPbMB'
 #collID = 'PbpMB'
 #collID = 'PbPb'
+
 
 phi.config.JobType.priority = 15
 
@@ -24,12 +26,14 @@ if __name__ == '__main__':
 
 
     if collID == 'pPb' or collID == 'Pbp':
-        for num in range(0,1):
+        for num in range(1,4):
             try:
                 with open( 'PhiVarStore.dat', 'r' ) as fle:
                     counter = int( fle.readline() )
             except FileNotFoundError:
                 counter = 0
+
+            phi.config.Data.outputDatasetTag = 'PhiFlowCorrelation_JL' + str(counter)
 
             if collID == 'pPb':
                 DataSet = ['/PAHighMultiplicity1/davidlw-RecoSkim2016_pPb_V0Cascade_v1-97be9aa52ea60cba5455e64649c12464/USER',
@@ -40,7 +44,7 @@ if __name__ == '__main__':
                         '/PAHighMultiplicity6/davidlw-RecoSkim2016_pPb_V0Cascade_v1-97be9aa52ea60cba5455e64649c12464/USER']
                 print 'Input Dataset is %r ' % (DataSet[num])
                 phi.config.Data.inputDataset = DataSet[num]
-                phi.config.General.requestName = 'PhiFlow_2016pPbPD' + str(num+1) + 'JL' + str(counter)
+                phi.config.General.requestName = 'PhiFlow_2016pPbPD' + str(num+1) + '_v' + str(version) + '_JL' + str(counter)
             else:
                 DataSet = ['/PAHighMultiplicity1/davidlw-RecoSkim2016_Pbp_V0Cascade_v1-97be9aa52ea60cba5455e64649c12464/USER',
                         '/PAHighMultiplicity2/davidlw-RecoSkim2016_Pbp_V0Cascade_v1-97be9aa52ea60cba5455e64649c12464/USER',
@@ -50,7 +54,7 @@ if __name__ == '__main__':
                         '/PAHighMultiplicity6/davidlw-RecoSkim2016_Pbp_V0Cascade_v1-97be9aa52ea60cba5455e64649c12464/USER']
                 print 'Input Dataset is %r ' % (DataSet[num])
                 phi.config.Data.inputDataset = DataSet[num]
-                phi.config.General.requestName = 'PhiFlow_2016PbpPD' + str(num+1) + 'JL' + str(counter)
+                phi.config.General.requestName = 'PhiFlow_2016PbpPD' + str(num+1) + '_v' + str(version) + '_JL' + str(counter)
             with open( 'V0XiVarStore.dat', 'w' ) as fle:
                 counter = counter + 1
                 fle.write( str(counter) )
