@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include "TMath.h"
 
 #include <TMath.h>
 #include <TH1D.h>
@@ -101,6 +102,7 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       double getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
       void FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
       void CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_);
+      bool AcceptTrack(double momentum, double dedx);
 
       const double kaonMass = 0.493677;
 

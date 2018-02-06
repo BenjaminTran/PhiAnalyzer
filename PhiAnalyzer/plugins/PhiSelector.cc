@@ -49,7 +49,9 @@ PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
         dedx = getDeDx(track_combo_,DeDxTrack);
-        dedx_p->Fill(momentum,dedx);
+        if(AcceptTrack(momentum,dedx))
+            dedx_p->Fill(momentum,dedx);
+
 }
 
 double
@@ -65,6 +67,9 @@ PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::D
 void
 PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
+    if(!AcceptTrack(track_combo_.track->p(),getDeDx(track_combo_,DeDxTrack)))
+        return;
+
     double energy = sqrt(TMath::Power(kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
     kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
 
@@ -88,6 +93,19 @@ PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<P
             h_mass_->Fill(mass);
         }
     }
+}
+
+bool
+PhiSelector::AcceptTrack(double momentum, double dedx)
+{
+    double functionValueTop = -999;
+    double functionValueBot = -999;
+    functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
+    functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
+    if(dedx < functionValueTop && dedx > functionValueBot)
+        return true;
+    else
+        return false;
 }
 
 
@@ -117,7 +135,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        return;
    }
 
-   //utility::myVertex vertex = utility::MyVertexBuild(vertices);
+   utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
    // Multiplicity selection
    int mult = utility::TrackFilter(tracks,vertices);
@@ -128,7 +146,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
            ++it)
    {
        //Use only tracks good enough to pass utility::TrackFilter
-       //if(!utility::isTrackGood(it,vertex)) continue;
+       if(!utility::isTrackGood(it,vertex)) continue;
 
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
        track_combo track_bundle(it,track_ref);
