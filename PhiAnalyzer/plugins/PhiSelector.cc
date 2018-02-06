@@ -105,7 +105,7 @@ PhiSelector::AcceptTrack(track_combo track_combo_, edm::Handle<edm::ValueMap<rec
     int nhits = track_combo_.track->numberOfValidHits();
     functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
     functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
-    if(dedx < functionValueTop && dedx > functionValueBot && nhits > 3)
+    if(dedx < functionValueTop && dedx > functionValueBot && nhits > 11)
         return true;
     else
         return false;
@@ -172,7 +172,7 @@ PhiSelector::beginJob()
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
     h_mult = fs->make<TH1D>("mult","",400,0,400);
-    h_mass_Harm = fs->make<TH1D>("mass_harm",";GeV",800,1.010,1.030);
+    h_mass_Harm = fs->make<TH1D>("mass_harm",";GeV",80,1.00,1.04);
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm",";p_{T};dE/dx",200,0,5,250,0,15);
 }
 
