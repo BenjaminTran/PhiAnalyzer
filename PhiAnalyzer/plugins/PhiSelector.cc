@@ -172,8 +172,8 @@ PhiSelector::beginJob()
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
     h_mult = fs->make<TH1D>("mult","",400,0,400);
-    h_mass_Harm = fs->make<TH1D>("mass_harm",";GeV",80,1.00,1.04);
-    h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm",";p_{T};dE/dx",200,0,5,250,0,15);
+    h_mass_Harm = fs->make<TH1D>("mass_harm",";GeV",800,1.010,1.030);
+    h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm",";p;dE/dx",200,0,5,250,0,15);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
