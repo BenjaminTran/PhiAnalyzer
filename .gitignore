@@ -16,6 +16,6 @@
 PhiAnalyzer/crab/crab_dir/HLT*
 PhiAnalyzer/crab/IDs
 PhiAnalyzer/crab/crab_dir
-PhiAnalyzer/json
+PhiAnalyzer/python
 *.orig
 tags
