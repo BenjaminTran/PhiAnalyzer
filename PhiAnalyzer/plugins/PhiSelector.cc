@@ -49,7 +49,7 @@ PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
         dedx = getDeDx(track_combo_,DeDxTrack);
-        if(AcceptTrack(momentum,dedx))
+        if(AcceptTrack(track_combo_,DeDxTrack))
             dedx_p->Fill(momentum,dedx);
 
 }
@@ -57,7 +57,7 @@ PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco
 double
 PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
-    double dedx_ = 1;
+    double dedx_ = -1;
     const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
     dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
 
@@ -67,7 +67,7 @@ PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::D
 void
 PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
-    if(!AcceptTrack(track_combo_.track->p(),getDeDx(track_combo_,DeDxTrack)))
+    if(!AcceptTrack(track_combo_, DeDxTrack))
         return;
 
     double energy = sqrt(TMath::Power(kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
@@ -96,18 +96,20 @@ PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<P
 }
 
 bool
-PhiSelector::AcceptTrack(double momentum, double dedx)
+PhiSelector::AcceptTrack(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
     double functionValueTop = -999;
     double functionValueBot = -999;
+    double momentum = track_combo_.track->p();
+    double dedx = getDeDx(track_combo_, DeDxTrack);
+    int nhits = track_combo_.track->numberOfValidHits();
     functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
     functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
-    if(dedx < functionValueTop && dedx > functionValueBot)
+    if(dedx < functionValueTop && dedx > functionValueBot && nhits > 3)
         return true;
     else
         return false;
 }
-
 
 // ------------ method called for each event  ------------
 void
