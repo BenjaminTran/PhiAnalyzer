@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
 
     if collID == 'pPb' or collID == 'Pbp':
-        for num in range(1,4):
+        for num in range(4,6):
             try:
                 with open( 'PhiVarStore.dat', 'r' ) as fle:
                     counter = int( fle.readline() )
@@ -55,7 +55,7 @@ if __name__ == '__main__':
                 print 'Input Dataset is %r ' % (DataSet[num])
                 phi.config.Data.inputDataset = DataSet[num]
                 phi.config.General.requestName = 'PhiFlow_2016PbpPD' + str(num+1) + '_v' + str(version) + '_JL' + str(counter)
-            with open( 'V0XiVarStore.dat', 'w' ) as fle:
+            with open( 'PhiVarStore.dat', 'w' ) as fle:
                 counter = counter + 1
                 fle.write( str(counter) )
             submit(phi.config)
@@ -80,14 +80,14 @@ if __name__ == '__main__':
                 phi.config.Data.inputDataset = DataSet[num]
                 phi.config.General.workArea = 'crab_dir/HLT185_250FlowCombinedv2ppbMB2016PD' + str(num+1) + 'Rap'
                 phi.config.General.requestName = 'HLT185_250Flow2016CorrelationpPbMBCombinedPD' + str(num+1) + 'JL' + str(counter)
-                with open( 'V0XiVarStore.dat', 'w' ) as fle:
+                with open( 'PhiVarStore.dat', 'w' ) as fle:
                     counter = counter + 1
                     fle.write( str(counter) )
                 submit(phi.config)
         else:
             for num in range(7,13):
                 try:
-                    with open( 'V0XiVarStore.dat', 'r' ) as fle:
+                    with open( 'PhiVarStore.dat', 'r' ) as fle:
                         counter = int( fle.readline() )
                 except FileNotFoundError:
                     counter = 0
@@ -116,14 +116,14 @@ if __name__ == '__main__':
                 phi.config.Data.inputDataset = DataSet[num]
                 phi.config.General.workArea = 'crab_dir/HLT185_250FlowCombinedv2PbpMB2016PD' + str(num+1) + 'Rap'
                 phi.config.General.requestName = 'HLT185_250Flow2016CorrelationPbpMBCombinedPD' + str(num+1) + 'JL' + str(counter)
-                with open( 'V0XiVarStore.dat', 'w' ) as fle:
+                with open( 'PhiVarStore.dat', 'w' ) as fle:
                     counter = counter + 1
                     fle.write( str(counter) )
                 submit(phi.config)
     if collID == 'PbPb':
             for num in range(0,3):
                 try:
-                    with open( 'V0XiVarStore.dat', 'r' ) as fle:
+                    with open( 'PhiVarStore.dat', 'r' ) as fle:
                         counter = int( fle.readline() )
                 except FileNotFoundError:
                     counter = 0
@@ -135,7 +135,7 @@ if __name__ == '__main__':
                 phi.config.Data.inputDataset = DataSet[num]
                 phi.config.General.workArea = 'crab_dir/HLT185_250FlowCombinedv2PbPb2016PD' + str(num+5) + 'Rap'
                 phi.config.General.requestName = 'Cent30_50_Flow2016CorrelationPbPbCombinedPD' + str(num+5) + 'JL' + str(counter)
-                with open( 'V0XiVarStore.dat', 'w' ) as fle:
+                with open( 'PhiVarStore.dat', 'w' ) as fle:
                     counter = counter + 1
                     fle.write( str(counter) )
                 submit(phi.config)

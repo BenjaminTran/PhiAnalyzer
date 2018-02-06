@@ -117,7 +117,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        return;
    }
 
-   utility::myVertex vertex = utility::MyVertexBuild(vertices);
+   //utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
    // Multiplicity selection
    int mult = utility::TrackFilter(tracks,vertices);
@@ -128,7 +128,7 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
            ++it)
    {
        //Use only tracks good enough to pass utility::TrackFilter
-       if(!utility::isTrackGood(it,vertex)) continue;
+       //if(!utility::isTrackGood(it,vertex)) continue;
 
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
        track_combo track_bundle(it,track_ref);
