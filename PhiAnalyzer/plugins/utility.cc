@@ -6,6 +6,8 @@
 
 namespace utility
 {
+
+    kaonMass = 0.493677;
     myVertex MyVertexBuild(edm::Handle<reco::VertexCollection> vertices)
     {
         const reco::Vertex & vtx = (*vertices)[0];
@@ -14,7 +16,8 @@ namespace utility
         return myVertex_;
     }
 
-    bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx)
+    //Multiplicity criteria
+    bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut = true)
     {
         double dzvtx = track->dz(myVtx.bestvtx);
         double dxyvtx = track->dxy(myVtx.bestvtx);
@@ -26,13 +29,16 @@ namespace utility
         if(fabs(dzvtx/dzerror) > 3) return false;
         if(fabs(dxyvtx/dxyerror) > 3) return false;
         if(fabs(track->eta()) > 3) return false;
-        if(track->pt() <= 0.4) return false;
+        if(ptCut)
+        {
+            if(track->pt() <= 0.4) return false;
+        }
 
         return true;
     }
 
 
-    int TrackFilter(edm::Handle<reco::TrackCollection> tracks,
+    int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices)
     {
         int Multiplicity = 0;

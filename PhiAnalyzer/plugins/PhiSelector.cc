@@ -28,6 +28,7 @@ PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
 {
     multMin_ = iConfig.getUntrackedParameter<int>("multMin");
     multMax_ = iConfig.getUntrackedParameter<int>("multMax");
+    trackPtCut_ = iConfig.getUntrackedParameter<bool>("trackPtCut");
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
     _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxHarmonic2"));
@@ -44,7 +45,7 @@ PhiSelector::~PhiSelector()
 //
 
 void
-PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p)
+PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p)
 {
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
@@ -55,7 +56,7 @@ PhiSelector::DeDxFiller(track_combo track_combo_, edm::Handle<edm::ValueMap<reco
 }
 
 double
-PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
+PhiSelector::getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
     double dedx_ = -1;
     const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
@@ -65,7 +66,7 @@ PhiSelector::getDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::D
 }
 
 void
-PhiSelector::FillKaonContainer(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
+PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
     if(!AcceptTrack(track_combo_, DeDxTrack))
         return;
@@ -96,7 +97,7 @@ PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<P
 }
 
 bool
-PhiSelector::AcceptTrack(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
+PhiSelector::AcceptTrack(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
     double functionValueTop = -999;
     double functionValueBot = -999;
@@ -140,18 +141,18 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
    // Multiplicity selection
-   int mult = utility::TrackFilter(tracks,vertices);
+   int mult = utility::Multiplicity(tracks,vertices);
    h_mult->Fill(mult);
 
    for(reco::TrackCollection::const_iterator it = tracks->begin();
            it != tracks->end();
            ++it)
    {
-       //Use only tracks good enough to pass utility::TrackFilter
-       if(!utility::isTrackGood(it,vertex)) continue;
+       //Use only tracks good enough to pass utility::Multiplicity
+       if(!utility::isTrackGood(it,vertex,trackPtCut_)) continue;
 
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
-       track_combo track_bundle(it,track_ref);
+       utility::track_combo track_bundle(it,track_ref);
 
        //Fill in the dEdx histograms
        DeDxFiller(track_bundle,DeDx_Harm,h_Dedx_p_Harm);
@@ -191,6 +192,7 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
+  desc.addUntracked<bool>("trackPtCut",true);
   descriptions.add("PhiSelector",desc);
 }
 

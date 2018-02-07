@@ -87,14 +87,6 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
               p(p_), dedx(dedx_), energy(energy_), charge(charge_)  {}
       };
 
-      struct track_combo{
-          reco::TrackCollection::const_iterator track;
-          reco::TrackRef track_ref;
-
-          track_combo(reco::TrackCollection::const_iterator &track_, reco::TrackRef track_ref_) :
-            track(track_), track_ref(track_ref_) {}
-      };
-
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
@@ -104,7 +96,6 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       void CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_);
       bool AcceptTrack(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 
-      const double kaonMass = 0.493677;
 
       // ----------member data ---------------------------
        edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
@@ -113,6 +104,7 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        int multMin_;
        int multMax_;
+       bool trackPtCut_;
 
        /* If you want to create a TTree
         */
