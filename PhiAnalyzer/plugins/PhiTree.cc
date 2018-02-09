@@ -95,10 +95,14 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             it != tracks->end();
             ++it)
     {
+        //if(!it->quality(reco::TrackBase::highPurity)) return;
         reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
         utility::track_combo track_bundle(it,track_ref);
 
         track_particle_.momentum      = it->p();
+        track_particle_.px            = it->px();
+        track_particle_.py            = it->py();
+        track_particle_.pz            = it->pz();
         track_particle_.pt            = it->pt();
         track_particle_.ptError       = it->ptError();
         track_particle_.energy        = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(it->p(),2));
@@ -110,6 +114,7 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         track_particle_.dxy           = it->dxy(vertex.bestvtx);
         track_particle_.dxyError      = sqrt(TMath::Power(it->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
         track_particle_.eta           = it->eta();
+        track_particle_.phi           = it->phi();
         track_particle_.ndof          = it->ndof();
         track_particle_.vx            = it->vx();
         track_particle_.vy            = it->vy();
@@ -118,7 +123,6 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         track_particle_.chi2          = it->chi2();
         track_particle_.chi2norm      = it->normalizedChi2();
         track_particle_.nhits         = it->numberOfValidHits();
-
     }
 
 }

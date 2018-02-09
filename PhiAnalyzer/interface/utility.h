@@ -89,9 +89,13 @@ namespace utility
         float dxy;
         float dxyError;
         float eta;
+        float phi;
         float vx;
         float vy;
         float vz;
+        float px;
+        float py;
+        float pz;
         float vzFlip;
         float chi2;
         float chi2norm;
@@ -105,6 +109,8 @@ namespace utility
 
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices);
+
+    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 }
 
 #endif

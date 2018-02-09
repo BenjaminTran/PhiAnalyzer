@@ -3,6 +3,7 @@
  */
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
 
 namespace utility
 {
@@ -56,4 +57,32 @@ namespace utility
 
         return Multiplicity;
     }
+
+    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, bool tight = true)
+        {
+            double functionValueTop = -999;
+            double functionValueBot = -999;
+            double momentum = track_combo_.track->p();
+            double dedx = PhiSelector::getDeDx(track_combo_, DeDxTrack);
+            int nhits = track_combo_.track->numberOfValidHits();
+            if(tight)
+            {
+                functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
+                functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
+                if(dedx < functionValueTop && dedx > functionValueBot)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+
+                functionValueTop = 0.55*(TMath::Power(1.62/x,2) - 2*TMath::Power(0.6/x,1)) + 3.6;
+                functionValueBot = 0.5*(TMath::Power(0.5/x,4) - 1*TMath::Power(0.50/x,2)) + 2.7;
+                if(dedx < functionValueTop && dedx > functionValueBot)
+                    return true;
+                else
+                    return false;
+            }
+        }
 }
