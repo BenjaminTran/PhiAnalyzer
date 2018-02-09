@@ -6,8 +6,7 @@
 
 namespace utility
 {
-
-    kaonMass = 0.493677;
+    const double kaonMass = 0.493677;
     myVertex MyVertexBuild(edm::Handle<reco::VertexCollection> vertices)
     {
         const reco::Vertex & vtx = (*vertices)[0];
@@ -49,7 +48,7 @@ namespace utility
                 it != tracks->end();
                 ++it)
         {
-            if(isTrackGood(it,myVtx))
+            if(isTrackGood(it,myVtx,true))
                 Multiplicity++;
             else
                 continue;
