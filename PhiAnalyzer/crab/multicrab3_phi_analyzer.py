@@ -1,6 +1,6 @@
 import phianalyzerheader as phi
 
-version = 2
+version = 3
 collID = 'pPb'
 #collID = 'Pbp'
 #collID = 'pPbMB'
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
 
     if collID == 'pPb' or collID == 'Pbp':
-        for num in range(4,6):
+        for num in range(0,1):
             try:
                 with open( 'PhiVarStore.dat', 'r' ) as fle:
                     counter = int( fle.readline() )
