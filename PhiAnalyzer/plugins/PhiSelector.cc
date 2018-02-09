@@ -50,7 +50,7 @@ PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::Valu
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
         dedx = getDeDx(track_combo_,DeDxTrack);
-        if(AcceptTrack(track_combo_,DeDxTrack))
+        //if(AcceptTrack(track_combo_,DeDxTrack))
             dedx_p->Fill(momentum,dedx);
 
 }
@@ -68,10 +68,10 @@ PhiSelector::getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMa
 void
 PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
 {
-    if(!AcceptTrack(track_combo_, DeDxTrack))
-        return;
+    //if(!AcceptTrack(track_combo_, DeDxTrack))
+        //return;
 
-    double energy = sqrt(TMath::Power(kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
+    double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
     kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
 
     //positive kaons
@@ -90,7 +90,7 @@ PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<P
     {
         for(PhiSelector::kaon Pkm : PKm)
         {
-            double mass = sqrt(2*TMath::Power(kaonMass,2) + 2*(Pkp.energy*Pkm.energy - Pkp.p*Pkm.p));
+            double mass = sqrt(2*TMath::Power(utility::kaonMass,2) + 2*(Pkp.energy*Pkm.energy - Pkp.p*Pkm.p));
             h_mass_->Fill(mass);
         }
     }
@@ -173,7 +173,7 @@ PhiSelector::beginJob()
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
     h_mult = fs->make<TH1D>("mult","",400,0,400);
-    h_mass_Harm = fs->make<TH1D>("mass_harm",";GeV",800,1.010,1.030);
+    h_mass_Harm = fs->make<TH1D>("mass_harm",";GeV",800,1.00,1.4);
     h_Dedx_p_Harm = fs->make<TH2D>("Dedx_harm",";p;dE/dx",200,0,5,250,0,15);
 }
 
@@ -192,7 +192,7 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
-  desc.addUntracked<bool>("trackPtCut",true);
+  desc.addUntracked<bool>("trackPtCut",false);
   descriptions.add("PhiSelector",desc);
 }
 

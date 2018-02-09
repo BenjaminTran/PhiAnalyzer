@@ -97,10 +97,12 @@ namespace utility
         float chi2norm;
         float ndof;
         int nhits;
-    }
+    };
 
     myVertex MyVertexBuild(edm::Handle<reco::VertexCollection> vertices);
-    bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx);
+
+    bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool trackPtCut);
+
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices);
 }
