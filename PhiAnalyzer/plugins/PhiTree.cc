@@ -144,6 +144,9 @@ PhiTree::beginJob()
     h_nEvt = fs->make<TH1D>("Evt","",10,0,10);
 
     trackTree->Branch("momentum"      , &track_particle_.momentum);
+    trackTree->Branch("px"            , &track_particle_.px);
+    trackTree->Branch("py"            , &track_particle_.py);
+    trackTree->Branch("pz"            , &track_particle_.pz);
     trackTree->Branch("pt"            , &track_particle_.pt);
     trackTree->Branch("ptError"       , &track_particle_.ptError);
     trackTree->Branch("energy"        , &track_particle_.energy);
@@ -155,6 +158,7 @@ PhiTree::beginJob()
     trackTree->Branch("dxy"           , &track_particle_.dxy);
     trackTree->Branch("dxyError"      , &track_particle_.dxyError);
     trackTree->Branch("eta"           , &track_particle_.eta);
+    trackTree->Branch("phi"           , &track_particle_.phi);
     trackTree->Branch("vx"            , &track_particle_.vx);
     trackTree->Branch("vy"            , &track_particle_.vy);
     trackTree->Branch("vz"            , &track_particle_.vz);

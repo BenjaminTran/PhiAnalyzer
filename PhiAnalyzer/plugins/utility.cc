@@ -64,7 +64,7 @@ namespace utility
         double functionValueBot = -999;
         double momentum = track_combo_.track->p();
         double dedx = getDeDx(track_combo_, DeDxTrack);
-        int nhits = track_combo_.track->numberOfValidHits();
+        //int nhits = track_combo_.track->numberOfValidHits();
         if(tight)
         {
             functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;

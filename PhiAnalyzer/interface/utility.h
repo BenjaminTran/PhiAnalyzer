@@ -85,7 +85,7 @@ namespace utility
         float charge;
         int track_quality;
         float dz;
-        float dzErrror;
+        float dzError;
         float dxy;
         float dxyError;
         float eta;
