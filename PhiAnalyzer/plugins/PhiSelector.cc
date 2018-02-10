@@ -55,7 +55,7 @@ PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::Valu
 
 }
 
-double
+static double
 PhiSelector::getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
 {
     double dedx_ = -1;
