@@ -6,6 +6,7 @@ process = cms.Process("PhiAnalyzer")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiSelector_cfi")
+process.load("PhiAnalyzer.PhiAnalyzer.PhiTree_cfi")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
@@ -36,9 +37,10 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-     fileName = cms.string('Phi_dedx_v3.root')
+     # fileName = cms.string('Phi_dedx_v3.root')
+     fileName = cms.string('Phi_Tree_v1.root')
 )
 
-process.test = cms.Sequence(process.PhiSelector)
+process.test = cms.Sequence(process.PhiTree)
 
 process.p = cms.Path(process.test)
