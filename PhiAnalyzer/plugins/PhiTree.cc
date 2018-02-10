@@ -44,7 +44,7 @@ PhiTree::~PhiTree()
 // member functions
 //
 
-int qualityMask_Mask(reco::TrackCollection::const_iterator &track)
+int PhiTree::qualityMask_Mask(reco::TrackCollection::const_iterator &track)
 {
     if(track->quality(reco::TrackBase::undefQuality))
         return -1;
