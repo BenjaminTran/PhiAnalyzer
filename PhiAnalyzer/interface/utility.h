@@ -82,7 +82,7 @@ namespace utility
         float ptError;
         float energy;
         float dedx;
-        float charge;
+        int charge;
         int track_quality;
         float dz;
         float dzError;
@@ -99,7 +99,7 @@ namespace utility
         float vzFlip;
         float chi2;
         float chi2norm;
-        float ndof;
+        int ndof;
         int nhits;
     };
 
