@@ -95,9 +95,11 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             it != tracks->end();
             ++it)
     {
-        //if(!it->quality(reco::TrackBase::highPurity)) return;
+        //if(!it->quality(reco::TrackBase::highPurity)) continue;
         reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
         utility::track_combo track_bundle(it,track_ref);
+
+        if(!utility::AcceptTrackDeDx(track_bundle,DeDx_Harm,false)) continue;
 
         track_particle_.momentum      = it->p();
         track_particle_.px            = it->px();
@@ -123,6 +125,8 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         track_particle_.chi2          = it->chi2();
         track_particle_.chi2norm      = it->normalizedChi2();
         track_particle_.nhits         = it->numberOfValidHits();
+
+        trackTree->Fill();
     }
 
 }
