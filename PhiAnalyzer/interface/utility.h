@@ -110,7 +110,7 @@ namespace utility
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices);
 
-    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
+    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, bool tight);
 }
 
 #endif

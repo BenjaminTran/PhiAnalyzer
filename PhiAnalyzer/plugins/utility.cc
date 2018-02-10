@@ -77,8 +77,8 @@ namespace utility
             else
             {
 
-                functionValueTop = 0.55*(TMath::Power(1.62/x,2) - 2*TMath::Power(0.6/x,1)) + 3.6;
-                functionValueBot = 0.5*(TMath::Power(0.5/x,4) - 1*TMath::Power(0.50/x,2)) + 2.7;
+                functionValueTop = 0.55*(TMath::Power(1.62/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.6;
+                functionValueBot = 0.5*(TMath::Power(0.5/momentum,4) - 1*TMath::Power(0.50/momentum,2)) + 2.7;
                 if(dedx < functionValueTop && dedx > functionValueBot)
                     return true;
                 else
