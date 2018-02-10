@@ -76,7 +76,6 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       ~PhiSelector();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-      static double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 
 
    private:

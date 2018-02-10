@@ -49,20 +49,10 @@ PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::Valu
 {
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
-        dedx = getDeDx(track_combo_,DeDxTrack);
+        dedx = utility::getDeDx(track_combo_,DeDxTrack);
         //if(utility::AcceptTrackDeDx(track_combo_,DeDxTrack,true))
             dedx_p->Fill(momentum,dedx);
 
-}
-
-static double
-PhiSelector::getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
-{
-    double dedx_ = -1;
-    const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
-    dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
-
-    return dedx_;
 }
 
 void
@@ -72,7 +62,7 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
         //return;
 
     double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
-    kaon pk(track_combo_.track->p(), getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
+    kaon pk(track_combo_.track->p(), utility::getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
 
     //positive kaons
     if(track_combo_.track->charge() == 1)

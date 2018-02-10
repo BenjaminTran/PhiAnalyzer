@@ -111,6 +111,8 @@ namespace utility
             edm::Handle<reco::VertexCollection> vertices);
 
     bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, bool tight);
+
+    double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 }
 
 #endif

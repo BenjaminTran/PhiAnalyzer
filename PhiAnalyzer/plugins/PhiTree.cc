@@ -108,7 +108,7 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         track_particle_.pt            = it->pt();
         track_particle_.ptError       = it->ptError();
         track_particle_.energy        = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(it->p(),2));
-        track_particle_.dedx          = PhiSelector::getDeDx(track_bundle,DeDx_Harm);
+        track_particle_.dedx          = utility::getDeDx(track_bundle,DeDx_Harm);
         track_particle_.charge        = it->charge();
         track_particle_.track_quality = qualityMask_Mask(it);
         track_particle_.dz            = it->dz(vertex.bestvtx);

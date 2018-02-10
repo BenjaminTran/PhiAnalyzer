@@ -59,30 +59,40 @@ namespace utility
     }
 
     bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, bool tight = true)
+    {
+        double functionValueTop = -999;
+        double functionValueBot = -999;
+        double momentum = track_combo_.track->p();
+        double dedx = getDeDx(track_combo_, DeDxTrack);
+        int nhits = track_combo_.track->numberOfValidHits();
+        if(tight)
         {
-            double functionValueTop = -999;
-            double functionValueBot = -999;
-            double momentum = track_combo_.track->p();
-            double dedx = PhiSelector::getDeDx(track_combo_, DeDxTrack);
-            int nhits = track_combo_.track->numberOfValidHits();
-            if(tight)
-            {
-                functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
-                functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
-                if(dedx < functionValueTop && dedx > functionValueBot)
-                    return true;
-                else
-                    return false;
-            }
+            functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
+            functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
+            if(dedx < functionValueTop && dedx > functionValueBot)
+                return true;
             else
-            {
-
-                functionValueTop = 0.55*(TMath::Power(1.62/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.6;
-                functionValueBot = 0.5*(TMath::Power(0.5/momentum,4) - 1*TMath::Power(0.50/momentum,2)) + 2.7;
-                if(dedx < functionValueTop && dedx > functionValueBot)
-                    return true;
-                else
-                    return false;
-            }
+                return false;
         }
+        else
+        {
+
+            functionValueTop = 0.55*(TMath::Power(1.62/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.6;
+            functionValueBot = 0.5*(TMath::Power(0.5/momentum,4) - 1*TMath::Power(0.50/momentum,2)) + 2.7;
+            if(dedx < functionValueTop && dedx > functionValueBot)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack)
+    {
+        double dedx_ = -1;
+        const edm::ValueMap<reco::DeDxData> dedxTrack = *DeDxTrack.product();
+        dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
+
+        return dedx_;
+    }
+
 }
