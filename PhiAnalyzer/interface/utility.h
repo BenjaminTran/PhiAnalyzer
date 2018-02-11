@@ -83,7 +83,6 @@ namespace utility
         float energy;
         float dedx;
         int charge;
-        int track_quality;
         float dz;
         float dzError;
         float dxy;

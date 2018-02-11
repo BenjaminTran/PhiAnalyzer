@@ -82,7 +82,6 @@ class PhiTree : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
-      int qualityMask_Mask(reco::TrackCollection::const_iterator &track);
 
 
       // ----------member data ---------------------------

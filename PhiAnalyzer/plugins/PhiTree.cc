@@ -44,31 +44,6 @@ PhiTree::~PhiTree()
 // member functions
 //
 
-int PhiTree::qualityMask_Mask(reco::TrackCollection::const_iterator &track)
-{
-    if(track->quality(reco::TrackBase::undefQuality))
-        return -1;
-    else if(track->quality(reco::TrackBase::loose))
-        return 0;
-    else if(track->quality(reco::TrackBase::tight))
-        return 1;
-    else if(track->quality(reco::TrackBase::highPurity))
-        return 2;
-    else if(track->quality(reco::TrackBase::confirmed))
-        return 3;
-    else if(track->quality(reco::TrackBase::goodIterative))
-        return 4;
-    else if(track->quality(reco::TrackBase::looseSetWithPV))
-        return 5;
-    else if(track->quality(reco::TrackBase::highPuritySetWithPV))
-        return 6;
-    else if(track->quality(reco::TrackBase::qualitySize))
-        return 7;
-    else
-        return 10;
-}
-
-
 // ------------ method called for each event  ------------
 void
 PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
@@ -95,7 +70,7 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             it != tracks->end();
             ++it)
     {
-        //if(!it->quality(reco::TrackBase::highPurity)) continue;
+        if(!it->quality(reco::TrackBase::highPurity)) continue;
         reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
         utility::track_combo track_bundle(it,track_ref);
 
@@ -110,7 +85,6 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         track_particle_.energy        = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(it->p(),2));
         track_particle_.dedx          = utility::getDeDx(track_bundle,DeDx_Harm);
         track_particle_.charge        = it->charge();
-        track_particle_.track_quality = qualityMask_Mask(it);
         track_particle_.dz            = it->dz(vertex.bestvtx);
         track_particle_.dzError       = sqrt(TMath::Power(it->dzError(),2) + TMath::Power(vertex.bestvzError,2));
         track_particle_.dxy           = it->dxy(vertex.bestvtx);
@@ -139,7 +113,7 @@ PhiTree::beginJob()
     TH1::SetDefaultSumw2();
     edm::Service<TFileService> fs;
 
-    trackTree = fs->make<TTree>("TrackTree","TrackTree");
+    trackTree = fs->make<TTree>("TrackTree","TrackTTree");
 
     h_nEvt = fs->make<TH1D>("Evt","",10,0,10);
 
@@ -166,7 +140,6 @@ PhiTree::beginJob()
     trackTree->Branch("ndof"          , &track_particle_.ndof          , "ndof/F");
     trackTree->Branch("nhits"         , &track_particle_.nhits         , "nhits/I");
     trackTree->Branch("charge"        , &track_particle_.charge        , "charge/I");
-    trackTree->Branch("track_quality" , &track_particle_.track_quality , "track_quality/I");
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
