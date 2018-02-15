@@ -106,10 +106,12 @@ namespace utility
 
     bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool trackPtCut);
 
+    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut, double dzdca, double dxydca, double eta, double ptCut, int nhits)
+
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices);
 
-    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, bool tight);
+    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::string constraint);
 
     double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 }
