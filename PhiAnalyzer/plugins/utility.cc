@@ -124,7 +124,7 @@ namespace utility
         }
         else
         {
-            throw domain_error(constraint + " is not a valid dedx function constraint!");
+            throw std::invalid_argument(constraint + " is not a valid dedx function constraint!");
         }
     }
 

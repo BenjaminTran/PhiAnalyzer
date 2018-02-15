@@ -5,6 +5,7 @@
 #include <TH1D.h>
 #include <TH2D.h>
 #include <string>
+#include <exception>
 #include <vector>
 #include <iostream>
 #include <math.h>

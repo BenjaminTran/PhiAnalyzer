@@ -56,16 +56,30 @@ PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::Valu
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
         dedx = utility::getDeDx(track_combo_,DeDxTrack);
-        if(utility::AcceptTrackDeDx(track_combo_,DeDxTrack,constraint))
-            dedx_p->Fill(momentum,dedx);
+        try
+        {
+            if(utility::AcceptTrackDeDx(track_combo_,DeDxTrack,constraint))
+                dedx_p->Fill(momentum,dedx);
+        }
+        catch( const std::invalid_argument& e)
+        {
+            std::cerr << e.what();
+        }
 
 }
 
 void
 PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm, std::string constraint)
 {
-    if(!utility::AcceptTrackDeDx(track_combo_, DeDxTrack,constraint))
-        return;
+    try
+    {
+        if(!utility::AcceptTrackDeDx(track_combo_, DeDxTrack,constraint))
+            return;
+    }
+    catch( const std::invalid_argument& e)
+    {
+        std::cerr << e.what();
+    }
 
     double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
     kaon pk(track_combo_.track->p(), track_combo_.track->pt(), track_combo_.track->px(), track_combo_.track->py(), track_combo_.track->pz(), utility::getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge(), track_combo_.track->numberOfValidHits());

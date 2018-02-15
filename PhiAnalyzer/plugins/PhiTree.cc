@@ -75,7 +75,14 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
         utility::track_combo track_bundle(it,track_ref);
 
-        if(!utility::AcceptTrackDeDx(track_bundle,DeDx_Harm,dedxConstraint_)) continue;
+        try
+        {
+            if(!utility::AcceptTrackDeDx(track_bundle,DeDx_Harm,dedxConstraint_)) continue;
+        }
+        catch(const std::invalid_argument& e)
+        {
+            std::cerr << e.what();
+        }
 
         track_particle_.momentum      = it->p();
         track_particle_.px            = it->px();
