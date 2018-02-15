@@ -68,7 +68,7 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
         return;
 
     double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
-    kaon pk(track_combo_.track->p(), utility::getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
+    kaon pk(track_combo_.track->p(), track_combo_.track->pt(), track_combo_.track->px(), track_combo_.track->py(), track_combo_.track->pz(), utility::getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge(), track_combo_.track->numberOfValidHits());
 
     //positive kaons
     if(track_combo_.track->charge() == 1)
@@ -90,6 +90,7 @@ PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<P
             TVector3 dau2p(Pkm.px,Pkm.py,Pkm.pz);
             TVector3 dauPsum(dau1p + dau2p);
             double mass = sqrt(TMath::Power(Pkp.energy+Pkm.energy,2) - dauPsum.Mag2());
+            h_mass_->Fill(mass);
         }
     }
 }

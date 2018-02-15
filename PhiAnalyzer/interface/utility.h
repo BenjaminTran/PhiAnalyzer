@@ -106,7 +106,7 @@ namespace utility
 
     bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool trackPtCut);
 
-    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut, double dzdca, double dxydca, double eta, double ptCutVal, int nhits)
+    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool trackPtCut, double dzdca, double dxydca, double eta, double ptCutVal, int nhits);
 
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices);

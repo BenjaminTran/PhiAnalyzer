@@ -37,7 +37,7 @@ namespace utility
         return true;
     }
 
-    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut = true, double dzdca, double dxydca, double eta, double ptCutVal, int nhits)
+    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut, double dzdca, double dxydca, double eta, double ptCutVal, int nhits)
     {
         double dzvtx = track->dz(myVtx.bestvtx);
         double dxyvtx = track->dxy(myVtx.bestvtx);
@@ -121,6 +121,10 @@ namespace utility
                 return true;
             else
                 return false;
+        }
+        else
+        {
+            throw domain_error(constraint + " is not a valid dedx function constraint!");
         }
     }
 

@@ -29,6 +29,7 @@ PhiTree::PhiTree(const edm::ParameterSet& iConfig)
 {
     multMin_ = iConfig.getUntrackedParameter<int>("multMin");
     multMax_ = iConfig.getUntrackedParameter<int>("multMax");
+    dedxConstraint_ = iConfig.getUntrackedParameter<string>("dedxConstraint");
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
     _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxHarmonic2"));
@@ -74,7 +75,7 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
         utility::track_combo track_bundle(it,track_ref);
 
-        if(!utility::AcceptTrackDeDx(track_bundle,DeDx_Harm,false)) continue;
+        if(!utility::AcceptTrackDeDx(track_bundle,DeDx_Harm,dedxConstraint_)) continue;
 
         track_particle_.momentum      = it->p();
         track_particle_.px            = it->px();
@@ -157,6 +158,7 @@ PhiTree::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
+  desc.addUntracked<string>("dedxConstraint","loose");
   descriptions.add("PhiTree",desc);
 }
 

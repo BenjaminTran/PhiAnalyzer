@@ -91,6 +91,7 @@ class PhiTree : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        int multMin_;
        int multMax_;
+       std::string dedxConstraint_;
 
        TTree* trackTree;
 
