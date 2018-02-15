@@ -37,7 +37,7 @@ namespace utility
         return true;
     }
 
-    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut = true, double dzdca, double dxydca, double eta, double ptCut, int nhits)
+    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut = true, double dzdca, double dxydca, double eta, double ptCutVal, int nhits)
     {
         double dzvtx = track->dz(myVtx.bestvtx);
         double dxyvtx = track->dxy(myVtx.bestvtx);
@@ -52,7 +52,7 @@ namespace utility
         if(fabs(track->eta()) > eta) return false;
         if(ptCut)
         {
-            if(track->pt() <= ptCut) return false;
+            if(track->pt() <= ptCutVal) return false;
         }
 
         return true;
