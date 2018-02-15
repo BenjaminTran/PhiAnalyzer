@@ -81,19 +81,24 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
    private:
       struct kaon{
           double p;
+          double pt;
+          double px;
+          double py;
+          double pz;
           double dedx;
           double energy;
           int charge;
+          int nhits;
 
-          kaon(double p_, double dedx_, double energy_, int charge_) :
-              p(p_), dedx(dedx_), energy(energy_), charge(charge_)  {}
+          kaon(double p_, double pt_, double px_, double py_, double pz_, double dedx_, double energy_, int charge_, int nhits_) :
+              p(p_), pt(pt_), px(px_), py(py_), pz(pz_), dedx(dedx_), energy(energy_), charge(charge_), nhits(nhits_)  {}
       };
 
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
-      void DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p);
-      void FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm);
+      void DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p, std::string constraint);
+      void FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm, std::string constraint);
       void CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_);
 
 
@@ -104,6 +109,12 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        int multMin_;
        int multMax_;
+       int nhits_;
+       double ZDCA_;
+       double XYDCA_;
+       double ptCut_;
+       double eta_;
+       std::string dedxConstraint_;
        bool trackPtCut_;
 
        /* If you want to create a TTree

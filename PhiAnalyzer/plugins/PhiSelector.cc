@@ -28,7 +28,13 @@ PhiSelector::PhiSelector(const edm::ParameterSet& iConfig)
 {
     multMin_ = iConfig.getUntrackedParameter<int>("multMin");
     multMax_ = iConfig.getUntrackedParameter<int>("multMax");
+    nhits_ = iConfig.getUntrackedParameter<int>("nhits");
+    ptCut_ = iConfig.getUntrackedParameter<double>("ptCut");
+    ZDCA_ = iConfig.getUntrackedParameter<double>("ZDCA");
+    XYDCA_ = iConfig.getUntrackedParameter<double>("XYDCA");
+    eta_ = iConfig.getUntrackedParameter<double>("eta");
     trackPtCut_ = iConfig.getUntrackedParameter<bool>("trackPtCut");
+    dedxConstraint_ = iConfig.getUntrackedParameter<string>("dedxConstraint");
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vtxSrc = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vtxSrc"));
     _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxHarmonic2"));
@@ -45,21 +51,21 @@ PhiSelector::~PhiSelector()
 //
 
 void
-PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p)
+PhiSelector::DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p, std::string constraint )
 {
         double dedx     = -999.9;
         double momentum = track_combo_.track->p();
         dedx = utility::getDeDx(track_combo_,DeDxTrack);
-        //if(utility::AcceptTrackDeDx(track_combo_,DeDxTrack,true))
+        if(utility::AcceptTrackDeDx(track_combo_,DeDxTrack,constraint))
             dedx_p->Fill(momentum,dedx);
 
 }
 
 void
-PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm)
+PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm, std::string constraint)
 {
-    //if(!utility::AcceptTrackDeDx(track_combo_, DeDxTrack,true))
-        //return;
+    if(!utility::AcceptTrackDeDx(track_combo_, DeDxTrack,constraint))
+        return;
 
     double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
     kaon pk(track_combo_.track->p(), utility::getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge());
@@ -76,12 +82,14 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
 void
 PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_)
 {
-    for(PhiSelector::kaon Pkp : PKp)
+    for(kaon Pkp : PKp)
     {
-        for(PhiSelector::kaon Pkm : PKm)
+        for(kaon Pkm : PKm)
         {
-            double mass = sqrt(2*TMath::Power(utility::kaonMass,2) + 2*(Pkp.energy*Pkm.energy - Pkp.p*Pkm.p));
-            h_mass_->Fill(mass);
+            TVector3 dau1p(Pkp.px,Pkp.py,Pkp.pz);
+            TVector3 dau2p(Pkm.px,Pkm.py,Pkm.pz);
+            TVector3 dauPsum(dau1p + dau2p);
+            double mass = sqrt(TMath::Power(Pkp.energy+Pkm.energy,2) - dauPsum.Mag2());
         }
     }
 }
@@ -123,17 +131,21 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
            it != tracks->end();
            ++it)
    {
-       //Use only tracks good enough to pass utility::Multiplicity
-       if(!utility::isTrackGood(it,vertex,trackPtCut_)) continue;
+       /*Use only tracks that pass the following kinematic cuts:
+        * DCA
+        * eta
+        * nhits
+        */
+       if(!utility::SelectionCut(it,vertex,trackPtCut_,ZDCA_,XYDCA_,eta_,ptCut_,nhits_)) continue;
 
        reco::TrackRef track_ref = reco::TrackRef(tracks,it - tracks->begin());
        utility::track_combo track_bundle(it,track_ref);
 
        //Fill in the dEdx histograms
-       DeDxFiller(track_bundle,DeDx_Harm,h_Dedx_p_Harm);
+       DeDxFiller(track_bundle,DeDx_Harm,h_Dedx_p_Harm,dedxConstraint_);
 
        // Make the vector of kaons to calculate invariant mass at the end
-       FillKaonContainer(track_bundle,DeDx_Harm,PKp_Harm,PKm_Harm);
+       FillKaonContainer(track_bundle,DeDx_Harm,PKp_Harm,PKm_Harm,dedxConstraint_);
    }
    CombinatorialMass(PKp_Harm,PKm_Harm,h_mass_Harm);
 }
@@ -167,7 +179,13 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
+  desc.addUntracked<int>("nhits",17);
   desc.addUntracked<bool>("trackPtCut",false);
+  desc.addUntracked<double>("ptCut",0);
+  desc.addUntracked<double>("ZDCA",1);
+  desc.addUntracked<double>("XYDCA",1);
+  desc.addUntracked<double>("eta",2.4);
+  desc.addUntracked<string>("dedxConstraint","default"); //tight | default | loose
   descriptions.add("PhiSelector",desc);
 }
 

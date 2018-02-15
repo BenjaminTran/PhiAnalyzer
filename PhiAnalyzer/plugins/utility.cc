@@ -37,6 +37,28 @@ namespace utility
         return true;
     }
 
+    bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut = true, double dzdca, double dxydca, double eta, double ptCut, int nhits)
+    {
+        double dzvtx = track->dz(myVtx.bestvtx);
+        double dxyvtx = track->dxy(myVtx.bestvtx);
+        double dzerror = sqrt(track->dzError()*track->dzError()+myVtx.bestvzError*myVtx.bestvzError);
+        double dxyerror = sqrt(track->d0Error()*track->d0Error()+myVtx.bestvxError*myVtx.bestvyError);
+
+        if(!track->quality(reco::TrackBase::highPurity)) return false;
+        if(track->numberOfValidHits() < nhits) return false;
+        if(fabs(track->ptError())/track->pt()>0.10) return false;
+        if(fabs(dzvtx/dzerror) > dzdca) return false;
+        if(fabs(dxyvtx/dxyerror) > dxydca) return false;
+        if(fabs(track->eta()) > eta) return false;
+        if(ptCut)
+        {
+            if(track->pt() <= ptCut) return false;
+        }
+
+        return true;
+
+    }
+
 
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices)
@@ -58,27 +80,43 @@ namespace utility
         return Multiplicity;
     }
 
-    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, bool tight = true)
+    /*
+     * For constraint use tight, default, or loose. Default will always be
+     * defined as the band of choice
+     */
+    bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::string constraint = "default")
     {
         double functionValueTop = -999;
         double functionValueBot = -999;
         double momentum = track_combo_.track->p();
         double dedx = getDeDx(track_combo_, DeDxTrack);
         //int nhits = track_combo_.track->numberOfValidHits();
-        if(tight)
+        if(constraint == "tight")
         {
-            functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.3;
-            functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3;
+            functionValueTop = 0.55*(TMath::Power(1.6/momentum,2) - 2.95*TMath::Power(0.6/momentum,1)) + 3.3;
+            functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 1.7*TMath::Power(0.6/momentum,1)) + 2.7;
+
             if(dedx < functionValueTop && dedx > functionValueBot)
                 return true;
             else
                 return false;
         }
-        else
+        else if(constraint == "default")
+        {
+            functionValueTop = 0.55*(TMath::Power(1.62/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.6;
+            functionValueBot = 0.55*(TMath::Power(1.15/momentum,2) - 1.7*TMath::Power(0.6/momentum,1)) + 2.5;
+
+            if(dedx < functionValueTop && dedx > functionValueBot)
+                return true;
+            else
+                return false;
+        }
+        else if(constraint == "loose")
         {
 
             functionValueTop = 0.55*(TMath::Power(1.62/momentum,2) - 2*TMath::Power(0.6/momentum,1)) + 3.6;
             functionValueBot = 0.5*(TMath::Power(0.5/momentum,4) - 1*TMath::Power(0.50/momentum,2)) + 2.7;
+
             if(dedx < functionValueTop && dedx > functionValueBot)
                 return true;
             else
