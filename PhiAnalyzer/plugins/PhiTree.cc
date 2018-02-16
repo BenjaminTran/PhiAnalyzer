@@ -67,8 +67,8 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
-    int mult = utility::Multiplicity(tracks, vertices);
-    int multRaw = tracks->size();
+    mult = utility::Multiplicity(tracks, vertices);
+    multRaw = tracks->size();
 
     h_mult->Fill(mult);
     h_multRaw->Fill(multRaw);
