@@ -83,6 +83,31 @@ class PhiTree : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
 
+      struct track_particle{
+          float momentum;
+          float pt;
+          float ptError;
+          float energy;
+          float dedx;
+          int charge;
+          float dz;
+          float dzError;
+          float dxy;
+          float dxyError;
+          float eta;
+          float phi;
+          float vx;
+          float vy;
+          float vz;
+          float px;
+          float py;
+          float pz;
+          float vzFlip;
+          float chi2;
+          float chi2norm;
+          int ndof;
+          int nhits;
+      };
 
       // ----------member data ---------------------------
        edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
@@ -91,13 +116,18 @@ class PhiTree : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
        int multMin_;
        int multMax_;
+
+       int mult;
+       int multRaw;
        std::string dedxConstraint_;
 
        TTree* trackTree;
 
        TH1D* h_nEvt;
+       TH1D* h_mult;
+       TH1D* h_multRaw;
 
-       utility::track_particle track_particle_;
+       track_particle track_particle_;
 };
 
 #endif

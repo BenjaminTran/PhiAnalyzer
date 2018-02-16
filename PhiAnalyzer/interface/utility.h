@@ -76,32 +76,6 @@ namespace utility
             track(track_), track_ref(track_ref_) {}
     };
 
-    struct track_particle{
-        float momentum;
-        float pt;
-        float ptError;
-        float energy;
-        float dedx;
-        int charge;
-        float dz;
-        float dzError;
-        float dxy;
-        float dxyError;
-        float eta;
-        float phi;
-        float vx;
-        float vy;
-        float vz;
-        float px;
-        float py;
-        float pz;
-        float vzFlip;
-        float chi2;
-        float chi2norm;
-        int ndof;
-        int nhits;
-    };
-
     myVertex MyVertexBuild(edm::Handle<reco::VertexCollection> vertices);
 
     bool isTrackGood(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool trackPtCut);

@@ -67,6 +67,12 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
+    int mult = utility::Multiplicity(tracks, vertices);
+    int multRaw = tracks->size();
+
+    h_mult->Fill(mult);
+    h_multRaw->Fill(multRaw);
+
     for(reco::TrackCollection::const_iterator it = tracks->begin();
             it != tracks->end();
             ++it)
@@ -125,29 +131,32 @@ PhiTree::beginJob()
 
     h_nEvt = fs->make<TH1D>("Evt","",10,0,10);
 
-    trackTree->Branch("momentum"      , &track_particle_.momentum      , "momentum/F");
-    trackTree->Branch("px"            , &track_particle_.px            , "px/F");
-    trackTree->Branch("py"            , &track_particle_.py            , "py/F");
-    trackTree->Branch("pz"            , &track_particle_.pz            , "pz/F");
-    trackTree->Branch("pt"            , &track_particle_.pt            , "pt/F");
-    trackTree->Branch("ptError"       , &track_particle_.ptError       , "ptError/F");
-    trackTree->Branch("energy"        , &track_particle_.energy        , "energy/F");
-    trackTree->Branch("dedx"          , &track_particle_.dedx          , "dedx/F");
-    trackTree->Branch("dz"            , &track_particle_.dz            , "dz/F");
-    trackTree->Branch("dzError"       , &track_particle_.dzError       , "dzError/F");
-    trackTree->Branch("dxy"           , &track_particle_.dxy           , "dxy/F");
-    trackTree->Branch("dxyError"      , &track_particle_.dxyError      , "dxyError/F");
-    trackTree->Branch("eta"           , &track_particle_.eta           , "eta/F");
-    trackTree->Branch("phi"           , &track_particle_.phi           , "phi/F");
-    trackTree->Branch("vx"            , &track_particle_.vx            , "vx/F");
-    trackTree->Branch("vy"            , &track_particle_.vy            , "vy/F");
-    trackTree->Branch("vz"            , &track_particle_.vz            , "vz/F");
-    trackTree->Branch("vzFlip"        , &track_particle_.vzFlip        , "vzFlip/F");
-    trackTree->Branch("chi2"          , &track_particle_.chi2          , "chi2/F");
-    trackTree->Branch("chi2norm"      , &track_particle_.chi2norm      , "chi2norm/F");
-    trackTree->Branch("ndof"          , &track_particle_.ndof          , "ndof/F");
-    trackTree->Branch("nhits"         , &track_particle_.nhits         , "nhits/I");
-    trackTree->Branch("charge"        , &track_particle_.charge        , "charge/I");
+    trackTree->Branch("momentum" , &track_particle_.momentum , "momentum/F");
+    trackTree->Branch("px"       , &track_particle_.px       , "px/F");
+    trackTree->Branch("py"       , &track_particle_.py       , "py/F");
+    trackTree->Branch("pz"       , &track_particle_.pz       , "pz/F");
+    trackTree->Branch("pt"       , &track_particle_.pt       , "pt/F");
+    trackTree->Branch("ptError"  , &track_particle_.ptError  , "ptError/F");
+    trackTree->Branch("energy"   , &track_particle_.energy   , "energy/F");
+    trackTree->Branch("dedx"     , &track_particle_.dedx     , "dedx/F");
+    trackTree->Branch("dz"       , &track_particle_.dz       , "dz/F");
+    trackTree->Branch("dzError"  , &track_particle_.dzError  , "dzError/F");
+    trackTree->Branch("dxy"      , &track_particle_.dxy      , "dxy/F");
+    trackTree->Branch("dxyError" , &track_particle_.dxyError , "dxyError/F");
+    trackTree->Branch("eta"      , &track_particle_.eta      , "eta/F");
+    trackTree->Branch("phi"      , &track_particle_.phi      , "phi/F");
+    trackTree->Branch("vx"       , &track_particle_.vx       , "vx/F");
+    trackTree->Branch("vy"       , &track_particle_.vy       , "vy/F");
+    trackTree->Branch("vz"       , &track_particle_.vz       , "vz/F");
+    trackTree->Branch("vzFlip"   , &track_particle_.vzFlip   , "vzFlip/F");
+    trackTree->Branch("chi2"     , &track_particle_.chi2     , "chi2/F");
+    trackTree->Branch("chi2norm" , &track_particle_.chi2norm , "chi2norm/F");
+    trackTree->Branch("ndof"     , &track_particle_.ndof     , "ndof/F");
+    trackTree->Branch("nhits"    , &track_particle_.nhits    , "nhits/I");
+    trackTree->Branch("charge"   , &track_particle_.charge   , "charge/I");
+    trackTree->Branch("mult"     , &mult                     , "mult/I");
+    trackTree->Branch("multRaw"  , &multRaw                  , "multRaw/I");
+
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
