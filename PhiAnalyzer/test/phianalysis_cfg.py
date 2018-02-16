@@ -37,11 +37,9 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-     #fileName = cms.string('Phi_dedx_v4.root')
-     fileName = cms.string('Phi_Tree_v2.root')
+     fileName = cms.string('Phi_dedx_v4.root')
 )
 
-process.test = cms.Sequence(process.PhiTree)
-#process.test = cms.Sequence(process.PhiSelector)
+process.test = cms.Sequence(process.PhiSelector)
 
 process.p = cms.Path(process.test)
