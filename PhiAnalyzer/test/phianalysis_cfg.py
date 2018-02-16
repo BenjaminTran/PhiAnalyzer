@@ -12,7 +12,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
 process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 #process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1200000))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000))
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
@@ -37,11 +37,11 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-     fileName = cms.string('Phi_dedx_v4.root')
-     #fileName = cms.string('Phi_Tree_v1.root')
+     #fileName = cms.string('Phi_dedx_v4.root')
+     fileName = cms.string('Phi_Tree_v2.root')
 )
 
-#process.test = cms.Sequence(process.PhiTree)
-process.test = cms.Sequence(process.PhiSelector)
+process.test = cms.Sequence(process.PhiTree)
+#process.test = cms.Sequence(process.PhiSelector)
 
 process.p = cms.Path(process.test)

@@ -130,6 +130,8 @@ PhiTree::beginJob()
     trackTree = fs->make<TTree>("TrackTree","TrackTTree");
 
     h_nEvt = fs->make<TH1D>("Evt","",10,0,10);
+    h_mult = fs->make<TH1D>("mult","",400,0,400);
+    h_multRaw = fs->make<TH1D>("multRaw","",400,0,400);
 
     trackTree->Branch("momentum" , &track_particle_.momentum , "momentum/F");
     trackTree->Branch("px"       , &track_particle_.px       , "px/F");
