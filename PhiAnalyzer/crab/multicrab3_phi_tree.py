@@ -1,4 +1,5 @@
 import phianalyzerheader as phi
+from phianalyzerheader import os
 
 version = 2
 collID = 'pPb'
@@ -8,9 +9,10 @@ collID = 'pPb'
 #collID = 'PbPb'
 
 
+phi.config.General.workArea = 'crab_dir/Phi_Tree_2016pPb'
 phi.config.JobType.priority = 15
 
-phi.config.JobType.psetName = os.path.expandvars('$CMSSW_BASE/src/PhiAnalyzer/PhiAnalyzer/test/phitree_cfg.py')
+phi.config.JobType.psetName = os.path.expandvars('$CMSSW_BASE/src/PhiAnalyzer/PhiAnalyzer/python/phitree_cfg.py')
 
 if __name__ == '__main__':
 

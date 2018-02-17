@@ -8,7 +8,7 @@ config.General.workArea = 'crab_dir/Phi_DeDx_2016pPb'
 config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
 #config.JobType.pluginName = 'PrivateMC'
-config.JobType.psetName = os.path.expandvars('$CMSSW_BASE/src/PhiAnalyzer/PhiAnalyzer/test/phianalysis_cfg.py')
+config.JobType.psetName = os.path.expandvars('$CMSSW_BASE/src/PhiAnalyzer/PhiAnalyzer/python/phianalysis_cfg.py')
 
 config.section_("Data")
 config.Data.inputDBS = 'phys03'
