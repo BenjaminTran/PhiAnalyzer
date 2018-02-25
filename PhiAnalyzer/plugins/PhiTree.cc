@@ -90,33 +90,39 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             std::cerr << e.what();
         }
 
-        track_particle_.momentum      = it->p();
-        track_particle_.px            = it->px();
-        track_particle_.py            = it->py();
-        track_particle_.pz            = it->pz();
-        track_particle_.pt            = it->pt();
-        track_particle_.ptError       = it->ptError();
-        track_particle_.energy        = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(it->p(),2));
-        track_particle_.dedx          = utility::getDeDx(track_bundle,DeDx_Harm);
-        track_particle_.charge        = it->charge();
-        track_particle_.dz            = it->dz(vertex.bestvtx);
-        track_particle_.dzError       = sqrt(TMath::Power(it->dzError(),2) + TMath::Power(vertex.bestvzError,2));
-        track_particle_.dxy           = it->dxy(vertex.bestvtx);
-        track_particle_.dxyError      = sqrt(TMath::Power(it->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
-        track_particle_.eta           = it->eta();
-        track_particle_.phi           = it->phi();
-        track_particle_.ndof          = it->ndof();
-        track_particle_.vx            = it->vx();
-        track_particle_.vy            = it->vy();
-        track_particle_.vz            = it->vz();
-        track_particle_.vzFlip        = -track_particle_.vz;
-        track_particle_.chi2          = it->chi2();
-        track_particle_.chi2norm      = it->normalizedChi2();
-        track_particle_.nhits         = it->numberOfValidHits();
+        double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(it->p(),2));
 
-        trackTree->Fill();
+        TLorentzVector tmpLV = new TLorentzVector(it->px(),it->py(),it->pz(),energy);
+
+        double rap = tmpLV.rapidity();
+
+        track_particle_.momentum.push_back(it->p());
+        track_particle_.px.push_back(it->px());
+        track_particle_.py.push_back(it->py());
+        track_particle_.pz.push_back(it->pz());
+        track_particle_.pt.push_back(it->pt());
+        track_particle_.ptError.push_back(it->ptError());
+        track_particle_.energy.push_back(energy);
+        track_particle_.dedx.push_back(utility::getDeDx(track_bundle,DeDx_Harm));
+        track_particle_.charge.push_back(it->charge());
+        track_particle_.dz.push_back(it->dz(vertex.bestvtx));
+        track_particle_.dzError.push_back(sqrt(TMath::Power(it->dzError(),2) + TMath::Power(vertex.bestvzError,2)));
+        track_particle_.dxy.push_back(it->dxy(vertex.bestvtx));
+        track_particle_.dxyError.push_back(sqrt(TMath::Power(it->d0Error(),2) + vertex.bestvxError*vertex.bestvyError));
+        track_particle_.eta.push_back(it->eta());
+        track_particle_.rapidity.push_back(rap);
+        track_particle_.phi.push_back(it->phi());
+        track_particle_.ndof.push_back(it->ndof());
+        track_particle_.vx.push_back(it->vx());
+        track_particle_.vy.push_back(it->vy());
+        track_particle_.vz.push_back(it->vz());
+        track_particle_.vzFlip.push_back(-(it->vz()));
+        track_particle_.chi2.push_back(it->chi2());
+        track_particle_.chi2norm.push_back(it->normalizedChi2());
+        track_particle_.nhits.push_back(it->numberOfValidHits());
     }
 
+    trackTree->Fill();
 }
 
 
@@ -146,6 +152,7 @@ PhiTree::beginJob()
     trackTree->Branch("dxy"      , &track_particle_.dxy      , "dxy/F");
     trackTree->Branch("dxyError" , &track_particle_.dxyError , "dxyError/F");
     trackTree->Branch("eta"      , &track_particle_.eta      , "eta/F");
+    trackTree->Branch("rapidity" , &track_particle_.rapidity , "rapidity/F");
     trackTree->Branch("phi"      , &track_particle_.phi      , "phi/F");
     trackTree->Branch("vx"       , &track_particle_.vx       , "vx/F");
     trackTree->Branch("vy"       , &track_particle_.vy       , "vy/F");
@@ -154,10 +161,10 @@ PhiTree::beginJob()
     trackTree->Branch("chi2"     , &track_particle_.chi2     , "chi2/F");
     trackTree->Branch("chi2norm" , &track_particle_.chi2norm , "chi2norm/F");
     trackTree->Branch("ndof"     , &track_particle_.ndof     , "ndof/F");
-    trackTree->Branch("nhits"    , &track_particle_.nhits    , "nhits/I");
-    trackTree->Branch("charge"   , &track_particle_.charge   , "charge/I");
-    trackTree->Branch("mult"     , &mult                     , "mult/I");
-    trackTree->Branch("multRaw"  , &multRaw                  , "multRaw/I");
+    trackTree->Branch("nhits"    , &track_particle_.nhits    , "nhits/F");
+    trackTree->Branch("charge"   , &track_particle_.charge   , "charge/F");
+    trackTree->Branch("mult"     , &mult                     , "mult/F");
+    trackTree->Branch("multRaw"  , &multRaw                  , "multRaw/F");
 
 }
 

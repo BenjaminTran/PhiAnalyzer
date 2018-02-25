@@ -84,29 +84,30 @@ class PhiTree : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void endJob() override;
 
       struct track_particle{
-          float momentum;
-          float pt;
-          float ptError;
-          float energy;
-          float dedx;
-          int charge;
-          float dz;
-          float dzError;
-          float dxy;
-          float dxyError;
-          float eta;
-          float phi;
-          float vx;
-          float vy;
-          float vz;
-          float px;
-          float py;
-          float pz;
-          float vzFlip;
-          float chi2;
-          float chi2norm;
-          int ndof;
-          int nhits;
+          std::vector<float> momentum;
+          std::vector<float> pt;
+          std::vector<float> ptError;
+          std::vector<float> energy;
+          std::vector<float> dedx;
+          std::vector<float> charge;
+          std::vector<float> dz;
+          std::vector<float> dzError;
+          std::vector<float> dxy;
+          std::vector<float> dxyError;
+          std::vector<float> eta;
+          std::vector<float> rapidity;
+          std::vector<float> phi;
+          std::vector<float> vx;
+          std::vector<float> vy;
+          std::vector<float> vz;
+          std::vector<float> px;
+          std::vector<float> py;
+          std::vector<float> pz;
+          std::vector<float> vzFlip;
+          std::vector<float> chi2;
+          std::vector<float> chi2norm;
+          std::vector<float> ndof;
+          std::vector<float> nhits;
       };
 
       // ----------member data ---------------------------
