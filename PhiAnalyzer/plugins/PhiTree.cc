@@ -92,9 +92,9 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(it->p(),2));
 
-        TLorentzVector tmpLV = new TLorentzVector(it->px(),it->py(),it->pz(),energy);
+        TLorentzVector* tmpLV = new TLorentzVector(it->px(),it->py(),it->pz(),energy);
 
-        double rap = tmpLV.rapidity();
+        double rap = tmpLV.Rapidity();
 
         track_particle_.momentum.push_back(it->p());
         track_particle_.px.push_back(it->px());
