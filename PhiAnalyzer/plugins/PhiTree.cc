@@ -94,7 +94,7 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         TLorentzVector* tmpLV = new TLorentzVector(it->px(),it->py(),it->pz(),energy);
 
-        double rap = tmpLV.Rapidity();
+        double rap = tmpLV->Rapidity();
 
         track_particle_.momentum.push_back(it->p());
         track_particle_.px.push_back(it->px());
@@ -123,6 +123,31 @@ PhiTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     trackTree->Fill();
+
+    track_particle_.momentum.clear();
+    track_particle_.px.clear();
+    track_particle_.py.clear();
+    track_particle_.pz.clear();
+    track_particle_.pt.clear();
+    track_particle_.ptError.clear();
+    track_particle_.energy.clear();
+    track_particle_.dedx.clear();
+    track_particle_.charge.clear();
+    track_particle_.dz.clear();
+    track_particle_.dzError.clear();
+    track_particle_.dxy.clear();
+    track_particle_.dxyError.clear();
+    track_particle_.eta.clear();
+    track_particle_.rapidity.clear();
+    track_particle_.phi.clear();
+    track_particle_.ndof.clear();
+    track_particle_.vx.clear();
+    track_particle_.vy.clear();
+    track_particle_.vz.clear();
+    track_particle_.vzFlip.clear();
+    track_particle_.chi2.clear();
+    track_particle_.chi2norm.clear();
+    track_particle_.nhits.clear();
 }
 
 
@@ -139,32 +164,32 @@ PhiTree::beginJob()
     h_mult = fs->make<TH1D>("mult","",900,0,900);
     h_multRaw = fs->make<TH1D>("multRaw","",5000,0,5000);
 
-    trackTree->Branch("momentum" , &track_particle_.momentum , "momentum/F");
-    trackTree->Branch("px"       , &track_particle_.px       , "px/F");
-    trackTree->Branch("py"       , &track_particle_.py       , "py/F");
-    trackTree->Branch("pz"       , &track_particle_.pz       , "pz/F");
-    trackTree->Branch("pt"       , &track_particle_.pt       , "pt/F");
-    trackTree->Branch("ptError"  , &track_particle_.ptError  , "ptError/F");
-    trackTree->Branch("energy"   , &track_particle_.energy   , "energy/F");
-    trackTree->Branch("dedx"     , &track_particle_.dedx     , "dedx/F");
-    trackTree->Branch("dz"       , &track_particle_.dz       , "dz/F");
-    trackTree->Branch("dzError"  , &track_particle_.dzError  , "dzError/F");
-    trackTree->Branch("dxy"      , &track_particle_.dxy      , "dxy/F");
-    trackTree->Branch("dxyError" , &track_particle_.dxyError , "dxyError/F");
-    trackTree->Branch("eta"      , &track_particle_.eta      , "eta/F");
-    trackTree->Branch("rapidity" , &track_particle_.rapidity , "rapidity/F");
-    trackTree->Branch("phi"      , &track_particle_.phi      , "phi/F");
-    trackTree->Branch("vx"       , &track_particle_.vx       , "vx/F");
-    trackTree->Branch("vy"       , &track_particle_.vy       , "vy/F");
-    trackTree->Branch("vz"       , &track_particle_.vz       , "vz/F");
-    trackTree->Branch("vzFlip"   , &track_particle_.vzFlip   , "vzFlip/F");
-    trackTree->Branch("chi2"     , &track_particle_.chi2     , "chi2/F");
-    trackTree->Branch("chi2norm" , &track_particle_.chi2norm , "chi2norm/F");
-    trackTree->Branch("ndof"     , &track_particle_.ndof     , "ndof/F");
-    trackTree->Branch("nhits"    , &track_particle_.nhits    , "nhits/F");
-    trackTree->Branch("charge"   , &track_particle_.charge   , "charge/F");
-    trackTree->Branch("mult"     , &mult                     , "mult/F");
-    trackTree->Branch("multRaw"  , &multRaw                  , "multRaw/F");
+    trackTree->Branch("momentum" , &track_particle_.momentum);
+    trackTree->Branch("px"       , &track_particle_.px      );
+    trackTree->Branch("py"       , &track_particle_.py      );
+    trackTree->Branch("pz"       , &track_particle_.pz      );
+    trackTree->Branch("pt"       , &track_particle_.pt      );
+    trackTree->Branch("ptError"  , &track_particle_.ptError );
+    trackTree->Branch("energy"   , &track_particle_.energy  );
+    trackTree->Branch("dedx"     , &track_particle_.dedx    );
+    trackTree->Branch("dz"       , &track_particle_.dz      );
+    trackTree->Branch("dzError"  , &track_particle_.dzError );
+    trackTree->Branch("dxy"      , &track_particle_.dxy     );
+    trackTree->Branch("dxyError" , &track_particle_.dxyError);
+    trackTree->Branch("eta"      , &track_particle_.eta     );
+    trackTree->Branch("rapidity" , &track_particle_.rapidity);
+    trackTree->Branch("phi"      , &track_particle_.phi     );
+    trackTree->Branch("vx"       , &track_particle_.vx      );
+    trackTree->Branch("vy"       , &track_particle_.vy      );
+    trackTree->Branch("vz"       , &track_particle_.vz      );
+    trackTree->Branch("vzFlip"   , &track_particle_.vzFlip  );
+    trackTree->Branch("chi2"     , &track_particle_.chi2    );
+    trackTree->Branch("chi2norm" , &track_particle_.chi2norm);
+    trackTree->Branch("ndof"     , &track_particle_.ndof    );
+    trackTree->Branch("nhits"    , &track_particle_.nhits   );
+    trackTree->Branch("charge"   , &track_particle_.charge  );
+    trackTree->Branch("mult"     , &mult                    );
+    trackTree->Branch("multRaw"  , &multRaw                 );
 
 }
 

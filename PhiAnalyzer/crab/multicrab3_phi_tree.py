@@ -1,7 +1,7 @@
 import phianalyzerheader as phi
 from phianalyzerheader import os
 
-version = 2
+version = 3
 collID = 'pPb'
 #collID = 'Pbp'
 #collID = 'pPbMB'
