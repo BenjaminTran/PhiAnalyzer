@@ -95,7 +95,14 @@ namespace utility
     bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::string constraint);
 
     template <typename T>
-    void GetCollection(const edm::Event& iEvent_,edm::EDGetTokenT<T> const& tag, edm::Handle<T>& result);
+    void GetCollection(const edm::Event& iEvent_,edm::EDGetTokenT<T> const& tag, edm::Handle<T>& result)
+    {
+        iEvent_.getByToken(tag,result);
+        if(!result.isValid())
+        {
+           throw std::invalid_argument("Collection is invalid.");
+        }
+    }
 
     double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 }
