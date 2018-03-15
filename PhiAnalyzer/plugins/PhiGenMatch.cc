@@ -30,7 +30,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     for(reco::GenParticleCollection::const_iterator gncand = gencand->begin();
             gncand != gencand->end();
-            ++gencand)
+            ++gncand)
     {
         int id = gncand->pdgId();
         double rap = gncand->rapidity();
