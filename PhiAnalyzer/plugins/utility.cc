@@ -37,6 +37,7 @@ namespace utility
         return true;
     }
 
+    //Check if track passes the given constraints
     bool SelectionCut(reco::TrackCollection::const_iterator &track, myVertex myVtx, bool ptCut, double dzdca, double dxydca, double eta, double ptCutVal, int nhits)
     {
         double dzvtx = track->dz(myVtx.bestvtx);
@@ -60,6 +61,7 @@ namespace utility
     }
 
 
+    //Return the multiplicity of the event
     int Multiplicity(edm::Handle<reco::TrackCollection> tracks,
             edm::Handle<reco::VertexCollection> vertices)
     {
@@ -135,6 +137,15 @@ namespace utility
         dedx_ = dedxTrack[track_combo_.track_ref].dEdx();
 
         return dedx_;
+    }
+
+    void GetCollection(const edm::Event& iEvent_,edm::EDGetTokenT<T> const& tag, edm::Handle<T>& result)
+    {
+        iEvent_.getByToken(tag,result);
+        if(!result.isValid())
+        {
+           throw std::invalid_argument("Collection is invalid.");
+        }
     }
 
 }
