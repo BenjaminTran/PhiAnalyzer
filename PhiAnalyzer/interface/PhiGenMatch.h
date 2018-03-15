@@ -10,7 +10,7 @@ class PhiGenMatch : public edm::EDAnalyzer {
 
         static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-    private;
+    private:
         virtual void beginJob() override;
         virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
         virtual void endJob() override;
