@@ -1,4 +1,4 @@
-#include "PhiAnalzer/PhiAnalyzer/interface/PhiGenMatch.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/PhiGenMatch.h"
 
 using namespace std;
 
