@@ -21,13 +21,13 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     h_nEvt->Fill(1);
 
     edm::Handle<reco::GenParticleCollection> gencand;
-    try{
-        utility::GetCollection<reco::GenParticleCollection>(iEvent,_genCollection,gencand);
-    }
-    catch(const std::invalid_argument& e){
-        std::cerr << e.what();
-        return;
-    }
+    //try{
+        //utility::GetCollection<reco::GenParticleCollection>(iEvent,_genCollection,gencand);
+    //}
+    //catch(const std::invalid_argument& e){
+        //std::cerr << e.what();
+        //return;
+    //}
 
     for(reco::GenParticleCollection::const_iterator gncand = gencand->begin();
             gncand != gencand->end();
