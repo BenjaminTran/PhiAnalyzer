@@ -138,15 +138,4 @@ namespace utility
 
         return dedx_;
     }
-
-    //template <typename T>
-    //void GetCollection(const edm::Event& iEvent_,edm::EDGetTokenT<T> const& tag, edm::Handle<T>& result)
-    //{
-        //iEvent_.getByToken(tag,result);
-        //if(!result.isValid())
-        //{
-           //throw std::invalid_argument("Collection is invalid.");
-        //}
-    //}
-
 }

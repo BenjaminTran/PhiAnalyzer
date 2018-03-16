@@ -7,6 +7,7 @@ process = cms.Process("PhiAnalyzer")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiSelector_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiTree_cfi")
+process.load("PhiAnalyzer.PhiAnalyzer.PhiGenMatch_cfi")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
@@ -15,7 +16,6 @@ process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000))
 
 process.source = cms.Source("PoolSource",
-    # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
         'root://cmsxrootd.fnal.gov//store/user/davidlw/PAHighMultiplicity1/RecoSkim2016_pPb_V0Cascade_FullSkim_v4/170803_222621/0000/pPb_HM_111.root',
         'root://cmsxrootd.fnal.gov//store/user/davidlw/PAHighMultiplicity1/RecoSkim2016_pPb_V0Cascade_FullSkim_v4/170803_222621/0000/pPb_HM_112.root',
