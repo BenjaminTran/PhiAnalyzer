@@ -94,7 +94,7 @@ namespace utility
 
     bool AcceptTrackDeDx(track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::string constraint);
 
-    template <typename T>
+    template <class T>
     void GetCollection(const edm::Event& iEvent_,edm::EDGetTokenT<T> const& tag, edm::Handle<T>& result)
     {
         iEvent_.getByToken(tag,result);
