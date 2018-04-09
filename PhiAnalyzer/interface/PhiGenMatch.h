@@ -2,6 +2,7 @@
 #define PHIANALYZER__PHIGENMATCH_H
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
 
 class PhiGenMatch : public edm::EDAnalyzer {
     public:
@@ -22,8 +23,8 @@ class PhiGenMatch : public edm::EDAnalyzer {
         TH1D* h_nEvt;
         TH1D* h_phi_yield_rap_1;
         TH1D* h_phi_yield_norap;
-        TH1D* h_phid0_mass;
         TH1D* h_phid1_mass;
+        TH1D* h_phid2_mass;
 
         edm::Service<TFileService> fs;
 

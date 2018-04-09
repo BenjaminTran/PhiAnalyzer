@@ -142,9 +142,9 @@ namespace utility
     std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_)
     {
         std::vector<PhiMeson> phiCollection;
-        for(kaon Pkp : PKp)
+        for(kaon Pkp : PKp_)
         {
-            for(kaon Pkm : PKm)
+            for(kaon Pkm : PKm_)
             {
                 TVector3 dau1p(Pkp.px, Pkp.py, Pkp.pz);
                 TVector3 dau2p(Pkm.px, Pkm.py, Pkm.pz);
@@ -160,7 +160,7 @@ namespace utility
                 double eta = phiLV.Eta();
                 double phi = phiLV.Phi();
 
-                PhiMeson::PhiMeson pgf(mass,pt,eta,phi,rapidity,p);
+                PhiMeson pgf(mass,pt,eta,phi,rapidity,p);
 
                 phiCollection.push_back(pgf);
             }
