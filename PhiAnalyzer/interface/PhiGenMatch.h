@@ -2,7 +2,6 @@
 #define PHIANALYZER__PHIGENMATCH_H
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
-#include "DataFormats/Candidate/interface/Candidate.h"
 
 class PhiGenMatch : public edm::EDAnalyzer {
     public:

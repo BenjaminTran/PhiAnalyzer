@@ -56,8 +56,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if(fabs(id) == 333 && fabs(rap) < 1.0)
         {
             h_phi_yield_rap_1->Fill(gncand->mass());
-            const Candidate *d1 = gncand->daughter(0);
-            const Candidate *d2 = gncand->daughter(1);
+            const reco::Candidate *d1 = gncand->daughter(0);
+            const reco::Candidate *d2 = gncand->daughter(1);
 
             h_phid1_mass->Fill(d1->mass());
             h_phid2_mass->Fill(d2->mass());
