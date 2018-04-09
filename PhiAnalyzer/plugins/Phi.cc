@@ -18,32 +18,32 @@ PhiMeson::PhiMeson(double mass, double pt, double eta, double phi, double rapidi
 
 double PhiMeson::getMass()
 {
-    return mass;
+    return mass_;
 }
 
 double PhiMeson::getEta()
 {
-    return eta;
+    return eta_;
 }
 
 double PhiMeson::getRapidity()
 {
-    return rapidity;
+    return rapidity_;
 }
 
 double PhiMeson::getPhi()
 {
-    return phi;
+    return phi_;
 }
 
 double PhiMeson::getPt()
 {
-    return pt;
+    return pt_;
 }
 
 double PhiMeson::getP()
 {
-    return p;
+    return p_;
 }
 
 void PhiMeson::setMass(double mass)

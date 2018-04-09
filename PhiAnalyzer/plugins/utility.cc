@@ -139,9 +139,9 @@ namespace utility
         return dedx_;
     }
 
-    std::vector<PhiMeson::PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_ std::vector<kaon> PKm_)
+    std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_)
     {
-        std::vector<PhiMeson::PhiMeson> phiCollection;
+        std::vector<PhiMeson> phiCollection;
         for(kaon Pkp : PKp)
         {
             for(kaon Pkm : PKm)
