@@ -36,7 +36,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         return;
     }
 
-    utility::myVertex vertex = utility::MyVertexBuild(vertices);
+    //utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
     for(reco::TrackCollection::const_iterator trk = trkSrc->begin();
             trk != trkSrc->end();
