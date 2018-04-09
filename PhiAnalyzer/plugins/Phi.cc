@@ -5,72 +5,73 @@ PhiMeson::PhiMeson()
 {
 }
 
-PhiMeson::PhiMeson(double mass_, double pt_, double eta_, double phi_, double rapidity_, double p_ = 0)
+PhiMeson::PhiMeson(double mass, double pt, double eta, double phi, double rapidity, double p = 0)
 {
-    mass = mass_;
-    pt = pt_;
-    eta = eta_;
-    rapidity = rapidity_;
-    phi = phi_;
-    eta = p_;
+    mass_ = mass;
+    pt_ = pt;
+    eta_ = eta;
+    rapidity_ = rapidity;
+    phi_ = phi;
+    p_ = p;
 }
 
-PhiMeson::getMass()
+
+double PhiMeson::getMass()
 {
     return mass;
 }
 
-PhiMeson::getEta()
+double PhiMeson::getEta()
 {
     return eta;
 }
 
-PhiMeson::getRapidity()
+double PhiMeson::getRapidity()
 {
     return rapidity;
 }
 
-PhiMeson::getPhi()
+double PhiMeson::getPhi()
 {
     return phi;
 }
 
-PhiMeson::getPt()
+double PhiMeson::getPt()
 {
     return pt;
 }
 
-PhiMeson::getP()
+double PhiMeson::getP()
 {
     return p;
 }
 
-PhiMeson::setMass(double mass_)
+void PhiMeson::setMass(double mass)
 {
-    mass = mass_;
+    mass_ = mass;
 }
 
-PhiMeson::setEta(double eta_)
+void PhiMeson::setEta(double eta)
 {
-    eta = eta_;
+    eta_ = eta;
 }
 
-PhiMeson::setRapidity(double rapidity_)
+void PhiMeson::setRapidity(double rapidity)
 {
-    rapidity = rapidity_;
+    rapidity_ = rapidity;
 }
 
-PhiMeson::setPhi(double phi_)
+void PhiMeson::setPhi(double phi)
 {
-    phi = phi_;
+    phi_ = phi;
 }
 
-PhiMeson::setPt(double pt_)
+void PhiMeson::setPt(double pt)
 {
-    pt = pt_;
+    pt_ = pt;
 }
 
-PhiMeson::setP(double p_)
+void PhiMeson::setP(double p)
 {
-    p = p_;
+    p_ = p;
 }

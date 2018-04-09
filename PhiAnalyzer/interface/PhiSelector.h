@@ -83,7 +83,7 @@ class PhiSelector : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
       void DeDxFiller(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, TH2D* dedx_p, std::string constraint);
-      void FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<kaon> &pkp, std::vector<kaon> &pkm, std::string constraint);
+      void FillKaonContainer(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack, std::vector<utility::kaon> &pkp, std::vector<utility::kaon> &pkm, std::string constraint);
       void CombinatorialMass(std::vector<utility::kaon> PKp, std::vector<utility::kaon> PKm, TH1D* h_mass_);
 
 

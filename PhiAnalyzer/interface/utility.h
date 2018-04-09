@@ -125,7 +125,7 @@ namespace utility
 
     double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 
-    std::vector<PhiMeson::PhiMeson> EventCombinatorialPhi(std::vector<kaon> Pkp_, std::vector<kaon> Pkm);
+    std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> Pkp_, std::vector<kaon> Pkm);
 }
 
 #endif

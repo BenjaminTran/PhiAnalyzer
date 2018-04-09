@@ -4,16 +4,16 @@
 
 class PhiMeson{
     private:
-        double mass;
-        double eta;
-        double rapidity;
-        double phi;
-        double pt;
-        double p;
+        double mass_;
+        double eta_;
+        double rapidity_;
+        double phi_;
+        double pt_;
+        double p_;
 
     public:
         PhiMeson();
-        PhiMeson(double mass_, double pt_, double eta_, double phi_, double rapidity_, double p_ = 0);
+        PhiMeson(double mass, double pt, double eta, double phi, double rapidity, double p);
         double getMass();
         double getEta();
         double getRapidity();
