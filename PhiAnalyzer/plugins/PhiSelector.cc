@@ -20,6 +20,7 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 
 using namespace std;
+using namespace utility;
 
 //
 // constructors and destructor
@@ -94,7 +95,7 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
 }
 
 void
-PhiSelector::CombinatorialMass(std::vector<PhiSelector::kaon> PKp, std::vector<PhiSelector::kaon> PKm, TH1D* h_mass_)
+PhiSelector::CombinatorialMass(std::vector<utility::kaon> PKp, std::vector<utility::kaon> PKm, TH1D* h_mass_)
 {
     for(kaon Pkp : PKp)
     {
@@ -117,8 +118,8 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
 
    //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
-   std::vector<PhiSelector::kaon> PKp_Harm; //Positive charged
-   std::vector<PhiSelector::kaon> PKm_Harm; //Negative charged
+   std::vector<utility::kaon> PKp_Harm; //Positive charged
+   std::vector<utility::kaon> PKm_Harm; //Negative charged
 
    h_nEvt->Fill(1);
 
@@ -194,7 +195,7 @@ PhiSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.addUntracked<edm::InputTag>("vtxSrc",edm::InputTag("offlinePrimaryVertices"));
   desc.addUntracked<int>("multMin",0);
   desc.addUntracked<int>("multMax",999);
-  desc.addUntracked<int>("nhits",17);
+  desc.addUntracked<int>("nhits",5);
   desc.addUntracked<bool>("trackPtCut",false);
   desc.addUntracked<double>("ptCut",0);
   desc.addUntracked<double>("ZDCA",1);

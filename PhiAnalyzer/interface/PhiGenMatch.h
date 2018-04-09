@@ -16,10 +16,14 @@ class PhiGenMatch : public edm::EDAnalyzer {
         virtual void endJob() override;
 
         edm::EDGetTokenT<reco::GenParticleCollection> _genCollection;
+        edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
+        edm::EDGetTokenT<reco::VertexCollection> _vertexCollName;
 
         TH1D* h_nEvt;
         TH1D* h_phi_yield_rap_1;
         TH1D* h_phi_yield_norap;
+        TH1D* h_phid0_mass;
+        TH1D* h_phid1_mass;
 
         edm::Service<TFileService> fs;
 

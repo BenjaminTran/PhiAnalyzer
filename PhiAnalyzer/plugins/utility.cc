@@ -138,4 +138,34 @@ namespace utility
 
         return dedx_;
     }
+
+    std::vector<PhiMeson::PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_ std::vector<kaon> PKm_)
+    {
+        std::vector<PhiMeson::PhiMeson> phiCollection;
+        for(kaon Pkp : PKp)
+        {
+            for(kaon Pkm : PKm)
+            {
+                TVector3 dau1p(Pkp.px, Pkp.py, Pkp.pz);
+                TVector3 dau2p(Pkm.px, Pkm.py, Pkm.pz);
+                TVector3 dauPsum(dau1p + dau2p);
+                double mass = sqrt(TMath::Power(Pkp.energy+Pkm.energy,2) - dauPsum.Mag2());
+
+                double p = sqrt(dauPsum.Mag2());
+                double pt = dauPsum.Perp();
+
+                TLorentzVector phiLV(dauPsum,Pkp.energy + Pkm.energy);
+
+                double rapidity = phiLV.Rapidity();
+                double eta = phiLV.Eta();
+                double phi = phiLV.Phi();
+
+                PhiMeson::PhiMeson pgf(mass,pt,eta,phi,rapidity,p);
+
+                phiCollection.push_back(pgf);
+            }
+        }
+
+        return phiCollection;
+    }
 }
