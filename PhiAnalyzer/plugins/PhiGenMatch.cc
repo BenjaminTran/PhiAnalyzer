@@ -50,8 +50,21 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             ++gncand)
     {
         int id = gncand->pdgId();
+        int mid = 0;
         double rap = gncand->rapidity();
         double eta = gncand->eta();
+
+        if(gncand->numberOfMothers() == 1)
+        {
+            const reco::Candidate *mom = gncand->mother();
+            mid = mom->pdgId();
+            if(mom->numberOfMothers() == 1)
+            {
+                const reco::Candidate * mom1 = mom->mother();
+                mid = mom1->pdgId();
+            }
+            h_momid->Fill(mid/100);
+        }
 
         if(fabs(id) == 333 && fabs(rap) < 1.0)
         {
@@ -59,7 +72,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             const reco::Candidate *d1 = gncand->daughter(0);
             const reco::Candidate *d2 = gncand->daughter(1);
 
-            if(fabs(d1->pdgId()) != fabs(d2->pdgId())) continue;
+            if(fabs(d1->pdgId()) == 321 && fabs(d2->pdgId()) == 321) continue;
 
             h_phid1_mass->Fill(d1->mass());
             h_phid2_mass->Fill(d2->mass());
@@ -80,6 +93,7 @@ PhiGenMatch::beginJob()
     h_phi_yield_norap = fs->make<TH1D>("h_phi_yield_norap","Gen Phi Yield no rap",50,1,1.05);
     h_phid1_mass = fs->make<TH1D>("h_phid1_mass","Dau1 mass",100,0.45,0.55);
     h_phid2_mass = fs->make<TH1D>("h_phid2_mass","Dau2 mass",100,0.45,0.55);
+    h_momid = fs->make<TH1D>("h_momid","mother ids",10000,0,10000);
 
 }
 

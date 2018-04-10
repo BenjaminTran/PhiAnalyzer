@@ -24,6 +24,7 @@ class PhiGenMatch : public edm::EDAnalyzer {
         TH1D* h_phi_yield_norap;
         TH1D* h_phid1_mass;
         TH1D* h_phid2_mass;
+        TH1D* h_momid;
 
         edm::Service<TFileService> fs;
 
