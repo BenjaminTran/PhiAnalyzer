@@ -54,6 +54,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         double rap = gncand->rapidity();
         double eta = gncand->eta();
 
+        if(gncand->numberOfDaughters() > 2) continue;
+
         if(gncand->numberOfMothers() == 1)
         {
             const reco::Candidate *mom = gncand->mother();
