@@ -59,6 +59,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             const reco::Candidate *d1 = gncand->daughter(0);
             const reco::Candidate *d2 = gncand->daughter(1);
 
+            if(fabs(d1->pdgId()) != fabs(d2->pdgId())) continue;
+
             h_phid1_mass->Fill(d1->mass());
             h_phid2_mass->Fill(d2->mass());
         }
