@@ -1,4 +1,5 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 
 kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double dedx, double mass, bool isGen)
 {
