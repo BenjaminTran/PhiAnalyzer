@@ -56,7 +56,8 @@
 #include <Math/SMatrix.h>
 
 // User classes
-#include "PhiAnalyzer/PhiAnalyzer/interface/Phi.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
 
 namespace utility

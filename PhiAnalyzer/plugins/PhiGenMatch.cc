@@ -9,6 +9,8 @@ PhiGenMatch::PhiGenMatch(const edm::ParameterSet& iConfig)
     _genCollection = consumes<reco::GenParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("genCollection"));
     _trkSrc = consumes<reco::TrackCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trkSrc"));
     _vertexCollName = consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertexCollName"));
+    dedxConstraint_ = iConfig.getUntrackedParameter<string>("dedxConstraint");
+    _Dedx_Harmonic2 = consumes<edm::ValueMap<reco::DeDxData> >(edm::InputTag("dedxHarmonic2"));
 }
 
 PhiGenMatch::~PhiGenMatch()
@@ -27,17 +29,19 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<reco::GenParticleCollection> gencand;
     edm::Handle<reco::TrackCollection> trkSrc;
     edm::Handle<reco::VertexCollection> vertices;
+    edm::Handle<edm::ValueMap<reco::DeDxData> > DeDx_Harm;
     try{
         utility::GetCollection<reco::GenParticleCollection>(iEvent,_genCollection,gencand);
         utility::GetCollection<reco::TrackCollection>(iEvent,_trkSrc,trkSrc);
         utility::GetCollection<reco::VertexCollection>(iEvent,_vertexCollName,vertices);
+        utility::GetCollection<edm::ValueMap<reco::DeDxData> >(iEvent,_Dedx_Harmonic2,DeDx_Harm);
     }
     catch(const std::invalid_argument& e){
         std::cerr << e.what();
         return;
     }
 
-    //utility::myVertex vertex = utility::MyVertexBuild(vertices);
+    utility::myVertex vertex = utility::MyVertexBuild(vertices);
 
 
     for(reco::GenParticleCollection::const_iterator gncand = gencand->begin();
@@ -90,6 +94,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             ++trk)
     {
         //if(!utility::SelectionCut(trk,vertex,false,1.0,1.0,2.4,0,5))
+        reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
+        utility::track_combo track_bundle(trk, track_ref);
         kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge());
 
         for(kaon genK : genDauKaons)
@@ -105,7 +111,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     sigTrack_particle_.pz       = trk->pz();
                     sigTrack_particle_.pt       = trk->pt();
                     sigTrack_particle_.ptError  = trk->ptError();
-                    sigTrack_particle_.energy   = energy;
+                    sigTrack_particle_.energy   = K.getEnergy();
                     sigTrack_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
                     sigTrack_particle_.charge   = trk->charge();
                     sigTrack_particle_.dz       = trk->dz(vertex.bestvtx);
@@ -113,7 +119,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     sigTrack_particle_.dxy      = trk->dxy(vertex.bestvtx);
                     sigTrack_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
                     sigTrack_particle_.eta      = trk->eta();
-                    sigTrack_particle_.rapidity = rap;
+                    sigTrack_particle_.rapidity = K.getRapidity();
                     sigTrack_particle_.phi      = trk->phi();
                     sigTrack_particle_.ndof     = trk->ndof();
                     sigTrack_particle_.vx       = trk->vx();
@@ -135,7 +141,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     bckTrack_particle_.pz       = trk->pz();
                     bckTrack_particle_.pt       = trk->pt();
                     bckTrack_particle_.ptError  = trk->ptError();
-                    bckTrack_particle_.energy   = energy;
+                    bckTrack_particle_.energy   = K.getEnergy();
                     bckTrack_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
                     bckTrack_particle_.charge   = trk->charge();
                     bckTrack_particle_.dz       = trk->dz(vertex.bestvtx);
@@ -143,7 +149,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     bckTrack_particle_.dxy      = trk->dxy(vertex.bestvtx);
                     bckTrack_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
                     bckTrack_particle_.eta      = trk->eta();
-                    bckTrack_particle_.rapidity = rap;
+                    bckTrack_particle_.rapidity = K.getRapidity();
                     bckTrack_particle_.phi      = trk->phi();
                     bckTrack_particle_.ndof     = trk->ndof();
                     bckTrack_particle_.vx       = trk->vx();
@@ -245,6 +251,7 @@ PhiGenMatch::fillDescriptions(edm::ConfigurationDescriptions& descriptions)
     desc.addUntracked<edm::InputTag>("genCollection",edm::InputTag("genParticles"));
     desc.addUntracked<edm::InputTag>("trkSrc",edm::InputTag("generalTracks"));
     desc.addUntracked<edm::InputTag>("vertexCollName",edm::InputTag("offlinePrimaryVertices"));
+    desc.addUntracked<string>("dedxConstraint","loose");
     descriptions.add("PhiGenMatch",desc);
 }
 

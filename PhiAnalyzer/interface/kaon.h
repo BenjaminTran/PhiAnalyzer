@@ -31,15 +31,16 @@ class kaon{
         TVector3 getMomentumVect();
         TLorentzVector getLorentzVect();
         double getDedx();
+        double getRapidity();
         double getEta();
         double getPhi();
         double getEnergy();
         bool getIsGen();
 
-        void setMomentumVect();
-        void setLorentzVect();
-        void setDedx();
-        void setCharge();
-        void setIsGen();
+        void setMomentumVect(TVector3 momentum);
+        void setLorentzVect(TLorentzVector PtEtaPhiE);
+        void setDedx(double dedx);
+        void setCharge(int charge);
+        void setIsGen(bool isGen);
 };
 #endif

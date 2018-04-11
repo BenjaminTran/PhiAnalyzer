@@ -29,6 +29,13 @@ double kaon::deltaR(TLorentzVector otherLV)
     return PtEtaPhiE_.DeltaR(otherLV);
 }
 
+double kaon::getRapidity()
+{
+    TLorentzVector LV(momentum_.X(), momentum_.Y(), momentum_.Z(), PtEtaPhiE_.E());
+
+    return LV.Rapidity();
+}
+
 bool kaon::matched(kaon genKaon)
 {
     double genPt = -999;
