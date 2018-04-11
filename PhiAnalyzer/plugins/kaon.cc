@@ -101,22 +101,22 @@ TLorentzVector kaon::getLorentzVect()
     return PtEtaPhiE_;
 }
 
-double getDedx()
+double kaon::getDedx()
 {
     return dedx_;
 }
 
-double getEta()
+double kaon::getEta()
 {
     return PtEtaPhiE_.Eta();
 }
 
-double getPhi()
+double kaon::getPhi()
 {
     return PtEtaPhiE_.Phi();
 }
 
-double getEnergy()
+double kaon::getEnergy()
 {
     return PtEtaPhiE_.Energy();
 }
@@ -124,27 +124,27 @@ double getEnergy()
 /*
  * Setters
  */
-void setIsGen(bool isGen)
+void kaon::setIsGen(bool isGen)
 {
     isGen_ = isGen;
 }
 
-void setDedx(double dedx)
+void kaon::setDedx(double dedx)
 {
     dedx_ = dedx;
 }
 
-void setCharge(int charge)
+void kaon::setCharge(int charge)
 {
     charge_ = charge;
 }
 
-void setMomentumVect(TVector3 momentum)
+void kaon::setMomentumVect(TVector3 momentum)
 {
     momentum_ = momentum;
 }
 
-void setLorentzVect(TLorentzVector PtEtaPhiE)
+void kaon::setLorentzVect(TLorentzVector PtEtaPhiE)
 {
     PtEtaPhiE_ = PtEtaPhiE;
 }
