@@ -1,6 +1,6 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
-kaon::kaon(TVector3 momentum, double eta, double phi, int charge = -9, double dedx = 0, double mass = utility::kaonMass, bool isGen = false)
+kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double dedx, double mass, bool isGen)
 {
     //TVector3 momentum(px,py,pz);
     double energy = sqrt(TMath::Power(mass,2) + TMath::Power(momentum.Mag(),2));
@@ -12,7 +12,7 @@ kaon::kaon(TVector3 momentum, double eta, double phi, int charge = -9, double de
     isGen_ = isGen;
 }
 
-kaon::kaon(TVector3 momentum, double eta, double phi, int charge = -9, double mass = utility::kaonMass, bool isGen = false)
+kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double mass, bool isGen)
 {
     //TVector3 momentum(px,py,pz);
     double energy = sqrt(TMath::Power(mass,2) + TMath::Power(momentum.Mag(),2));
