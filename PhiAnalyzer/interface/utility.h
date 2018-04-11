@@ -64,22 +64,6 @@ namespace utility
 {
     extern double const kaonMass;
 
-    struct kaon{
-        double p;
-        double pt;
-        double px;
-        double py;
-        double pz;
-        double dedx;
-        double energy;
-        int charge;
-        int nhits;
-
-        kaon(double p_, double pt_, double px_, double py_, double pz_, double dedx_, double energy_, int charge_, int nhits_) :
-            p(p_), pt(pt_), px(px_), py(py_), pz(pz_), dedx(dedx_), energy(energy_), charge(charge_), nhits(nhits_)  {}
-    };
-
-
     struct myVertex{
         double bestvx = -999;
         double bestvy = -999;
