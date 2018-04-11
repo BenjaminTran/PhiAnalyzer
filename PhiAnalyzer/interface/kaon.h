@@ -2,6 +2,7 @@
 #define PHIANALYZER__KAON_H
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+using namespace utility;
 
 class kaon{
     private:
@@ -17,8 +18,8 @@ class kaon{
         bool isGen_;
 
     public:
-        kaon(TVector3 momentum, double eta, double phi, int charge = -9, double dedx = 0, double mass = utility::kaonMass, bool isGen = false);
-        kaon(TVector3 momentum, double eta, double phi, int charge = -9, double mass = utility::kaonMass, bool isGen = false);
+        kaon(TVector3 momentum, double eta, double phi, int charge = -9, double dedx = 0, double mass = kaonMass, bool isGen = false);
+        kaon(TVector3 momentum, double eta, double phi, int charge = -9, double mass = kaonMass, bool isGen = false);
 
         double deltaR(TLorentzVector otherLV);
         bool matched(kaon genKaon);
