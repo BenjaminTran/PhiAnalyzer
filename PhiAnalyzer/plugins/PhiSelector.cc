@@ -16,7 +16,8 @@
 //
 //
 
-#include "/afs/cern.ch/user/b/btran/work/CMSSW_8_0_24/src/PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 
 using namespace std;
@@ -83,7 +84,8 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
     }
 
     double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
-    kaon pk(track_combo_.track->p(), track_combo_.track->pt(), track_combo_.track->px(), track_combo_.track->py(), track_combo_.track->pz(), utility::getDeDx(track_combo_,DeDxTrack), energy, track_combo_.track->charge(), track_combo_.track->numberOfValidHits());
+    TVector3 momentum = (track_combo_.track->px(), track_combo_.track->py(), track_combo_.track->pz());
+    kaon pk(momentum, track_combo_.track->eta(), track_combo_.track->phi(),  track_combo_.track->charge(), utility::getDeDx(track_combo_,DeDxTrack));
 
     //positive kaons
     if(track_combo_.track->charge() == 1)
@@ -95,16 +97,16 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
 }
 
 void
-PhiSelector::CombinatorialMass(std::vector<utility::kaon> PKp, std::vector<utility::kaon> PKm, TH1D* h_mass_)
+PhiSelector::CombinatorialMass(std::vector<kaon> PKp, std::vector<kaon> PKm, TH1D* h_mass_)
 {
     for(kaon Pkp : PKp)
     {
         for(kaon Pkm : PKm)
         {
-            TVector3 dau1p(Pkp.px,Pkp.py,Pkp.pz);
-            TVector3 dau2p(Pkm.px,Pkm.py,Pkm.pz);
+            TVector3 dau1p = Pkp.getMomentumVect();
+            TVector3 dau2p = Pkm.getMomentumVect();
             TVector3 dauPsum(dau1p + dau2p);
-            double mass = sqrt(TMath::Power(Pkp.energy+Pkm.energy,2) - dauPsum.Mag2());
+            double mass = sqrt(TMath::Power(Pkp.getEnergy()+Pkm.getEnergy(),2) - dauPsum.Mag2());
             h_mass_->Fill(mass);
         }
     }
@@ -118,8 +120,8 @@ PhiSelector::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
 
    //Vectors to hold kaons to perform combinatorial mass reconstruction. Following PEN naming scheme
-   std::vector<utility::kaon> PKp_Harm; //Positive charged
-   std::vector<utility::kaon> PKm_Harm; //Negative charged
+   std::vector<kaon> PKp_Harm; //Positive charged
+   std::vector<kaon> PKm_Harm; //Negative charged
 
    h_nEvt->Fill(1);
 

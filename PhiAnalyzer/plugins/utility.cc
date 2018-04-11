@@ -146,10 +146,10 @@ namespace utility
         {
             for(kaon Pkm : PKm_)
             {
-                TVector3 dau1p(Pkp.px, Pkp.py, Pkp.pz);
-                TVector3 dau2p(Pkm.px, Pkm.py, Pkm.pz);
+                TVector3 dau1p(Pkp.getPx(), Pkp.getPy(), Pkp.getPz());
+                TVector3 dau2p(Pkm.getPx(), Pkm.getPy(), Pkm.getPz());
                 TVector3 dauPsum(dau1p + dau2p);
-                double mass = sqrt(TMath::Power(Pkp.energy+Pkm.energy,2) - dauPsum.Mag2());
+                double mass = sqrt(TMath::Power(Pkp.getEnergy()+Pkm.getEnergy(),2) - dauPsum.Mag2());
 
                 double p = sqrt(dauPsum.Mag2());
                 double pt = dauPsum.Perp();
