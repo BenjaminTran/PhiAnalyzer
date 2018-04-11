@@ -56,9 +56,6 @@
 #include <Math/SMatrix.h>
 
 // User classes
-#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
-#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
-
 
 namespace utility
 {
@@ -110,7 +107,6 @@ namespace utility
 
     double getDeDx(utility::track_combo track_combo_, edm::Handle<edm::ValueMap<reco::DeDxData> > DeDxTrack);
 
-    std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_);
 }
 
 #endif

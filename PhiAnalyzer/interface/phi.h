@@ -1,6 +1,7 @@
 #ifndef PHIANALYZER__PHIMESON_H
 #define PHIANALYZER__PHIMESON_H
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
 class PhiMeson{
     private:
@@ -14,6 +15,7 @@ class PhiMeson{
     public:
         PhiMeson();
         PhiMeson(double mass, double pt, double eta, double phi, double rapidity, double p);
+        std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_);
         double getMass();
         double getEta();
         double getRapidity();
