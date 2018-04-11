@@ -61,6 +61,7 @@
 #include <Math/SMatrix.h>
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 //
 // class declaration
 //
