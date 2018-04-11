@@ -4,6 +4,8 @@
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
 
 namespace utility
 {
