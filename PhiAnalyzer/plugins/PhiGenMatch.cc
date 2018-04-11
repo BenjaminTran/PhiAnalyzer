@@ -1,5 +1,6 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/PhiGenMatch.h"
-#include "PhiAnalyzer/PhiAnalyzer/interface/Phi.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
 
 using namespace std;
 
@@ -83,8 +84,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             h_phid1_mass->Fill(d1->mass());
             h_phid2_mass->Fill(d2->mass());
 
-            genDauKaons.push_back(kaon::kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
-            genDauKaons.push_back(kaon::kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
+            genDauKaons.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
+            genDauKaons.push_back(kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
         }
     }
 
@@ -96,7 +97,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //if(!utility::SelectionCut(trk,vertex,false,1.0,1.0,2.4,0,5))
         reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
         utility::track_combo track_bundle(trk, track_ref);
-        kaon::kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge());
+        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge());
 
         for(kaon genK : genDauKaons)
         {
