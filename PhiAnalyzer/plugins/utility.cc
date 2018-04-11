@@ -154,7 +154,7 @@ namespace utility
                 double p = sqrt(dauPsum.Mag2());
                 double pt = dauPsum.Perp();
 
-                TLorentzVector phiLV(dauPsum,Pkp.energy + Pkm.energy);
+                TLorentzVector phiLV(dauPsum,Pkp.getEnergy() + Pkm.getEnergy());
 
                 double rapidity = phiLV.Rapidity();
                 double eta = phiLV.Eta();
