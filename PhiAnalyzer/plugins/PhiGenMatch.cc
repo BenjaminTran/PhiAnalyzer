@@ -97,7 +97,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //if(!utility::SelectionCut(trk,vertex,false,1.0,1.0,2.4,0,5))
         reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
         utility::track_combo track_bundle(trk, track_ref);
-        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge());
+        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge(), false);
 
         for(kaon genK : genDauKaons)
         {
