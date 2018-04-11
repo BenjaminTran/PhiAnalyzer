@@ -2,7 +2,6 @@
 #define PHIANALYZER__KAON_H
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
-using namespace utility;
 
 class kaon{
     private:
