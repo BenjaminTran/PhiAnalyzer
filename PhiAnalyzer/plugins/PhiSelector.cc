@@ -85,7 +85,7 @@ PhiSelector::FillKaonContainer(utility::track_combo track_combo_, edm::Handle<ed
 
     double energy = sqrt(TMath::Power(utility::kaonMass,2) + TMath::Power(track_combo_.track->p(),2));
     TVector3 momentum(track_combo_.track->px(), track_combo_.track->py(), track_combo_.track->pz());
-    kaon pk(momentum, track_combo_.track->eta(), track_combo_.track->phi(),  track_combo_.track->charge(), utility::getDeDx(track_combo_,DeDxTrack));
+    kaon::kaon pk(momentum, track_combo_.track->eta(), track_combo_.track->phi(),  track_combo_.track->charge(), utility::getDeDx(track_combo_,DeDxTrack));
 
     //positive kaons
     if(track_combo_.track->charge() == 1)

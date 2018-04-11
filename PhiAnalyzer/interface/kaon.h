@@ -17,8 +17,8 @@ class kaon{
         bool isGen_;
 
     public:
-        kaon(TVector3 momentum, double eta, double phi, double dedx, int charge, double mass, bool isGen);
-        kaon(TVector3 momentum, double eta, double phi, int charge, double mass, bool isGen);
+        kaon(TVector3 momentum, double eta, double phi, int charge = -9, double dedx = 0, double mass = utility::kaonMass, bool isGen = false);
+        kaon(TVector3 momentum, double eta, double phi, int charge = -9, double mass = utility::kaonMass, bool isGen = false);
 
         double deltaR(TLorentzVector otherLV);
         bool matched(kaon genKaon);
