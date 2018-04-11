@@ -1,7 +1,7 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
-kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double dedx, double mass, bool isGen)
+kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double dedx, bool isGen, double mass)
 {
     //TVector3 momentum(px,py,pz);
     double energy = sqrt(TMath::Power(mass,2) + TMath::Power(momentum.Mag(),2));
@@ -13,7 +13,7 @@ kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double dedx, d
     isGen_ = isGen;
 }
 
-kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double mass, bool isGen)
+kaon::kaon(TVector3 momentum, double eta, double phi, int charge, bool isGen, double mass)
 {
     //TVector3 momentum(px,py,pz);
     double energy = sqrt(TMath::Power(mass,2) + TMath::Power(momentum.Mag(),2));
@@ -57,8 +57,12 @@ bool kaon::matched(kaon genKaon)
 
     double dpt = genPt - trkPt;
 
+    bool isMatched = false;
+
     if(kaon::deltaR(genKaon.getLorentzVect()) < 0.1 && fabs(dpt/genPt) < 0.1)
-        return true;
+        isMatched = true;
+
+    return isMatched;
 }
 
 bool kaon::getIsGen()

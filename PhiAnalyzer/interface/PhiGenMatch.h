@@ -19,7 +19,7 @@ class PhiGenMatch : public edm::EDAnalyzer {
         edm::EDGetTokenT<reco::GenParticleCollection> _genCollection;
         edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
         edm::EDGetTokenT<reco::VertexCollection> _vertexCollName;
-       edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
+        edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
 
         TH1D* h_nEvt;
         TH1D* h_phi_yield_rap_1;
@@ -62,6 +62,8 @@ class PhiGenMatch : public edm::EDAnalyzer {
 
         kaon_particle sigTrack_particle_;
         kaon_particle bckTrack_particle_;
+
+        std::string dedxConstraint_;
 
 };
 
