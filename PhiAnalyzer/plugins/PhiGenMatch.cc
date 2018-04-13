@@ -101,90 +101,37 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         for(kaon genK : genDauKaons)
         {
-            sigTrack_particle_.momentum = trk->p();
-            sigTrack_particle_.px       = trk->px();
-            sigTrack_particle_.py       = trk->py();
-            sigTrack_particle_.pz       = trk->pz();
-            sigTrack_particle_.pt       = trk->pt();
-            sigTrack_particle_.ptError  = trk->ptError();
-            sigTrack_particle_.energy   = K.getEnergy();
-            sigTrack_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
-            sigTrack_particle_.charge   = trk->charge();
-            sigTrack_particle_.dz       = trk->dz(vertex.bestvtx);
-            sigTrack_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
-            sigTrack_particle_.dxy      = trk->dxy(vertex.bestvtx);
-            sigTrack_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
-            sigTrack_particle_.eta      = trk->eta();
-            sigTrack_particle_.rapidity = K.getRapidity();
-            sigTrack_particle_.phi      = trk->phi();
-            sigTrack_particle_.ndof     = trk->ndof();
-            sigTrack_particle_.vx       = trk->vx();
-            sigTrack_particle_.vy       = trk->vy();
-            sigTrack_particle_.vz       = trk->vz();
-            sigTrack_particle_.vzFlip   = -(trk->vz());
-            sigTrack_particle_.chi2     = trk->chi2();
-            sigTrack_particle_.chi2norm = trk->normalizedChi2();
-            sigTrack_particle_.nhits    = trk->numberOfValidHits();
+            Track_particle_.momentum = trk->p();
+            Track_particle_.px       = trk->px();
+            Track_particle_.py       = trk->py();
+            Track_particle_.pz       = trk->pz();
+            Track_particle_.pt       = trk->pt();
+            Track_particle_.ptError  = trk->ptError();
+            Track_particle_.energy   = K.getEnergy();
+            Track_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
+            Track_particle_.charge   = trk->charge();
+            Track_particle_.dz       = trk->dz(vertex.bestvtx);
+            Track_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
+            Track_particle_.dxy      = trk->dxy(vertex.bestvtx);
+            Track_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
+            Track_particle_.eta      = trk->eta();
+            Track_particle_.rapidity = K.getRapidity();
+            Track_particle_.phi      = trk->phi();
+            Track_particle_.ndof     = trk->ndof();
+            Track_particle_.vx       = trk->vx();
+            Track_particle_.vy       = trk->vy();
+            Track_particle_.vz       = trk->vz();
+            Track_particle_.vzFlip   = -(trk->vz());
+            Track_particle_.chi2     = trk->chi2();
+            Track_particle_.chi2norm = trk->normalizedChi2();
+            Track_particle_.nhits    = trk->numberOfValidHits();
             try
             {
                 if(K.matched(genK))
                 {
                     //Enter into signal tree
-                    //sigTrack_particle_.momentum = trk->p();
-                    //sigTrack_particle_.px       = trk->px();
-                    //sigTrack_particle_.py       = trk->py();
-                    //sigTrack_particle_.pz       = trk->pz();
-                    //sigTrack_particle_.pt       = trk->pt();
-                    //sigTrack_particle_.ptError  = trk->ptError();
-                    //sigTrack_particle_.energy   = K.getEnergy();
-                    //sigTrack_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
-                    //sigTrack_particle_.charge   = trk->charge();
-                    //sigTrack_particle_.dz       = trk->dz(vertex.bestvtx);
-                    //sigTrack_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
-                    //sigTrack_particle_.dxy      = trk->dxy(vertex.bestvtx);
-                    //sigTrack_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
-                    //sigTrack_particle_.eta      = trk->eta();
-                    //sigTrack_particle_.rapidity = K.getRapidity();
-                    //sigTrack_particle_.phi      = trk->phi();
-                    //sigTrack_particle_.ndof     = trk->ndof();
-                    //sigTrack_particle_.vx       = trk->vx();
-                    //sigTrack_particle_.vy       = trk->vy();
-                    //sigTrack_particle_.vz       = trk->vz();
-                    //sigTrack_particle_.vzFlip   = -(trk->vz());
-                    //sigTrack_particle_.chi2     = trk->chi2();
-                    //sigTrack_particle_.chi2norm = trk->normalizedChi2();
-                    //sigTrack_particle_.nhits    = trk->numberOfValidHits();
                     Signal->Fill();
                     break;
-                }
-                else
-                {
-                    //Enter into background tree
-                    //bckTrack_particle_.momentum = trk->p();
-                    //bckTrack_particle_.px       = trk->px();
-                    //bckTrack_particle_.py       = trk->py();
-                    //bckTrack_particle_.pz       = trk->pz();
-                    //bckTrack_particle_.pt       = trk->pt();
-                    //bckTrack_particle_.ptError  = trk->ptError();
-                    //bckTrack_particle_.energy   = K.getEnergy();
-                    //bckTrack_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
-                    //bckTrack_particle_.charge   = trk->charge();
-                    //bckTrack_particle_.dz       = trk->dz(vertex.bestvtx);
-                    //bckTrack_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
-                    //bckTrack_particle_.dxy      = trk->dxy(vertex.bestvtx);
-                    //bckTrack_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
-                    //bckTrack_particle_.eta      = trk->eta();
-                    //bckTrack_particle_.rapidity = K.getRapidity();
-                    //bckTrack_particle_.phi      = trk->phi();
-                    //bckTrack_particle_.ndof     = trk->ndof();
-                    //bckTrack_particle_.vx       = trk->vx();
-                    //bckTrack_particle_.vy       = trk->vy();
-                    //bckTrack_particle_.vz       = trk->vz();
-                    //bckTrack_particle_.vzFlip   = -(trk->vz());
-                    //bckTrack_particle_.chi2     = trk->chi2();
-                    //bckTrack_particle_.chi2norm = trk->normalizedChi2();
-                    //bckTrack_particle_.nhits    = trk->numberOfValidHits();
-                    Background->Fill();
                 }
             }
             catch(const std::invalid_argument& e)
@@ -192,6 +139,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 std::cerr << e.what();
             }
         }
+        Background->Fill();
     }
 
 
@@ -212,55 +160,55 @@ PhiGenMatch::beginJob()
     Signal = fs->make<TTree>("SignalTree","SignalTree");
     Background = fs->make<TTree>("BackgroundTree","BackgroundTree");
 
-    Signal->Branch("momentum" , &sigTrack_particle_.momentum);
-    Signal->Branch("px"       , &sigTrack_particle_.px      );
-    Signal->Branch("py"       , &sigTrack_particle_.py      );
-    Signal->Branch("pz"       , &sigTrack_particle_.pz      );
-    Signal->Branch("pt"       , &sigTrack_particle_.pt      );
-    Signal->Branch("ptError"  , &sigTrack_particle_.ptError );
-    Signal->Branch("energy"   , &sigTrack_particle_.energy  );
-    Signal->Branch("dedx"     , &sigTrack_particle_.dedx    );
-    Signal->Branch("dz"       , &sigTrack_particle_.dz      );
-    Signal->Branch("dzError"  , &sigTrack_particle_.dzError );
-    Signal->Branch("dxy"      , &sigTrack_particle_.dxy     );
-    Signal->Branch("dxyError" , &sigTrack_particle_.dxyError);
-    Signal->Branch("eta"      , &sigTrack_particle_.eta     );
-    Signal->Branch("rapidity" , &sigTrack_particle_.rapidity);
-    Signal->Branch("phi"      , &sigTrack_particle_.phi     );
-    Signal->Branch("vx"       , &sigTrack_particle_.vx      );
-    Signal->Branch("vy"       , &sigTrack_particle_.vy      );
-    Signal->Branch("vz"       , &sigTrack_particle_.vz      );
-    Signal->Branch("vzFlip"   , &sigTrack_particle_.vzFlip  );
-    Signal->Branch("chi2"     , &sigTrack_particle_.chi2    );
-    Signal->Branch("chi2norm" , &sigTrack_particle_.chi2norm);
-    Signal->Branch("ndof"     , &sigTrack_particle_.ndof    );
-    Signal->Branch("nhits"    , &sigTrack_particle_.nhits   );
-    Signal->Branch("charge"   , &sigTrack_particle_.charge  );
+    Signal->Branch("momentum" , &Track_particle_.momentum);
+    Signal->Branch("px"       , &Track_particle_.px      );
+    Signal->Branch("py"       , &Track_particle_.py      );
+    Signal->Branch("pz"       , &Track_particle_.pz      );
+    Signal->Branch("pt"       , &Track_particle_.pt      );
+    Signal->Branch("ptError"  , &Track_particle_.ptError );
+    Signal->Branch("energy"   , &Track_particle_.energy  );
+    Signal->Branch("dedx"     , &Track_particle_.dedx    );
+    Signal->Branch("dz"       , &Track_particle_.dz      );
+    Signal->Branch("dzError"  , &Track_particle_.dzError );
+    Signal->Branch("dxy"      , &Track_particle_.dxy     );
+    Signal->Branch("dxyError" , &Track_particle_.dxyError);
+    Signal->Branch("eta"      , &Track_particle_.eta     );
+    Signal->Branch("rapidity" , &Track_particle_.rapidity);
+    Signal->Branch("phi"      , &Track_particle_.phi     );
+    Signal->Branch("vx"       , &Track_particle_.vx      );
+    Signal->Branch("vy"       , &Track_particle_.vy      );
+    Signal->Branch("vz"       , &Track_particle_.vz      );
+    Signal->Branch("vzFlip"   , &Track_particle_.vzFlip  );
+    Signal->Branch("chi2"     , &Track_particle_.chi2    );
+    Signal->Branch("chi2norm" , &Track_particle_.chi2norm);
+    Signal->Branch("ndof"     , &Track_particle_.ndof    );
+    Signal->Branch("nhits"    , &Track_particle_.nhits   );
+    Signal->Branch("charge"   , &Track_particle_.charge  );
 
-    Background->Branch("momentum" , &sigTrack_particle_.momentum);
-    Background->Branch("px"       , &sigTrack_particle_.px      );
-    Background->Branch("py"       , &sigTrack_particle_.py      );
-    Background->Branch("pz"       , &sigTrack_particle_.pz      );
-    Background->Branch("pt"       , &sigTrack_particle_.pt      );
-    Background->Branch("ptError"  , &sigTrack_particle_.ptError );
-    Background->Branch("energy"   , &sigTrack_particle_.energy  );
-    Background->Branch("dedx"     , &sigTrack_particle_.dedx    );
-    Background->Branch("dz"       , &sigTrack_particle_.dz      );
-    Background->Branch("dzError"  , &sigTrack_particle_.dzError );
-    Background->Branch("dxy"      , &sigTrack_particle_.dxy     );
-    Background->Branch("dxyError" , &sigTrack_particle_.dxyError);
-    Background->Branch("eta"      , &sigTrack_particle_.eta     );
-    Background->Branch("rapidity" , &sigTrack_particle_.rapidity);
-    Background->Branch("phi"      , &sigTrack_particle_.phi     );
-    Background->Branch("vx"       , &sigTrack_particle_.vx      );
-    Background->Branch("vy"       , &sigTrack_particle_.vy      );
-    Background->Branch("vz"       , &sigTrack_particle_.vz      );
-    Background->Branch("vzFlip"   , &sigTrack_particle_.vzFlip  );
-    Background->Branch("chi2"     , &sigTrack_particle_.chi2    );
-    Background->Branch("chi2norm" , &sigTrack_particle_.chi2norm);
-    Background->Branch("ndof"     , &sigTrack_particle_.ndof    );
-    Background->Branch("nhits"    , &sigTrack_particle_.nhits   );
-    Background->Branch("charge"   , &sigTrack_particle_.charge  );
+    Background->Branch("momentum" , &Track_particle_.momentum);
+    Background->Branch("px"       , &Track_particle_.px      );
+    Background->Branch("py"       , &Track_particle_.py      );
+    Background->Branch("pz"       , &Track_particle_.pz      );
+    Background->Branch("pt"       , &Track_particle_.pt      );
+    Background->Branch("ptError"  , &Track_particle_.ptError );
+    Background->Branch("energy"   , &Track_particle_.energy  );
+    Background->Branch("dedx"     , &Track_particle_.dedx    );
+    Background->Branch("dz"       , &Track_particle_.dz      );
+    Background->Branch("dzError"  , &Track_particle_.dzError );
+    Background->Branch("dxy"      , &Track_particle_.dxy     );
+    Background->Branch("dxyError" , &Track_particle_.dxyError);
+    Background->Branch("eta"      , &Track_particle_.eta     );
+    Background->Branch("rapidity" , &Track_particle_.rapidity);
+    Background->Branch("phi"      , &Track_particle_.phi     );
+    Background->Branch("vx"       , &Track_particle_.vx      );
+    Background->Branch("vy"       , &Track_particle_.vy      );
+    Background->Branch("vz"       , &Track_particle_.vz      );
+    Background->Branch("vzFlip"   , &Track_particle_.vzFlip  );
+    Background->Branch("chi2"     , &Track_particle_.chi2    );
+    Background->Branch("chi2norm" , &Track_particle_.chi2norm);
+    Background->Branch("ndof"     , &Track_particle_.ndof    );
+    Background->Branch("nhits"    , &Track_particle_.nhits   );
+    Background->Branch("charge"   , &Track_particle_.charge  );
 
 }
 

@@ -60,8 +60,7 @@ class PhiGenMatch : public edm::EDAnalyzer {
             float nhits;
         };
 
-        kaon_particle sigTrack_particle_;
-        kaon_particle bckTrack_particle_;
+        kaon_particle Track_particle_;
 
         std::string dedxConstraint_;
 
