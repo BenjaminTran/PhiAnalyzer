@@ -98,33 +98,33 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
         utility::track_combo track_bundle(trk, track_ref);
         kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge(), false);
+        Track_particle_.momentum = trk->p();
+        Track_particle_.px       = trk->px();
+        Track_particle_.py       = trk->py();
+        Track_particle_.pz       = trk->pz();
+        Track_particle_.pt       = trk->pt();
+        Track_particle_.ptError  = trk->ptError();
+        Track_particle_.energy   = K.getEnergy();
+        Track_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
+        Track_particle_.charge   = trk->charge();
+        Track_particle_.dz       = trk->dz(vertex.bestvtx);
+        Track_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
+        Track_particle_.dxy      = trk->dxy(vertex.bestvtx);
+        Track_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
+        Track_particle_.eta      = trk->eta();
+        Track_particle_.rapidity = K.getRapidity();
+        Track_particle_.phi      = trk->phi();
+        Track_particle_.ndof     = trk->ndof();
+        Track_particle_.vx       = trk->vx();
+        Track_particle_.vy       = trk->vy();
+        Track_particle_.vz       = trk->vz();
+        Track_particle_.vzFlip   = -(trk->vz());
+        Track_particle_.chi2     = trk->chi2();
+        Track_particle_.chi2norm = trk->normalizedChi2();
+        Track_particle_.nhits    = trk->numberOfValidHits();
 
         for(kaon genK : genDauKaons)
         {
-            Track_particle_.momentum = trk->p();
-            Track_particle_.px       = trk->px();
-            Track_particle_.py       = trk->py();
-            Track_particle_.pz       = trk->pz();
-            Track_particle_.pt       = trk->pt();
-            Track_particle_.ptError  = trk->ptError();
-            Track_particle_.energy   = K.getEnergy();
-            Track_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
-            Track_particle_.charge   = trk->charge();
-            Track_particle_.dz       = trk->dz(vertex.bestvtx);
-            Track_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
-            Track_particle_.dxy      = trk->dxy(vertex.bestvtx);
-            Track_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
-            Track_particle_.eta      = trk->eta();
-            Track_particle_.rapidity = K.getRapidity();
-            Track_particle_.phi      = trk->phi();
-            Track_particle_.ndof     = trk->ndof();
-            Track_particle_.vx       = trk->vx();
-            Track_particle_.vy       = trk->vy();
-            Track_particle_.vz       = trk->vz();
-            Track_particle_.vzFlip   = -(trk->vz());
-            Track_particle_.chi2     = trk->chi2();
-            Track_particle_.chi2norm = trk->normalizedChi2();
-            Track_particle_.nhits    = trk->numberOfValidHits();
             try
             {
                 if(K.matched(genK))
