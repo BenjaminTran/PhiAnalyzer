@@ -16,7 +16,7 @@ process.source = cms.Source("PoolSource",
         )
 
 process.TFileService = cms.Service("TFileService",
-        fileName = cms.string('PhiGenMatch_v1.root')
+        fileName = cms.string('PhiGenMatch_v3.root')
         )
 
 process.test = cms.Sequence(process.PhiGenMatch)
