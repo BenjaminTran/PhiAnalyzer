@@ -17,7 +17,7 @@ class PhiMeson : public Particle{
         void addKaonDau(kaon dau);
 
         //Getter
-        kaon getKaonDau();
+        kaon getKaonDau(int dauID);
 
 
 };

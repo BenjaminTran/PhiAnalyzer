@@ -44,8 +44,8 @@ PhiMeson PhiMeson::BuildPhi(kaon Pkp, kaon Pkm, bool isGen)
     TLorentzVector PtEtaPhiE(pt,phiLV.Eta(),phiLV.Phi(),Pkp.getEnergy() + Pkm.getEnergy());
 
     PhiMeson pgf(mass,dauPsum,PtEtaPhiE,isGen);
-    pgf.addKaonDau(Pkp*);
-    pgf.addKaonDau(Pkm*);
+    pgf.addKaonDau(Pkp);
+    pgf.addKaonDau(Pkm);
 
     return pgf;
 }
@@ -55,7 +55,7 @@ kaon PhiMeson::getKaonDau(int dauID)
     return KaonDau_.at(dauID);
 }
 
-void addKaonDau(kaon dau)
+void PhiMeson::addKaonDau(kaon dau)
 {
     KaonDau_.push_back(dau);
 }

@@ -156,7 +156,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
     }
 
-    const int NumberOfGenPhis = genDauKaons.size();
+    constexpr int NumberOfGenPhis = genDauKaons.size();
 
     std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
 
