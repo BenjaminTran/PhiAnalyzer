@@ -117,22 +117,22 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         if(gncand->numberOfDaughters() > 2) continue;
 
-        if(gncand->numberOfMothers() == 1)
-        {
-            const reco::Candidate *mom = gncand->mother();
-            mid = mom->pdgId();
-            //if(mom->numberOfMothers() == 1)
-            //{
-                //const reco::Candidate * mom1 = mom->mother();
-                //mid = mom1->pdgId();
-            //}
-            h_momid->Fill(mid);
-        }
+        //if(gncand->numberOfMothers() == 1)
+        //{
+            //const reco::Candidate *mom = gncand->mother();
+            //mid = mom->pdgId();
+            ////if(mom->numberOfMothers() == 1)
+            ////{
+                ////const reco::Candidate * mom1 = mom->mother();
+                ////mid = mom1->pdgId();
+            ////}
+            //h_momid->Fill(mid);
+        //}
 
-        if(fabs(id) == 333 && fabs(rap) < 1.0)
-        {
-            h_phi_yield_rap_1->Fill(gncand->mass());
-        }
+        //if(fabs(id) == 333 && fabs(rap) < 1.0)
+        //{
+            //h_phi_yield_rap_1->Fill(gncand->mass());
+        //}
 
         if(fabs(id) == 333 && fabs(eta) < 2.4)
         {
@@ -142,8 +142,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
             if(fabs(d1->pdgId()) != 321 && fabs(d2->pdgId()) != 321) continue;
 
-            h_phid1_mass->Fill(d1->mass());
-            h_phid2_mass->Fill(d2->mass());
+            //h_phid1_mass->Fill(d1->mass());
+            //h_phid2_mass->Fill(d2->mass());
 
             std::vector<kaon> tmpKaonDau;
             tmpKaonDau.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
@@ -252,11 +252,11 @@ PhiGenMatch::beginJob()
     TH1::SetDefaultSumw2();
 
     h_nEvt            = fs->make<TH1D>("h_nEvt","Events",10,0,10);
-    h_phi_yield_rap_1 = fs->make<TH1D>("h_phi_yield_rap_1","Gen Phi Yield rap < 1",50,1,1.05);
+    //h_phi_yield_rap_1 = fs->make<TH1D>("h_phi_yield_rap_1","Gen Phi Yield rap < 1",50,1,1.05);
     h_phi_yield_norap = fs->make<TH1D>("h_phi_yield_norap","Gen Phi Yield no rap",50,1,1.05);
-    h_phid1_mass      = fs->make<TH1D>("h_phid1_mass","Dau1 mass",100,0.45,0.55);
-    h_phid2_mass      = fs->make<TH1D>("h_phid2_mass","Dau2 mass",100,0.45,0.55);
-    h_momid           = fs->make<TH1D>("h_momid","mother ids",1000000,0,1000000);
+    //h_phid1_mass      = fs->make<TH1D>("h_phid1_mass","Dau1 mass",100,0.45,0.55);
+    //h_phid2_mass      = fs->make<TH1D>("h_phid2_mass","Dau2 mass",100,0.45,0.55);
+    //h_momid           = fs->make<TH1D>("h_momid","mother ids",1000000,0,1000000);
 
     Signal     = fs->make<TTree>("SignalTree","SignalTree");
     Background = fs->make<TTree>("BackgroundTree","BackgroundTree");
