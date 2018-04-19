@@ -25,7 +25,7 @@ void PhiGenMatch::FillTreeStruct(tree_particle& treeStruct, PhiMeson phi)
         treeStruct.mass       = phi.getMass();
         treeStruct.momentum_1 = dau1.getP();
         treeStruct.pt_1       = dau1.getPt();
-        treeStruct.ptError_1  = dau1.
+        treeStruct.ptError_1  = dau1.getPtError();
         treeStruct.energy_1   = dau1.getEnergy();
         treeStruct.dedx_1     = dau1.getDedx();
         treeStruct.charge_1   = dau1.getCharge();
@@ -49,7 +49,7 @@ void PhiGenMatch::FillTreeStruct(tree_particle& treeStruct, PhiMeson phi)
         treeStruct.nhits_1    = dau1.getNhits();
         treeStruct.momentum_2 = dau2.getP();
         treeStruct.pt_2       = dau2.getPt();
-        treeStruct.ptError_2  = dau2.
+        treeStruct.ptError_2  = dau2.getPtError();
         treeStruct.energy_2   = dau2.getEnergy();
         treeStruct.dedx_2     = dau2.getDedx();
         treeStruct.charge_2   = dau2.getCharge();
@@ -156,7 +156,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
     }
 
-    int NumberOfGenPhis = genDauKaons.size();
+    const int NumberOfGenPhis = genDauKaons.size();
 
     std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
 
@@ -169,7 +169,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
         utility::track_combo track_bundle(trk, track_ref);
 
-        kaon::cutVariables kaonCutVariables;
+        kaon::cutVariables kaonCutVariables_;
         kaonCutVariables_.ptError  = trk->ptError();
         kaonCutVariables_.dz       = trk->dz(vertex.bestvtx);
         kaonCutVariables_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
@@ -194,7 +194,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             {
                 try
                 {
-                    if(K.matched(genKaonPair[j]))
+                    if(K.matched(genKaonPair[j]*))
                     {
                         trackKaonPairs.at(i).push_back(K);
                         kaonMatched = true;

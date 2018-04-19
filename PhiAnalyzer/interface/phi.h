@@ -10,7 +10,7 @@ class PhiMeson : public Particle{
 
     public:
         PhiMeson();
-        PhiMeson(double mass, double pt, double eta, double phi, double rapidity, double p = 0, bool isMatched = false);
+        PhiMeson(double mass, TVector3 momentum, TLorentzVector PtEtaPhiE, bool isMatched = false);
 
         PhiMeson BuildPhi(kaon Pkp, kaon Pkm, bool isMatched = false);
         std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_);

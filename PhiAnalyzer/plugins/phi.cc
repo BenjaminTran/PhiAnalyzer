@@ -37,7 +37,6 @@ PhiMeson PhiMeson::BuildPhi(kaon Pkp, kaon Pkm, bool isGen)
     TVector3 dauPsum(dau1p + dau2p);
     double mass = sqrt(TMath::Power(Pkp.getEnergy()+Pkm.getEnergy(),2) - dauPsum.Mag2());
 
-    double p = sqrt(dauPsum.Mag2());
     double pt = dauPsum.Perp();
 
     TLorentzVector phiLV(dauPsum,Pkp.getEnergy() + Pkm.getEnergy());
