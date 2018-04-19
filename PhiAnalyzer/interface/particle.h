@@ -5,13 +5,12 @@
 #include "TLorentzVector.h"
 
 class Particle{
-    private:
+    public:
         TVector3 momentum_;
         TLorentzVector PtEtaPhiE_;
         bool isGen_;
         double mass_;
 
-    public:
         //Getters
         double getMass() { return mass_; };
         double getP() { return sqrt(momentum_.Mag2()); };
@@ -24,7 +23,7 @@ class Particle{
         TLorentzVector getLorentzVect() { return PtEtaPhiE_; };
         double getRapidity() {
             TLorentzVector LV(momentum_.X(), momentum_.Y(), momentum_.Z(), PtEtaPhiE_.E());
-            return LV.rapidity();
+            return LV.Rapidity();
         };
         double getEta() { return PtEtaPhiE_.Eta(); };
         double getPhi() { return PtEtaPhiE_.Phi(); };

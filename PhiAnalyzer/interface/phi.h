@@ -4,7 +4,7 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/particle.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
-class PhiMeson : Particle{
+class PhiMeson : public Particle{
     private:
         std::vector<kaon> KaonDau_;
 

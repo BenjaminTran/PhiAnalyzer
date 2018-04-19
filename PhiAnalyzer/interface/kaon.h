@@ -4,7 +4,7 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/particle.h"
 
-class kaon : Particle{
+class kaon : public Particle{
     private:
         double dedx_;
         int charge_;
