@@ -156,7 +156,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
     }
 
-    constexpr int NumberOfGenPhis = genDauKaons.size();
+    int NumberOfGenPhis = genDauKaons.size();
 
     //std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
     std::vector<std::vector<kaon>> trackKaonPairs(NumberOfGenPhis);
@@ -184,18 +184,18 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         kaonCutVariables_.vz       = trk->vz();
         kaonCutVariables_.ndof     = trk->ndof();
 
-        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaon::CutVariables, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
+        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaon::cutVariables, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
 
         bool kaonMatched = false;
 
-        for(int i=0; i<genDauKaons.size(); i++)
+        for(unsigned i=0; i<genDauKaons.size(); i++)
         {
             std::vector<kaon> genKaonPair = genDauKaons[i];
-            for(int j=0; j<genKaonPair.size(); j++)
+            for(unsigned j=0; j<genKaonPair.size(); j++)
             {
                 try
                 {
-                    if(K.matched(genKaonPair[j]*))
+                    if(K.matched(*(genKaonPair[j])))
                     {
                         trackKaonPairs.at(i).push_back(K);
                         kaonMatched = true;
@@ -225,7 +225,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //Check if there are two kaons in each container. If not then skip
         if(kaonPair.size() < 2) continue;
 
-        PhiMeson phi = BuildPhi(kaonPair[0],kaonPair[1],true);
+        PhiMeson phi = PhiMeson::BuildPhi(kaonPair[0],kaonPair[1],true);
 
         SignalPhis.push_back(phi);
     }
