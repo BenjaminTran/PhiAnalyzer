@@ -15,10 +15,37 @@ class kaon{
         double dedx_;
         int charge_;
         bool isGen_;
+        double ptError_ = -999;
+        double dz_ = -999;
+        double dzError_ = -999;
+        double dxy_ = -999;
+        double dxyError_ = -999;
+        int nhits_ = -999;
+        double chi2_ = -999;
+        double chi2norm_ = -999;
+        double vx_ = -999;
+        double vy_ = -999;
+        double vz_ = -999;
+        double ndof_ = -999;
 
     public:
+        struct cutVariables{
+            double ptError;
+            double dz;
+            double dzError;
+            double dxy;
+            double dxyError;
+            int nhits;
+            double chi2;
+            double chi2norm;
+            double vx;
+            double vy;
+            double vz;
+            double ndof;
+        };
         kaon(TVector3 momentum, double eta, double phi, int charge = -9, double dedx = 0, bool isGen = false, double mass = utility::kaonMass);
         kaon(TVector3 momentum, double eta, double phi, int charge = -9, bool isGen = false, double mass = utility::kaonMass);
+        kaon(TVector3 momentum, double eta, double phi, cutVariables cutValues, int charge = -9, double dedx = 0, bool isGen = false, double mass = utility::kaonMass);
 
         double deltaR(TLorentzVector otherLV);
         bool matched(kaon genKaon);
@@ -28,6 +55,18 @@ class kaon{
         double getPx();
         double getPy();
         double getPz();
+        double getPtError();
+        double getDz();
+        double getDzError();
+        double getDxy();
+        double getDxyError();
+        int getNhits();
+        double getChi2();
+        double getChi2norm();
+        double getVx();
+        double getVy();
+        double getVz();
+        double getNdof();
         TVector3 getMomentumVect();
         TLorentzVector getLorentzVect();
         double getDedx();
@@ -35,6 +74,7 @@ class kaon{
         double getEta();
         double getPhi();
         double getEnergy();
+        double getCharge();
         bool getIsGen();
 
         void setMomentumVect(TVector3 momentum);

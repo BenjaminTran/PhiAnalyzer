@@ -25,7 +25,14 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     h_nEvt->Fill(1);
 
-    std::vector<kaon> genDauKaons;
+    std::vector<std::vector<kaon> > genDauKaons;
+    std::vector<PhiMeson> SignalPhis;
+    std::vector<PhiMeson> BackgroundPhis;
+    /*
+     * For background kaons that did not match. Will be used to construct background phis
+     */
+    std::vector<kaon> bkgPKp;
+    std::vector<kaon> bkgPKm;
 
     edm::Handle<reco::GenParticleCollection> gencand;
     edm::Handle<reco::TrackCollection> trkSrc;
@@ -84,10 +91,20 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             h_phid1_mass->Fill(d1->mass());
             h_phid2_mass->Fill(d2->mass());
 
-            genDauKaons.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
-            genDauKaons.push_back(kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
+            std::vector<kaon> tmpKaonDau;
+            tmpKaonDau.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
+            tmpKaonDau.push_back(kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
+
+            genDauKaons.push_back(tmpKaonDau);
+
+            //genDauKaons.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
+            //genDauKaons.push_back(kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
         }
     }
+
+    int NumberOfGenPhis = genDauKaons.size();
+
+    std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
 
     //Perform Matching
     for(reco::TrackCollection::const_iterator trk = trkSrc->begin();
@@ -97,52 +114,124 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //if(!utility::SelectionCut(trk,vertex,false,1.0,1.0,2.4,0,5))
         reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
         utility::track_combo track_bundle(trk, track_ref);
-        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), trk->charge(), false);
-        Track_particle_.momentum = trk->p();
-        Track_particle_.px       = trk->px();
-        Track_particle_.py       = trk->py();
-        Track_particle_.pz       = trk->pz();
-        Track_particle_.pt       = trk->pt();
-        Track_particle_.ptError  = trk->ptError();
-        Track_particle_.energy   = K.getEnergy();
-        Track_particle_.dedx     = utility::getDeDx(track_bundle,DeDx_Harm);
-        Track_particle_.charge   = trk->charge();
-        Track_particle_.dz       = trk->dz(vertex.bestvtx);
-        Track_particle_.dzError  = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
-        Track_particle_.dxy      = trk->dxy(vertex.bestvtx);
-        Track_particle_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
-        Track_particle_.eta      = trk->eta();
-        Track_particle_.rapidity = K.getRapidity();
-        Track_particle_.phi      = trk->phi();
-        Track_particle_.ndof     = trk->ndof();
-        Track_particle_.vx       = trk->vx();
-        Track_particle_.vy       = trk->vy();
-        Track_particle_.vz       = trk->vz();
-        Track_particle_.vzFlip   = -(trk->vz());
-        Track_particle_.chi2     = trk->chi2();
-        Track_particle_.chi2norm = trk->normalizedChi2();
-        Track_particle_.nhits    = trk->numberOfValidHits();
 
-        for(kaon genK : genDauKaons)
+        kaon::cutVariables kaonCutVariables;
+        kaonCutVariables_.ptError = trk->ptError();
+        kaonCutVariables_.dz = trk->dz(vertex.bestvtx);
+        kaonCutVariables_.dzError = sqrt(TMath::Power(trk->dzError(),2) + TMath::Power(vertex.bestvzError,2));
+        kaonCutVariables_.dxy = trk->dxy(vertex.bestvtx);
+        kaonCutVariables_.dxyError = sqrt(TMath::Power(trk->d0Error(),2) + vertex.bestvxError*vertex.bestvyError);
+        kaonCutVariables_.nhits = trk->numberOfValidHits();
+        kaonCutVariables_.chi2 = trk->chi2();
+        kaonCutVariables_.chi2norm = trk->normalizedChi2();
+        kaonCutVariables_.vx = trk->vx();
+        kaonCutVariables_.vy = trk->vy();
+        kaonCutVariables_.vz = trk->vz();
+        kaonCutVariables_.ndof = trk->ndof();
+
+        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaonCutVariables, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
+
+        bool kaonMatched = false;
+
+        for(int i=0; i<genDauKaons.size(); i++)
         {
-            try
+            std::vector<kaon> genKaonPair = genDauKaons[i];
+            for(int j=0; j<genKaonPair.size(); j++)
             {
-                if(K.matched(genK))
+                try
                 {
-                    //Enter into signal tree
-                    Signal->Fill();
-                    break;
+                    if(K.matched(genKaonPair[j]))
+                    {
+                        trackKaonPairs.at(i).push_back(K);
+                        kaonMatched = true;
+                        break;
+                    }
+                }
+                catch(const std::invalid_argument& e)
+                {
+                    std::cerr << e.what();
                 }
             }
-            catch(const std::invalid_argument& e)
-            {
-                std::cerr << e.what();
-            }
+            if(kaonMatched)
+                break;
         }
-        Background->Fill();
+        if(!kaonMatched)
+        {
+            if(K.getCharge() == 1)
+                bkgPKp.push_back(K);
+            else if(K.getCharge() == -1)
+                bkgPKm.push_back(K);
+        }
     }
 
+    //Build signal Phis
+    for(std::vector<kaon> kaonPair : trackKaonPairs)
+    {
+        //Check if there are two kaons in each container. If not then skip
+        if(kaonPair.size() < 2) continue;
 
+        PhiMeson phi = BuildPhi(kaonPair[0],kaonPair[1],true);
+
+        SignalPhis.push_back(phi);
+    }
+
+    //Build background Phis
+    BackgroundPhis = PhiMeson::EventCombinatorialPhi(bkgPKp, bkgPKm);
+
+    for(PhiMeson phi : SignalPhis)
+    {
+        kaon dau1 = phi.getKaonDau(0);
+        kaon dau2 = phi.getKaonDau(1);
+        particle_.mass = phi.getMass();
+        particle_.momentum_1 = dau1.getP();
+        particle_.pt_1 = dau1.getPt();
+        particle_.ptError_1 = dau1.
+        particle_.energy_1 = dau1.getEnergy();
+        particle_.dedx_1 = dau1.getDedx();
+        particle_.charge_1 = dau1.getCharge();
+        particle_.dz_1 = dau1.
+        particle_.dzError_1 = dau1.
+        particle_.dxy_1 = dau1.
+        particle_.dxyError_1 = dau1.
+        particle_.eta_1 = dau1.getEta();
+        particle_.rapidity_1 = dau1.getRapidity();
+        particle_.phi_1 = phi.getPhi();
+        particle_.vx_1 = dau1.
+        particle_.vy_1 = dau1.
+        particle_.vz_1 = dau1.
+        particle_.px_1 = dau1.getPx();
+        particle_.py_1 = dau1.getPy();
+        particle_.pz_1 = dau1.getPz();
+        particle_.vzFlip_1 = dau1.
+        particle_.chi2_1 = dau1.
+        particle_.chi2norm_1 = dau1.
+        particle_.ndof_1 = dau1.
+        particle_.momentum_2 = phi.
+        particle_.pt_2 = phi.
+        particle_.ptError_2 = phi.
+        particle_.energy_2 = phi.
+        particle_.dedx_2 = phi.
+        particle_.charge_2 = phi.
+        particle_.dz_2 = phi.
+        particle_.dzError_2 = phi.
+        particle_.dxy_2 = phi.
+        particle_.dxyError_2 = phi.
+        particle_.eta_2 = phi.
+        particle_.rapidity_2 = phi.
+        particle_.phi_2 = phi.
+        particle_.vx_2 = phi.
+        particle_.vy_2 = phi.
+        particle_.vz_2 = phi.
+        particle_.px_2 = phi.
+        particle_.py_2 = phi.
+        particle_.pz_2 = phi.
+        particle_.vzFlip_2 = phi.
+        particle_.chi2_2 = phi.
+        particle_.chi2norm_2 = phi.
+        particle_.ndof_2 = phi.
+        particle_.nhits_2 = phi.
+        particle_.nhits_2 = phi.
+    }
 }
 
 void

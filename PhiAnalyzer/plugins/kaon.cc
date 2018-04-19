@@ -1,6 +1,7 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
+
 kaon::kaon(TVector3 momentum, double eta, double phi, int charge, double dedx, bool isGen, double mass)
 {
     //TVector3 momentum(px,py,pz);
@@ -25,17 +26,34 @@ kaon::kaon(TVector3 momentum, double eta, double phi, int charge, bool isGen, do
     isGen_ = isGen;
 }
 
+kaon::kaon(TVector3 momentum, double eta, double phi, cutVariables cutValues, int charge, double dedx, bool isGen, double mass)
+{
+    double energy = sqrt(TMath::Power(mass,2) + TMath::Power(momentum.Mag(),2));
+    TLorentzVector PtEtaPhiE(momentum.Perp(),eta,phi,energy);
+    momentum_ = momentum;
+    PtEtaPhiE_ = PtEtaPhiE;
+    dedx_ = dedx;
+    charge_ = charge;
+    isGen_ = isGen;
+    ptError_ = cutValues.ptError;
+    dz_ = cutValues.dz;
+    dzError_ = cutValues.dzError;
+    dxy_ = cutValues.dxy;
+    dxyError_ = cutValues.dxyError;
+    nhits_ = cutValues.nhits;
+    chi2_ = cutValues.chi2;
+    chi2norm_ = cutValues.chi2norm;
+    vx_ = cutValues.vx;
+    vy_ = cutValues.vy;
+    vz_ = cutValues.vz;
+    ndof_ = cutValues.ndof;
+}
+
 double kaon::deltaR(TLorentzVector otherLV)
 {
     return PtEtaPhiE_.DeltaR(otherLV);
 }
 
-double kaon::getRapidity()
-{
-    TLorentzVector LV(momentum_.X(), momentum_.Y(), momentum_.Z(), PtEtaPhiE_.E());
-
-    return LV.Rapidity();
-}
 
 bool kaon::matched(kaon genKaon)
 {
@@ -63,6 +81,18 @@ bool kaon::matched(kaon genKaon)
         isMatched = true;
 
     return isMatched;
+}
+
+double kaon::getRapidity()
+{
+    TLorentzVector LV(momentum_.X(), momentum_.Y(), momentum_.Z(), PtEtaPhiE_.E());
+
+    return LV.Rapidity();
+}
+
+double kaon::getCharge()
+{
+    return charge_;
 }
 
 bool kaon::getIsGen()
@@ -94,6 +124,8 @@ double kaon::getPz()
 {
     return momentum_.Z();
 }
+
+double kaon::getPtError();
 
 TVector3 kaon::getMomentumVect()
 {

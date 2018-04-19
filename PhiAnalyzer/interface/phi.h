@@ -11,10 +11,13 @@ class PhiMeson{
         double phi_;
         double pt_;
         double p_;
+        bool isMatched_;
+        std::vector<kaon> KaonDau_;
 
     public:
         PhiMeson();
-        PhiMeson(double mass, double pt, double eta, double phi, double rapidity, double p);
+        PhiMeson(double mass, double pt, double eta, double phi, double rapidity, double p = 0, bool isMatched = false);
+        PhiMeson BuildPhi(kaon Pkp, kaon Pkm, bool isMatched = false);
         std::vector<PhiMeson> EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_);
         double getMass();
         double getEta();
@@ -22,13 +25,18 @@ class PhiMeson{
         double getPhi();
         double getPt();
         double getP();
+        bool getIsGen();
+        kaon getKaonDau();
 
-        void setMass(double mass_);
-        void setEta(double eta_);
-        void setRapidity(double rapidity_);
-        void setPhi(double phi_);
-        void setPt(double pt_);
-        void setP(double p_);
+        void setMass(double mass);
+        void setEta(double eta);
+        void setRapidity(double rapidity);
+        void setPhi(double phi);
+        void setPt(double pt);
+        void setP(double p);
+        void setIsGen(bool isMatched);
+
+        void addKaonDau(kaon dau);
 
 };
 
