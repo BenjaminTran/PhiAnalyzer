@@ -184,7 +184,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         kaonCutVariables_.vz       = trk->vz();
         kaonCutVariables_.ndof     = trk->ndof();
 
-        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaon::cutVariables, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
+        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaonCutVariables_, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
 
         bool kaonMatched = false;
 
@@ -195,7 +195,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             {
                 try
                 {
-                    if(K.matched(*(genKaonPair[j])))
+                    if(K.matched(&(genKaonPair[j])))
                     {
                         trackKaonPairs.at(i).push_back(K);
                         kaonMatched = true;
