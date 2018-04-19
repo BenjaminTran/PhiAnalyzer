@@ -158,7 +158,8 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     constexpr int NumberOfGenPhis = genDauKaons.size();
 
-    std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
+    //std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
+    std::vector<std::vector<kaon>> trackKaonPairs(NumberOfGenPhis);
 
     //Perform Matching
     for(reco::TrackCollection::const_iterator trk = trkSrc->begin();
@@ -183,7 +184,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         kaonCutVariables_.vz       = trk->vz();
         kaonCutVariables_.ndof     = trk->ndof();
 
-        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaonCutVariables, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
+        kaon K(TVector3(trk->px(), trk->py(), trk->pz()), trk->eta(), trk->phi(), kaon::CutVariables, trk->charge(), utility::getDeDx(track_bundle, DeDx_Harm), false);
 
         bool kaonMatched = false;
 
