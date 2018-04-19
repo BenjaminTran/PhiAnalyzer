@@ -13,11 +13,13 @@ class Particle{
 
     public:
         //Getters
-        double getP() { return momentum_.Mag(); };
+        double getMass() { return mass_; };
+        double getP() { return sqrt(momentum_.Mag2()); };
         double getPt() { return momentum_.Perp(); };
         double getPx() { return momentum_.X(); };
         double getPy() { return momentum_.Y(); };
         double getPz() { return momentum_.Z(); };
+        double getEnergy() { return PtEtaPhiE_.E(); };
         TVector3 getMomentumVect() { return momentum_; };
         TLorentzVector getLorentzVect() { return PtEtaPhiE_; };
         double getRapidity() {
@@ -33,6 +35,7 @@ class Particle{
         bool matched(Particle* genParticle);
 
         //Setters
+        void setMass(double mass) {mass_ = mass;};
         void setMomentumVect(TVector3 momentum) {momentum_ = momentum;};
         void setLorentzVect(TLorentzVector PtEtaPhiE) {PtEtaPhiE_ = PtEtaPhiE;};
         void setIsGen(bool isGen) {isGen_ = isGen;};

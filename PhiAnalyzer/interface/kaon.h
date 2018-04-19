@@ -2,19 +2,12 @@
 #define PHIANALYZER__KAON_H
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/particle.h"
 
-class kaon{
+class kaon : Particle{
     private:
-        //double p;
-        //double pt;
-        //double px;
-        //double py;
-        //double pz;
-        TVector3 momentum_;
-        TLorentzVector PtEtaPhiE_;
         double dedx_;
         int charge_;
-        bool isGen_;
         double ptError_ = -999;
         double dz_ = -999;
         double dzError_ = -999;
@@ -47,40 +40,22 @@ class kaon{
         kaon(TVector3 momentum, double eta, double phi, int charge = -9, bool isGen = false, double mass = utility::kaonMass);
         kaon(TVector3 momentum, double eta, double phi, cutVariables cutValues, int charge = -9, double dedx = 0, bool isGen = false, double mass = utility::kaonMass);
 
-        double deltaR(TLorentzVector otherLV);
-        bool matched(kaon genKaon);
+        double getPtError() {return ptError_;};
+        double getDz() {return dz_;};
+        double getDzError() {return dzError_;};
+        double getDxy() {return dxy_;};
+        double getDxyError() {return dxyError_;};
+        int getNhits() {return nhits_;};
+        double getChi2() {return chi2_;};
+        double getChi2norm() {return chi2norm_;};
+        double getVx() {return vx_;};
+        double getVy() {return vy_;};
+        double getVz() {return vz_;};
+        double getNdof() {return ndof_;};
+        double getDedx() {return dedx_;};
+        double getCharge() {return charge_;};
 
-        double getP();
-        double getPt();
-        double getPx();
-        double getPy();
-        double getPz();
-        double getPtError();
-        double getDz();
-        double getDzError();
-        double getDxy();
-        double getDxyError();
-        int getNhits();
-        double getChi2();
-        double getChi2norm();
-        double getVx();
-        double getVy();
-        double getVz();
-        double getNdof();
-        TVector3 getMomentumVect();
-        TLorentzVector getLorentzVect();
-        double getDedx();
-        double getRapidity();
-        double getEta();
-        double getPhi();
-        double getEnergy();
-        double getCharge();
-        bool getIsGen();
-
-        void setMomentumVect(TVector3 momentum);
-        void setLorentzVect(TLorentzVector PtEtaPhiE);
-        void setDedx(double dedx);
-        void setCharge(int charge);
-        void setIsGen(bool isGen);
+        void setDedx(double dedx) {dedx_ = dedx;};
+        void setCharge(int charge) {charge_ = charge;};
 };
 #endif

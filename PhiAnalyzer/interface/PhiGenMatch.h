@@ -3,6 +3,7 @@
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
 
 class PhiGenMatch : public edm::EDAnalyzer {
     public:
@@ -20,18 +21,6 @@ class PhiGenMatch : public edm::EDAnalyzer {
         edm::EDGetTokenT<reco::TrackCollection> _trkSrc;
         edm::EDGetTokenT<reco::VertexCollection> _vertexCollName;
         edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
-
-        TH1D* h_nEvt;
-        TH1D* h_phi_yield_rap_1;
-        TH1D* h_phi_yield_norap;
-        TH1D* h_phid1_mass;
-        TH1D* h_phid2_mass;
-        TH1D* h_momid;
-
-        edm::Service<TFileService> fs;
-
-        TTree* Signal;
-        TTree* Background;
 
         struct tree_particle{
             float mass;
@@ -58,6 +47,7 @@ class PhiGenMatch : public edm::EDAnalyzer {
             float chi2_1;
             float chi2norm_1;
             float ndof_1;
+            float nhits_1;
             float momentum_2;
             float pt_2;
             float ptError_2;
@@ -82,12 +72,26 @@ class PhiGenMatch : public edm::EDAnalyzer {
             float chi2norm_2;
             float ndof_2;
             float nhits_2;
-            float nhits_2;
         };
 
-        tree_particle particle_;
+        TH1D* h_nEvt;
+        TH1D* h_phi_yield_rap_1;
+        TH1D* h_phi_yield_norap;
+        TH1D* h_phid1_mass;
+        TH1D* h_phid2_mass;
+        TH1D* h_momid;
+
+        edm::Service<TFileService> fs;
+
+        TTree* Signal;
+        TTree* Background;
+
+        tree_particle signalStruct;
+        tree_particle backgroundStruct;
 
         std::string dedxConstraint_;
+
+        void FillTreeStruct(tree_particle& treeStruct, PhiMeson phi);
 
 };
 
