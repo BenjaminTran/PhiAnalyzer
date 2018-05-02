@@ -14,13 +14,19 @@ PhiMeson::PhiMeson(double mass, TVector3 momentum, TLorentzVector PtEtaPhiE, boo
     PtEtaPhiE_ = PtEtaPhiE;
 }
 
-std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_)
+std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_, bool throwAway = false, int maxValue = 100)
 {
     std::vector<PhiMeson> phiCollection;
     for(kaon Pkp : PKp_)
     {
         for(kaon Pkm : PKm_)
         {
+            if(throwAway)
+            {
+                int Rand = gRandom->Integer(maxValue);
+                if(Rand < 1) continue;
+            }
+
             PhiMeson pgf = BuildPhi(Pkp, Pkm);
 
             phiCollection.push_back(pgf);
