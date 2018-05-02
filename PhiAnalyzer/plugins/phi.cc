@@ -24,7 +24,7 @@ std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, st
             if(throwAway)
             {
                 int Rand = gRandom->Integer(maxValue);
-                if(Rand < 1) continue;
+                if(Rand > 1) continue;
             }
 
             PhiMeson pgf = BuildPhi(Pkp, Pkm);
