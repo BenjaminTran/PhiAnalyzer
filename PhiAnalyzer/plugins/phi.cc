@@ -60,9 +60,11 @@ PhiMeson PhiMeson::BuildPhi(kaon Pkp, kaon Pkm, bool isGen)
     return pgf;
 }
 
-kaon PhiMeson::getKaonDau(int dauID)
+kaon* PhiMeson::getKaonDau(int dauID)
 {
-    return KaonDau_.at(dauID);
+    kaon* tmpKaon = &(KaonDau_.at(dauID));
+    return tmpKaon;
+    //return KaonDau_.at(dauID);
 }
 
 void PhiMeson::addKaonDau(kaon dau)

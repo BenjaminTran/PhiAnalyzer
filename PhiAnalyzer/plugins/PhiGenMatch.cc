@@ -153,17 +153,17 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     //Build background Phis
-    BackgroundPhis = PhiMeson::EventCombinatorialPhi(bkgPKp, bkgPKm, true, 1e3);
+    BackgroundPhis = PhiMeson::EventCombinatorialPhi(bkgPKp, bkgPKm, true, 1000, 1);
 
     for(PhiMeson phi : SignalPhis)
     {
-        utility::FillTreeStruct(signalStruct, phi);
+        utility::FillTreeStruct(signalStruct, &phi);
         Signal->Fill();
     }
 
     for(PhiMeson phi : BackgroundPhis)
     {
-        utility::FillTreeStruct(backgroundStruct, phi);
+        utility::FillTreeStruct(backgroundStruct, &phi);
         Background->Fill();
     }
 }

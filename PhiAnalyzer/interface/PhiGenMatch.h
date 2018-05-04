@@ -39,8 +39,6 @@ class PhiGenMatch : public edm::EDAnalyzer {
 
         std::string dedxConstraint_;
 
-        void FillTreeStruct(tree_particle& treeStruct, PhiMeson phi);
-
 };
 
 #endif
