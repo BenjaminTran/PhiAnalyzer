@@ -35,3 +35,8 @@ config.section_("Site")
 config.Site.storageSite = 'T2_CH_CERN'
 config.Site.whitelist = ['T2_US_MIT']
 #config.Site.whitelist = ['T2_US_Vanderbilt']
+
+with open( 'PhiVarStore.dat', 'w' ) as fle:
+    counter = counter + 1
+    fle.write( str(counter) )
+
