@@ -1,6 +1,26 @@
 #ifndef PHIANALYZER__PHIGENMATCH_H
 #define PHIANALYZER__PHIGENMATCH_H
 
+#include <TTree.h>
+#include <TVector3.h>
+#include <TLorentzVector.h>
+#include <TMath.h>
+#include <TH1D.h>
+#include <TH2D.h>
+
+#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/ServiceRegistry/interface/Service.h"
+
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"

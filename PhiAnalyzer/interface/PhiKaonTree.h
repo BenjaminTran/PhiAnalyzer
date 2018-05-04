@@ -1,6 +1,17 @@
 #ifndef PHIANALYZER__PHIKAONTREE_H
 #define PHIANALYZER__PHIKAONTREE_H
 
+#include <iostream>
+
+#include <TMath.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TTree.h>
+#include <TVector3.h>
+#include <TLorentzVector.h>
+
+// user include files
+
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 
 class PhiKaonTree : public edm::one::EDAnalyzer<edm::one::SharedResources> {
@@ -22,6 +33,8 @@ class PhiKaonTree : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         TH1D* h_nEvt;
 
         TTree* phiKaonTree;
+
+        utility::tree_particle phiKaonCandidate;
 };
 
 #endif

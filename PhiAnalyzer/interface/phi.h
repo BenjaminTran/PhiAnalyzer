@@ -3,6 +3,7 @@
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/particle.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
+#include <TRandom.h>
 
 class PhiMeson : public Particle{
     private:
