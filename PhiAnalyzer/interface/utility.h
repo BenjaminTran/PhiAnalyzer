@@ -56,9 +56,8 @@
 #include <Math/SMatrix.h>
 
 // User classes
-#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
-#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
+class PhiMeson;
 namespace utility
 {
     extern double const kaonMass;
@@ -138,7 +137,7 @@ namespace utility
             track(track_), track_ref(track_ref_) {}
     };
 
-    void FillTreeStruct(tree_particle& treeStruct, PhiMeson phi);
+    void FillTreeStruct(tree_particle& treeStruct, PhiMeson* phi);
 
     myVertex MyVertexBuild(edm::Handle<reco::VertexCollection> vertices);
 

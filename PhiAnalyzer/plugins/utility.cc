@@ -4,9 +4,9 @@
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/PhiSelector.h"
-#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
 
+class kaon;
 namespace utility
 {
     const double kaonMass = 0.493677;
@@ -144,8 +144,8 @@ namespace utility
 
     void FillTreeStruct(utility::tree_particle& treeStruct, PhiMeson phi)
     {
-            kaon dau1             = phi.getKaonDau(0);
-            kaon dau2             = phi.getKaonDau(1);
+            kaon* dau1             = phi.getKaonDau(0);
+            kaon* dau2             = phi.getKaonDau(1);
             treeStruct.mass       = phi.getMass();
             treeStruct.momentum_1 = dau1.getP();
             treeStruct.pt_1       = dau1.getPt();
