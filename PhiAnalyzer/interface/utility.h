@@ -57,7 +57,7 @@
 
 // User classes
 #include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
-#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h""
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 
 namespace utility
 {
