@@ -14,7 +14,9 @@ PhiMeson::PhiMeson(double mass, TVector3 momentum, TLorentzVector PtEtaPhiE, boo
     PtEtaPhiE_ = PtEtaPhiE;
 }
 
-std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_, bool throwAway = false, int maxValue = 100)
+// Takes two vectors of kaons, one containing only positive and the other negative. Third option specifies if you want to throw away
+// a certain percentage of the combinatorial phis. Percentage determined from maxValue and keepValue e.g. default values keeps 1%
+std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_, bool throwAway = false, int maxValue = 100, int keepValue = 1)
 {
     std::vector<PhiMeson> phiCollection;
     for(kaon Pkp : PKp_)
@@ -24,7 +26,7 @@ std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, st
             if(throwAway)
             {
                 int Rand = gRandom->Integer(maxValue);
-                if(Rand > 1) continue;
+                if(Rand > keepValue) continue;
             }
 
             PhiMeson pgf = BuildPhi(Pkp, Pkm);
@@ -36,6 +38,8 @@ std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, st
     return phiCollection;
 }
 
+// Third parameter is to specify whether or not the phi is produced from matched
+// daughter kaons
 PhiMeson PhiMeson::BuildPhi(kaon Pkp, kaon Pkm, bool isGen)
 {
     TVector3 dau1p(Pkp.getPx(), Pkp.getPy(), Pkp.getPz());

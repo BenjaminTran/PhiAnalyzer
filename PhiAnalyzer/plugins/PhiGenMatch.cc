@@ -18,60 +18,6 @@ PhiGenMatch::~PhiGenMatch()
 {}
 
 // Member functions
-void PhiGenMatch::FillTreeStruct(tree_particle& treeStruct, PhiMeson phi)
-{
-        kaon dau1             = phi.getKaonDau(0);
-        kaon dau2             = phi.getKaonDau(1);
-        treeStruct.mass       = phi.getMass();
-        treeStruct.momentum_1 = dau1.getP();
-        treeStruct.pt_1       = dau1.getPt();
-        treeStruct.ptError_1  = dau1.getPtError();
-        treeStruct.energy_1   = dau1.getEnergy();
-        treeStruct.dedx_1     = dau1.getDedx();
-        treeStruct.charge_1   = dau1.getCharge();
-        treeStruct.dz_1       = dau1.getDz();
-        treeStruct.dzError_1  = dau1.getDzError();
-        treeStruct.dxy_1      = dau1.getDxy();
-        treeStruct.dxyError_1 = dau1.getDxyError();
-        treeStruct.eta_1      = dau1.getEta();
-        treeStruct.rapidity_1 = dau1.getRapidity();
-        treeStruct.phi_1      = dau1.getPhi();
-        treeStruct.vx_1       = dau1.getVx();
-        treeStruct.vy_1       = dau1.getVy();
-        treeStruct.vz_1       = dau1.getVz();
-        treeStruct.px_1       = dau1.getPx();
-        treeStruct.py_1       = dau1.getPy();
-        treeStruct.pz_1       = dau1.getPz();
-        treeStruct.vzFlip_1   = -dau1.getVz();
-        treeStruct.chi2_1     = dau1.getChi2();
-        treeStruct.chi2norm_1 = dau1.getChi2norm();
-        treeStruct.ndof_1     = dau1.getNdof();
-        treeStruct.nhits_1    = dau1.getNhits();
-        treeStruct.momentum_2 = dau2.getP();
-        treeStruct.pt_2       = dau2.getPt();
-        treeStruct.ptError_2  = dau2.getPtError();
-        treeStruct.energy_2   = dau2.getEnergy();
-        treeStruct.dedx_2     = dau2.getDedx();
-        treeStruct.charge_2   = dau2.getCharge();
-        treeStruct.dz_2       = dau2.getDz();
-        treeStruct.dzError_2  = dau2.getDzError();
-        treeStruct.dxy_2      = dau2.getDxy();
-        treeStruct.dxyError_2 = dau2.getDxyError();
-        treeStruct.eta_2      = dau2.getEta();
-        treeStruct.rapidity_2 = dau2.getRapidity();
-        treeStruct.phi_2      = dau2.getPhi();
-        treeStruct.vx_2       = dau2.getVx();
-        treeStruct.vy_2       = dau2.getVy();
-        treeStruct.vz_2       = dau2.getVz();
-        treeStruct.px_2       = dau2.getPx();
-        treeStruct.py_2       = dau2.getPy();
-        treeStruct.pz_2       = dau2.getPz();
-        treeStruct.vzFlip_2   = -dau2.getVz();
-        treeStruct.chi2_2     = dau2.getChi2();
-        treeStruct.chi2norm_2 = dau2.getChi2norm();
-        treeStruct.ndof_2     = dau2.getNdof();
-        treeStruct.nhits_2    = dau2.getNhits();
-}
 
 // ------------ method called for each event  ------------
 void
@@ -125,23 +71,16 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
             if(fabs(d1->pdgId()) != 321 && fabs(d2->pdgId()) != 321) continue;
 
-            //h_phid1_mass->Fill(d1->mass());
-            //h_phid2_mass->Fill(d2->mass());
-
             std::vector<kaon> tmpKaonDau;
             tmpKaonDau.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
             tmpKaonDau.push_back(kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
 
             genDauKaons.push_back(tmpKaonDau);
-
-            //genDauKaons.push_back(kaon(TVector3(d1->px(), d1->py(), d1->pz()), d1->eta(), d1->phi(), d1->charge(), true));
-            //genDauKaons.push_back(kaon(TVector3(d2->px(), d2->py(), d2->pz()), d2->eta(), d2->phi(), d2->charge(), true));
         }
     }
 
     int NumberOfGenPhis = genDauKaons.size();
 
-    //std::array<std::vector<kaon>, NumberOfGenPhis> trackKaonPairs;
     std::vector<std::vector<kaon>> trackKaonPairs(NumberOfGenPhis);
 
     //Perform Matching
@@ -218,13 +157,13 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     for(PhiMeson phi : SignalPhis)
     {
-        FillTreeStruct(signalStruct, phi);
+        utility::FillTreeStruct(signalStruct, phi);
         Signal->Fill();
     }
 
     for(PhiMeson phi : BackgroundPhis)
     {
-        FillTreeStruct(backgroundStruct, phi);
+        utility::FillTreeStruct(backgroundStruct, phi);
         Background->Fill();
     }
 }
