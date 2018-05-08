@@ -13,6 +13,8 @@
 // user include files
 
 #include "PhiAnalyzer/PhiAnalyzer/interface/utility.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
+#include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
 
 class PhiKaonTree : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     public:
