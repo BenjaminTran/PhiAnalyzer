@@ -19,6 +19,10 @@ void
 PhiKaonTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     h_nEvt->Fill(1);
+
+    std::vector<PhiMeson> Phis;
+    std::vector<kaon> bkgPKp;
+    std::vector<kaon> bkgPKm;
 }
 
 void

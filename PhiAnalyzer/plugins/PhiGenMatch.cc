@@ -89,6 +89,7 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             ++trk)
     {
         //if(!utility::SelectionCut(trk,vertex,false,1.0,1.0,2.4,0,5))
+        if(!trk->quality(reco::TrackBase::highPurity)) continue;
         reco::TrackRef track_ref = reco::TrackRef(trkSrc,trk - trkSrc->begin());
         utility::track_combo track_bundle(trk, track_ref);
 
