@@ -75,6 +75,7 @@ PhiKaonTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     for(PhiMeson phi : Phis)
     {
+        if(phi.getMass() < 1.03 && phi.getMass() > 1.015) continue;
         utility::FillTreeStruct(phiKaonCandidate, &phi);
         phiKaonTree->Fill();
     }
@@ -93,50 +94,50 @@ PhiKaonTree::beginJob()
     phiKaonTree->Branch( "momentum_1" , &phiKaonCandidate.momentum_1 );
     phiKaonTree->Branch( "pt_1"       , &phiKaonCandidate.pt_1       );
     phiKaonTree->Branch( "ptError_1"  , &phiKaonCandidate.ptError_1  );
-    phiKaonTree->Branch( "energy_1"   , &phiKaonCandidate.energy_1   );
+    //phiKaonTree->Branch( "energy_1"   , &phiKaonCandidate.energy_1   );
     phiKaonTree->Branch( "dedx_1"     , &phiKaonCandidate.dedx_1     );
-    phiKaonTree->Branch( "charge_1"   , &phiKaonCandidate.charge_1   );
+    //phiKaonTree->Branch( "charge_1"   , &phiKaonCandidate.charge_1   );
     phiKaonTree->Branch( "dz_1"       , &phiKaonCandidate.dz_1       );
     phiKaonTree->Branch( "dzError_1"  , &phiKaonCandidate.dzError_1  );
     phiKaonTree->Branch( "dxy_1"      , &phiKaonCandidate.dxy_1      );
     phiKaonTree->Branch( "dxyError_1" , &phiKaonCandidate.dxyError_1 );
     phiKaonTree->Branch( "eta_1"      , &phiKaonCandidate.eta_1      );
     phiKaonTree->Branch( "rapidity_1" , &phiKaonCandidate.rapidity_1 );
-    phiKaonTree->Branch( "phi_1"      , &phiKaonCandidate.phi_1      );
-    phiKaonTree->Branch( "vx_1"       , &phiKaonCandidate.vx_1       );
-    phiKaonTree->Branch( "vy_1"       , &phiKaonCandidate.vy_1       );
-    phiKaonTree->Branch( "vz_1"       , &phiKaonCandidate.vz_1       );
-    phiKaonTree->Branch( "px_1"       , &phiKaonCandidate.px_1       );
-    phiKaonTree->Branch( "py_1"       , &phiKaonCandidate.py_1       );
-    phiKaonTree->Branch( "pz_1"       , &phiKaonCandidate.pz_1       );
-    phiKaonTree->Branch( "vzFlip_1"   , &phiKaonCandidate.vzFlip_1   );
-    phiKaonTree->Branch( "chi2_1"     , &phiKaonCandidate.chi2_1     );
-    phiKaonTree->Branch( "chi2norm_1" , &phiKaonCandidate.chi2norm_1 );
-    phiKaonTree->Branch( "ndof_1"     , &phiKaonCandidate.ndof_1     );
+    //phiKaonTree->Branch( "phi_1"      , &phiKaonCandidate.phi_1      );
+    //phiKaonTree->Branch( "vx_1"       , &phiKaonCandidate.vx_1       );
+    //phiKaonTree->Branch( "vy_1"       , &phiKaonCandidate.vy_1       );
+    //phiKaonTree->Branch( "vz_1"       , &phiKaonCandidate.vz_1       );
+    //phiKaonTree->Branch( "px_1"       , &phiKaonCandidate.px_1       );
+    //phiKaonTree->Branch( "py_1"       , &phiKaonCandidate.py_1       );
+    //phiKaonTree->Branch( "pz_1"       , &phiKaonCandidate.pz_1       );
+    //phiKaonTree->Branch( "vzFlip_1"   , &phiKaonCandidate.vzFlip_1   );
+    //phiKaonTree->Branch( "chi2_1"     , &phiKaonCandidate.chi2_1     );
+    //phiKaonTree->Branch( "chi2norm_1" , &phiKaonCandidate.chi2norm_1 );
+    //phiKaonTree->Branch( "ndof_1"     , &phiKaonCandidate.ndof_1     );
     phiKaonTree->Branch( "nhits_1"    , &phiKaonCandidate.nhits_1    );
     phiKaonTree->Branch( "momentum_2" , &phiKaonCandidate.momentum_2 );
     phiKaonTree->Branch( "pt_2"       , &phiKaonCandidate.pt_2       );
     phiKaonTree->Branch( "ptError_2"  , &phiKaonCandidate.ptError_2  );
-    phiKaonTree->Branch( "energy_2"   , &phiKaonCandidate.energy_2   );
+    //phiKaonTree->Branch( "energy_2"   , &phiKaonCandidate.energy_2   );
     phiKaonTree->Branch( "dedx_2"     , &phiKaonCandidate.dedx_2     );
-    phiKaonTree->Branch( "charge_2"   , &phiKaonCandidate.charge_2   );
+    //phiKaonTree->Branch( "charge_2"   , &phiKaonCandidate.charge_2   );
     phiKaonTree->Branch( "dz_2"       , &phiKaonCandidate.dz_2       );
     phiKaonTree->Branch( "dzError_2"  , &phiKaonCandidate.dzError_2  );
     phiKaonTree->Branch( "dxy_2"      , &phiKaonCandidate.dxy_2      );
     phiKaonTree->Branch( "dxyError_2" , &phiKaonCandidate.dxyError_2 );
     phiKaonTree->Branch( "eta_2"      , &phiKaonCandidate.eta_2      );
     phiKaonTree->Branch( "rapidity_2" , &phiKaonCandidate.rapidity_2 );
-    phiKaonTree->Branch( "phi_2"      , &phiKaonCandidate.phi_2      );
-    phiKaonTree->Branch( "vx_2"       , &phiKaonCandidate.vx_2       );
-    phiKaonTree->Branch( "vy_2"       , &phiKaonCandidate.vy_2       );
-    phiKaonTree->Branch( "vz_2"       , &phiKaonCandidate.vz_2       );
-    phiKaonTree->Branch( "px_2"       , &phiKaonCandidate.px_2       );
-    phiKaonTree->Branch( "py_2"       , &phiKaonCandidate.py_2       );
-    phiKaonTree->Branch( "pz_2"       , &phiKaonCandidate.pz_2       );
-    phiKaonTree->Branch( "vzFlip_2"   , &phiKaonCandidate.vzFlip_2   );
-    phiKaonTree->Branch( "chi2_2"     , &phiKaonCandidate.chi2_2     );
-    phiKaonTree->Branch( "chi2norm_2" , &phiKaonCandidate.chi2norm_2 );
-    phiKaonTree->Branch( "ndof_2"     , &phiKaonCandidate.ndof_2     );
+    //phiKaonTree->Branch( "phi_2"      , &phiKaonCandidate.phi_2      );
+    //phiKaonTree->Branch( "vx_2"       , &phiKaonCandidate.vx_2       );
+    //phiKaonTree->Branch( "vy_2"       , &phiKaonCandidate.vy_2       );
+    //phiKaonTree->Branch( "vz_2"       , &phiKaonCandidate.vz_2       );
+    //phiKaonTree->Branch( "px_2"       , &phiKaonCandidate.px_2       );
+    //phiKaonTree->Branch( "py_2"       , &phiKaonCandidate.py_2       );
+    //phiKaonTree->Branch( "pz_2"       , &phiKaonCandidate.pz_2       );
+    //phiKaonTree->Branch( "vzFlip_2"   , &phiKaonCandidate.vzFlip_2   );
+    //phiKaonTree->Branch( "chi2_2"     , &phiKaonCandidate.chi2_2     );
+    //phiKaonTree->Branch( "chi2norm_2" , &phiKaonCandidate.chi2norm_2 );
+    //phiKaonTree->Branch( "ndof_2"     , &phiKaonCandidate.ndof_2     );
     phiKaonTree->Branch( "nhits_2"    , &phiKaonCandidate.nhits_2    );
 
 }

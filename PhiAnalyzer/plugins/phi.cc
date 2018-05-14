@@ -16,7 +16,7 @@ PhiMeson::PhiMeson(double mass, TVector3 momentum, TLorentzVector PtEtaPhiE, boo
 
 // Takes two vectors of kaons, one containing only positive and the other negative. Third option specifies if you want to throw away
 // a certain percentage of the combinatorial phis. Percentage determined from maxValue and keepValue e.g. default values keeps 1%
-std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_, bool throwAway = false, int maxValue = 100, int keepValue = 1)
+std::vector<PhiMeson> PhiMeson::EventCombinatorialPhi(std::vector<kaon> PKp_, std::vector<kaon> PKm_, bool throwAway, int maxValue, int keepValue)
 {
     std::vector<PhiMeson> phiCollection;
     for(kaon Pkp : PKp_)
