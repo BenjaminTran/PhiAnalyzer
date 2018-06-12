@@ -9,6 +9,7 @@ process.load("PhiAnalyzer.PhiAnalyzer.PhiSelector_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiTree_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiGenMatch_cfi")
 process.load("PhiAnalyzer.PhiAnalyzer.PhiKaonTree_cfi")
+process.load("PhiAnalyzer.PhiAnalyzer.BDTApp_cfi")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
