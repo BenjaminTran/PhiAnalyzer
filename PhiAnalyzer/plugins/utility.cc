@@ -146,6 +146,8 @@ namespace utility
             kaon* dau1            = phi->getKaonDau(0);
             kaon* dau2            = phi->getKaonDau(1);
             treeStruct.mass       = phi->getMass();
+            treeStruct.momentum = phi->getP();
+            treeStruct.pt = phi->getPt();
             treeStruct.momentum_1 = dau1->getP();
             treeStruct.pt_1       = dau1->getPt();
             treeStruct.ptError_1  = dau1->getPtError();

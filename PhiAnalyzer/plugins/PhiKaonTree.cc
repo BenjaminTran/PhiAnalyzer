@@ -71,13 +71,22 @@ PhiKaonTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     //Build Phis
-    Phis = PhiMeson::EventCombinatorialPhi(bkgPKp, bkgPKm);
+    Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm,true,100,5);
+    //Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm);
 
     for(PhiMeson phi : Phis)
     {
-        if(phi.getMass() < 1.03 && phi.getMass() > 1.015) continue;
+        if(phi.getMass() < 1.0 || phi.getMass() > 1.04) continue;
+        ////if(phi.getMass() < 1.028 && phi.getMass() > 1.012)
+        //{
+            //h_masspt->Fill(phi.getMass(),phi.getPt());
+            //continue;
+        //}
+        //if(phi.getMass() < 1.025 && phi.getMass() > 1.015) continue;
+        //if(phi.getMass() < 1.023 && phi.getMass() > 1.017) continue;
         utility::FillTreeStruct(phiKaonCandidate, &phi);
         phiKaonTree->Fill();
+        h_masspt->Fill(phi.getMass(),phi.getPt());
     }
 }
 
@@ -88,6 +97,7 @@ PhiKaonTree::beginJob()
     edm::Service<TFileService> fs;
 
     h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
+    h_masspt = fs->make<TH2D>("masspt","",100,1,1.05,200,0,20);
     phiKaonTree = fs->make<TTree>("PhiKaonTree","PhiKaonTree");
 
     phiKaonTree->Branch( "mass"       , &phiKaonCandidate.mass       );

@@ -48,6 +48,8 @@ namespace utility
 
     struct tree_particle{
         float mass;
+        float momentum;
+        float pt;
         float momentum_1;
         float pt_1;
         float ptError_1;

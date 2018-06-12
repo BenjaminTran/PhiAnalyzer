@@ -49,6 +49,9 @@ class PhiGenMatch : public edm::EDAnalyzer {
         TH1D* h_phid2_mass;
         TH1D* h_momid;
 
+        TH2D* h_masspt_sig;
+        TH2D* h_masspt_bkg;
+
         edm::Service<TFileService> fs;
 
         TTree* Signal;

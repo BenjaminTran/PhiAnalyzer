@@ -154,18 +154,21 @@ PhiGenMatch::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     //Build background Phis
-    BackgroundPhis = PhiMeson::EventCombinatorialPhi(bkgPKp, bkgPKm, true, 1000, 1);
+    BackgroundPhis = PhiMeson::EventCombinatorialPhi(bkgPKp, bkgPKm, true, 100, 1);
 
     for(PhiMeson phi : SignalPhis)
     {
         utility::FillTreeStruct(signalStruct, &phi);
         Signal->Fill();
+        h_masspt_sig->Fill(phi.getMass(),phi.getPt());
     }
 
     for(PhiMeson phi : BackgroundPhis)
     {
+        if(phi.getMass() < 1.0 || phi.getMass() > 1.04) continue;
         utility::FillTreeStruct(backgroundStruct, &phi);
         Background->Fill();
+        h_masspt_bkg->Fill(phi.getMass(),phi.getPt());
     }
 }
 
@@ -176,11 +179,15 @@ PhiGenMatch::beginJob()
 
     h_nEvt            = fs->make<TH1D>("h_nEvt","Events",10,0,10);
     h_phi_yield_norap = fs->make<TH1D>("h_phi_yield_norap","Gen Phi Yield no rap",50,1,1.05);
+    h_masspt_sig = fs->make<TH2D>("masspt_sig","",200,0.95,1.05,200,0,20);
+    h_masspt_bkg = fs->make<TH2D>("masspt_bkg","",100,1.0,1.05,200,0,20);
 
     Signal     = fs->make<TTree>("SignalTree","SignalTree");
     Background = fs->make<TTree>("BackgroundTree","BackgroundTree");
 
     Signal->Branch( "mass"       , &signalStruct.mass       );
+    Signal->Branch( "momentum"       , &signalStruct.momentum       );
+    Signal->Branch( "pt"       , &signalStruct.pt       );
     Signal->Branch( "momentum_1" , &signalStruct.momentum_1 );
     Signal->Branch( "pt_1"       , &signalStruct.pt_1       );
     Signal->Branch( "ptError_1"  , &signalStruct.ptError_1  );
@@ -231,6 +238,8 @@ PhiGenMatch::beginJob()
     Signal->Branch( "nhits_2"    , &signalStruct.nhits_2    );
 
     Background->Branch( "mass"       , &backgroundStruct.mass       );
+    Background->Branch( "momentum"   , &backgroundStruct.momentum   );
+    Background->Branch( "pt"         , &backgroundStruct.pt         );
     Background->Branch( "momentum_1" , &backgroundStruct.momentum_1 );
     Background->Branch( "pt_1"       , &backgroundStruct.pt_1       );
     Background->Branch( "ptError_1"  , &backgroundStruct.ptError_1  );

@@ -33,6 +33,7 @@ class PhiKaonTree : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
 
         TH1D* h_nEvt;
+        TH2D* h_masspt;
 
         TTree* phiKaonTree;
 
