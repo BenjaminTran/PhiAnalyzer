@@ -19,7 +19,6 @@ void
 BDTApp::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     h_nEvt->Fill(1);
-    std::vector<double> pts = {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6};
 
 
     std::vector<PhiMeson> Phis;
@@ -73,47 +72,173 @@ BDTApp::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     //Make tree for event
-    TTree* BDTPhiTree = new TTree("tmpBDTphiTree","tmpBDTphiTree");
-    BDTPhiTree->Branch( "momentum_1" , &phiKaonCandidate.momentum_1 );
-    BDTPhiTree->Branch( "pt_1"       , &phiKaonCandidate.pt_1       );
-    BDTPhiTree->Branch( "ptError_1"  , &phiKaonCandidate.ptError_1  );
-    BDTPhiTree->Branch( "dedx_1"     , &phiKaonCandidate.dedx_1     );
-    BDTPhiTree->Branch( "dz_1"       , &phiKaonCandidate.dz_1       );
-    BDTPhiTree->Branch( "dzError_1"  , &phiKaonCandidate.dzError_1  );
-    BDTPhiTree->Branch( "dxy_1"      , &phiKaonCandidate.dxy_1      );
-    BDTPhiTree->Branch( "dxyError_1" , &phiKaonCandidate.dxyError_1 );
-    BDTPhiTree->Branch( "eta_1"      , &phiKaonCandidate.eta_1      );
-    BDTPhiTree->Branch( "rapidity_1" , &phiKaonCandidate.rapidity_1 );
-    BDTPhiTree->Branch( "nhits_1"    , &phiKaonCandidate.nhits_1    );
-    BDTPhiTree->Branch( "momentum_2" , &phiKaonCandidate.momentum_2 );
-    BDTPhiTree->Branch( "pt_2"       , &phiKaonCandidate.pt_2       );
-    BDTPhiTree->Branch( "ptError_2"  , &phiKaonCandidate.ptError_2  );
-    BDTPhiTree->Branch( "dedx_2"     , &phiKaonCandidate.dedx_2     );
-    BDTPhiTree->Branch( "dz_2"       , &phiKaonCandidate.dz_2       );
-    BDTPhiTree->Branch( "dzError_2"  , &phiKaonCandidate.dzError_2  );
-    BDTPhiTree->Branch( "dxy_2"      , &phiKaonCandidate.dxy_2      );
-    BDTPhiTree->Branch( "dxyError_2" , &phiKaonCandidate.dxyError_2 );
-    BDTPhiTree->Branch( "eta_2"      , &phiKaonCandidate.eta_2      );
-    BDTPhiTree->Branch( "rapidity_2" , &phiKaonCandidate.rapidity_2 );
-    BDTPhiTree->Branch( "nhits_2"    , &phiKaonCandidate.nhits_2    );
+    //TTree* BDTPhiTree = new TTree("tmpBDTphiTree","tmpBDTphiTree");
+    //BDTPhiTree->Branch( "mass"       , &phiKaonCandidate.mass       );
+    //BDTPhiTree->Branch( "pt"       , &phiKaonCandidate.pt       );
+    //BDTPhiTree->Branch( "momentum_1" , &phiKaonCandidate.momentum_1 );
+    //BDTPhiTree->Branch( "pt_1"       , &phiKaonCandidate.pt_1       );
+    //BDTPhiTree->Branch( "ptError_1"  , &phiKaonCandidate.ptError_1  );
+    //BDTPhiTree->Branch( "dedx_1"     , &phiKaonCandidate.dedx_1     );
+    //BDTPhiTree->Branch( "dz_1"       , &phiKaonCandidate.dz_1       );
+    //BDTPhiTree->Branch( "dzError_1"  , &phiKaonCandidate.dzError_1  );
+    //BDTPhiTree->Branch( "dxy_1"      , &phiKaonCandidate.dxy_1      );
+    //BDTPhiTree->Branch( "dxyError_1" , &phiKaonCandidate.dxyError_1 );
+    //BDTPhiTree->Branch( "eta_1"      , &phiKaonCandidate.eta_1      );
+    //BDTPhiTree->Branch( "rapidity_1" , &phiKaonCandidate.rapidity_1 );
+    //BDTPhiTree->Branch( "nhits_1"    , &phiKaonCandidate.nhits_1    );
+    //BDTPhiTree->Branch( "momentum_2" , &phiKaonCandidate.momentum_2 );
+    //BDTPhiTree->Branch( "pt_2"       , &phiKaonCandidate.pt_2       );
+    //BDTPhiTree->Branch( "ptError_2"  , &phiKaonCandidate.ptError_2  );
+    //BDTPhiTree->Branch( "dedx_2"     , &phiKaonCandidate.dedx_2     );
+    //BDTPhiTree->Branch( "dz_2"       , &phiKaonCandidate.dz_2       );
+    //BDTPhiTree->Branch( "dzError_2"  , &phiKaonCandidate.dzError_2  );
+    //BDTPhiTree->Branch( "dxy_2"      , &phiKaonCandidate.dxy_2      );
+    //BDTPhiTree->Branch( "dxyError_2" , &phiKaonCandidate.dxyError_2 );
+    //BDTPhiTree->Branch( "eta_2"      , &phiKaonCandidate.eta_2      );
+    //BDTPhiTree->Branch( "rapidity_2" , &phiKaonCandidate.rapidity_2 );
+    //BDTPhiTree->Branch( "nhits_2"    , &phiKaonCandidate.nhits_2    );
 
+
+    //Build Phis
+    Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm);
+
+    for(PhiMeson phi : Phis)
+    {
+        if(phi.getMass() < 1.0 || phi.getMass() > 1.04) continue;
+        if(fabs(phi.getRapidity()) > 1.0) continue;
+        utility::FillTreeStruct(phiKaonCandidate, &phi);
+        local_mass = phiKaonCandidate.mass;
+        local_pt = phiKaonCandidate.pt;
+        local_pt_1 = phiKaonCandidate.pt_1;
+        local_ptError_1 = phiKaonCandidate.ptError_1;
+        local_dz_1 = phiKaonCandidate.dz_1;
+        local_dzError_1 = phiKaonCandidate.dzError_1;
+        local_dxy_1 = phiKaonCandidate.dxy_1;
+        local_dxyError_1 = phiKaonCandidate.dxyError_1;
+        local_rapidity_1 = phiKaonCandidate.rapidity_1;
+        local_nhits_1 = phiKaonCandidate.nhits_1;
+        local_dedx_1 = phiKaonCandidate.dedx_1;
+        local_eta_1 = phiKaonCandidate.eta_1;
+        local_momentum_1 = phiKaonCandidate.momentum_1;
+
+        local_pt_2 = phiKaonCandidate.pt_2;
+        local_ptError_2 = phiKaonCandidate.ptError_2;
+        local_dz_2 = phiKaonCandidate.dz_2;
+        local_dzError_2 = phiKaonCandidate.dzError_2;
+        local_dxy_2 = phiKaonCandidate.dxy_2;
+        local_dxyError_2 = phiKaonCandidate.dxyError_2;
+        local_rapidity_2 = phiKaonCandidate.rapidity_2;
+        local_nhits_2 = phiKaonCandidate.nhits_2;
+        local_dedx_2 = phiKaonCandidate.dedx_2;
+        local_eta_2 = phiKaonCandidate.eta_2;
+        local_momentum_2 = phiKaonCandidate.momentum_2;
+
+        local_relpterr_1 = fabs(local_pt_1/local_ptError_1);
+        local_dca_z1 = fabs(local_dz_1/local_dzError_1);
+        local_dca_xy1 = fabs(local_dxy_1/local_dxyError_1);
+
+        local_relpterr_2 = fabs(local_pt_2/local_ptError_2);
+        local_dca_z2 = fabs(local_dz_2/local_dzError_2);
+        local_dca_xy2 = fabs(local_dxy_2/local_dxyError_2);
+        for(unsigned i=0; i<pts.size()-1; i++)
+        {
+            if(local_pt > pts[i] && local_pt < pts[i+1])
+            {
+                v_mass[i] = local_mass;
+                v_pt[i] = local_pt;
+                v_BDTresponse[i] = reader->EvaluateMVA(Form("BDT_%.1f",pts[i]));
+                v_Trees[i]->Fill();
+                break;
+            }
+        }
+        //BDTPhiTree->Fill();
+        //h_masspt->Fill(phi.getMass(),phi.getPt());
+    }
+
+    //Setup branch addresses
+    //BDTPhiTree->SetBranchAddress( "mass"       , &local_mass       );
+    //BDTPhiTree->SetBranchAddress( "pt"       , &local_pt       );
+    //BDTPhiTree->SetBranchAddress("momentum_1"  , &local_momentum_1);
+    //BDTPhiTree->SetBranchAddress( "pt_1"       , &local_pt_1       );
+    //BDTPhiTree->SetBranchAddress( "ptError_1"  , &local_ptError_1  );
+    //BDTPhiTree->SetBranchAddress( "dedx_1"     , &local_dedx_1     );
+    //BDTPhiTree->SetBranchAddress( "dz_1"       , &local_dz_1       );
+    //BDTPhiTree->SetBranchAddress( "dzError_1"  , &local_dzError_1  );
+    //BDTPhiTree->SetBranchAddress( "dxy_1"      , &local_dxy_1      );
+    //BDTPhiTree->SetBranchAddress( "dxyError_1" , &local_dxyError_1 );
+    //BDTPhiTree->SetBranchAddress( "eta_1"      , &local_eta_1      );
+    //BDTPhiTree->SetBranchAddress( "rapidity_1" , &local_rapidity_1 );
+    //BDTPhiTree->SetBranchAddress( "nhits_1"    , &local_nhits_1    );
+    //BDTPhiTree->SetBranchAddress( "momentum_2" , &local_momentum_2 );
+    //BDTPhiTree->SetBranchAddress( "pt_2"       , &local_pt_2       );
+    //BDTPhiTree->SetBranchAddress( "ptError_2"  , &local_ptError_2  );
+    //BDTPhiTree->SetBranchAddress( "dedx_2"     , &local_dedx_2     );
+    //BDTPhiTree->SetBranchAddress( "dz_2"       , &local_dz_2       );
+    //BDTPhiTree->SetBranchAddress( "dzError_2"  , &local_dzError_2  );
+    //BDTPhiTree->SetBranchAddress( "dxy_2"      , &local_dxy_2      );
+    //BDTPhiTree->SetBranchAddress( "dxyError_2" , &local_dxyError_2 );
+    //BDTPhiTree->SetBranchAddress( "eta_2"      , &local_eta_2      );
+    //BDTPhiTree->SetBranchAddress( "rapidity_2" , &local_rapidity_2 );
+    //BDTPhiTree->SetBranchAddress( "nhits_2"    , &local_nhits_2    );
+
+   //for (Long64_t ievt=0; ievt<BDTPhiTree->GetEntries();ievt++) {
+
+      //if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
+
+      //BDTPhiTree->GetEntry(ievt);
+
+      //local_relpterr_1 = fabs(local_pt_1/local_ptError_1);
+      //local_dca_z1 = fabs(local_dz_1/local_dzError_1);
+      //local_dca_xy1 = fabs(local_dxy_1/local_dxyError_1);
+
+      //local_relpterr_2 = fabs(local_pt_2/local_ptError_2);
+      //local_dca_z2 = fabs(local_dz_2/local_dzError_2);
+      //local_dca_xy2 = fabs(local_dxy_2/local_dxyError_2);
+
+
+   //}
+
+   //BDTPhiTree->Delete("all");
+   //delete BDTPhiTree;
+   //delete reader;
+}
+
+void
+BDTApp::beginJob()
+{
+    TH1::SetDefaultSumw2();
+    edm::Service<TFileService> fs;
+
+    for(unsigned i=0; i<pts.size()-1; i++)
+    {
+        std::ostringstream fipstr;
+        //std::string prefix = "PhiAnalyzer/PhiAnalyzer/dataset/dataset_pt";
+        //std::string suffix = "/weights/Phi_BDT_BDT.weights.xml";
+        //fipstr << prefix << pts[i] << "-" << pts[i+1] << suffix;
+        std::string prefix = "PhiAnalyzer/PhiAnalyzer/data/Phi_BDT_BDT";
+        std::string suffix = ".weights.xml";
+        fipstr << prefix << pts[i] << "-" << pts[i+1] << suffix;
+        edm::FileInPath tmpfip(fipstr.str().c_str());
+
+        v_weightFileName.push_back(tmpfip.fullPath());
+    }
+
+    h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
+    h_BDTresponse1 = fs->make<TH1D>("BDTresp1","",40,-1,1);
+    h_BDTresponse2 = fs->make<TH1D>("BDTresp2","",40,-1,1);
+    h_masspt = fs->make<TH2D>("masspt","",100,1,1.05,200,0,20);
+
+    for(unsigned i=0; i<pts.size()-1; i++)
+    {
+        TTree* tmp = fs->make<TTree>(Form("BDTAppTree_%.1f",pts[i]),Form("BDTAppTree_%.1f",pts[i]));
+        v_Trees.push_back(tmp);
+        v_Trees[i]->Branch("mass", &(v_mass[i]));
+        v_Trees[i]->Branch("pt", &(v_pt[i]));
+        v_Trees[i]->Branch("BDTresponse", &(v_BDTresponse[i]));
+    }
+    //
     //Setup reader
-    TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );
-    float local_relpterr_1    , local_relpterr_2;
-    float local_dca_z1     , local_dca_z2;
-    float local_dca_xy1    , local_dca_xy2;
-    float local_rapidity_1 , local_rapidity_2;
-    float local_nhits_1    , local_nhits_2;
-    float local_dedx_1     , local_dedx_2;
-    float local_eta_1      , local_eta_2;
-    float local_momentum_1 , local_momentum_2;
-
-    float local_pt_1 , local_pt_2;
-    float local_ptError_1, local_ptError_2;
-    float local_dzError_1 , local_dzError_2;
-    float local_dxyError_1 , local_dxyError_2;
-    float local_dz_1, local_dz_2;
-    float local_dxy_1, local_dxy_2;
+    reader = new TMVA::Reader( "!Color:!Silent" );
 
     reader->AddVariable("fabs(pt_1/ptError_1)",&local_relpterr_1);
     reader->AddVariable("fabs(dz_1/dzError_1)",&local_dca_z1);
@@ -133,90 +258,16 @@ BDTApp::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     reader->AddVariable("eta_2",&local_eta_2);
     reader->AddVariable("momentum_2",&local_momentum_2);
 
-    std::ostringstream dir;
-    //dir << "dataset"
-    dir << "PhiAnalyzer/PhiAnalyzer/dataset/dataset_pt1.5-2/weights/Phi_BDT_BDT.weights.xml";
-
-    reader->BookMVA("BDT method",weightFileName.c_str());
-
-
-    //Build Phis
-    Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm);
-
-    for(PhiMeson phi : Phis)
+    for(unsigned i=0; i<pts.size()-1; i++)
     {
-        if(phi.getMass() < 1.0 || phi.getMass() > 1.04) continue;
-        utility::FillTreeStruct(phiKaonCandidate, &phi);
-        BDTPhiTree->Fill();
-        h_masspt->Fill(phi.getMass(),phi.getPt());
+        reader->BookMVA(Form("BDT_%.1f",pts[i]),v_weightFileName[i].c_str());
     }
-
-    //Setup branch addresses
-    BDTPhiTree->SetBranchAddress("momentum_1"  , &local_momentum_1);
-    BDTPhiTree->SetBranchAddress( "pt_1"       , &local_pt_1       );
-    BDTPhiTree->SetBranchAddress( "ptError_1"  , &local_ptError_1  );
-    BDTPhiTree->SetBranchAddress( "dedx_1"     , &local_dedx_1     );
-    BDTPhiTree->SetBranchAddress( "dz_1"       , &local_dz_1       );
-    BDTPhiTree->SetBranchAddress( "dzError_1"  , &local_dzError_1  );
-    BDTPhiTree->SetBranchAddress( "dxy_1"      , &local_dxy_1      );
-    BDTPhiTree->SetBranchAddress( "dxyError_1" , &local_dxyError_1 );
-    BDTPhiTree->SetBranchAddress( "eta_1"      , &local_eta_1      );
-    BDTPhiTree->SetBranchAddress( "rapidity_1" , &local_rapidity_1 );
-    BDTPhiTree->SetBranchAddress( "nhits_1"    , &local_nhits_1    );
-    BDTPhiTree->SetBranchAddress( "momentum_2" , &local_momentum_2 );
-    BDTPhiTree->SetBranchAddress( "pt_2"       , &local_pt_2       );
-    BDTPhiTree->SetBranchAddress( "ptError_2"  , &local_ptError_2  );
-    BDTPhiTree->SetBranchAddress( "dedx_2"     , &local_dedx_2     );
-    BDTPhiTree->SetBranchAddress( "dz_2"       , &local_dz_2       );
-    BDTPhiTree->SetBranchAddress( "dzError_2"  , &local_dzError_2  );
-    BDTPhiTree->SetBranchAddress( "dxy_2"      , &local_dxy_2      );
-    BDTPhiTree->SetBranchAddress( "dxyError_2" , &local_dxyError_2 );
-    BDTPhiTree->SetBranchAddress( "eta_2"      , &local_eta_2      );
-    BDTPhiTree->SetBranchAddress( "rapidity_2" , &local_rapidity_2 );
-    BDTPhiTree->SetBranchAddress( "nhits_2"    , &local_nhits_2    );
-
-   for (Long64_t ievt=0; ievt<BDTPhiTree->GetEntries();ievt++) {
-
-      //if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
-
-      BDTPhiTree->GetEntry(ievt);
-
-      local_relpterr_1 = fabs(local_pt_1/local_ptError_1);
-      local_dca_z1 = fabs(local_dz_1/local_dzError_1);
-      local_dca_xy1 = fabs(local_dxy_1/local_dxyError_1);
-
-      local_relpterr_2 = fabs(local_pt_2/local_ptError_2);
-      local_dca_z2 = fabs(local_dz_2/local_dzError_2);
-      local_dca_xy2 = fabs(local_dxy_2/local_dxyError_2);
-
-      h_BDTresponse->Fill(reader->EvaluateMVA("BDT method"));
-   }
-
-   delete BDTPhiTree;
+    //phiKaonTree = fs->make<TTree>("BDTAppTree","BDTAppTree");
 
 
-}
-
-void
-BDTApp::beginJob()
-{
-    TH1::SetDefaultSumw2();
-    edm::Service<TFileService> fs;
-
-    //edm::FileInPath fip("PhiAnalyzer/PhiAnalyzer/dataset/dataset_pt1.5-2/weights/Phi_BDT_BDT.weights.xml");
-    edm::FileInPath fip("PhiAnalyzer/PhiAnalyzer/dataset/dataset_pt5.5-6/weights/Phi_BDT_BDT.weights.xml");
-    weightFileName = fip.fullPath();
-
-
-    h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
-    h_BDTresponse = fs->make<TH1D>("BDTresp","",40,-1,1);
-    h_masspt = fs->make<TH2D>("masspt","",100,1,1.05,200,0,20);
-    phiKaonTree = fs->make<TTree>("BDTAppTree","BDTAppTree");
-
-
-    phiKaonTree->Branch( "mass"       , &mass       );
-    phiKaonTree->Branch( "pt"       , &pt       );
-    phiKaonTree->Branch( "BDTresponse"   , &BDTresponse);
+    //phiKaonTree->Branch( "mass"       , &mass       );
+    //phiKaonTree->Branch( "pt"       , &pt       );
+    //phiKaonTree->Branch( "BDTresponse"   , &BDTresponse);
     //phiKaonTree->Branch( "momentum_1" , &phiKaonCandidate.momentum_1 );
     //phiKaonTree->Branch( "pt_1"       , &phiKaonCandidate.pt_1       );
     //phiKaonTree->Branch( "ptError_1"  , &phiKaonCandidate.ptError_1  );

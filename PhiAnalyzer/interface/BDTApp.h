@@ -34,17 +34,40 @@ class BDTApp : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         edm::EDGetTokenT<reco::VertexCollection> _vertexCollName;
         edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > _Dedx_Harmonic2;
 
+        TMVA::Reader* reader;
+        float local_relpterr_1    , local_relpterr_2;
+        float local_dca_z1     , local_dca_z2;
+        float local_dca_xy1    , local_dca_xy2;
+        float local_rapidity_1 , local_rapidity_2;
+        float local_nhits_1    , local_nhits_2;
+        float local_dedx_1     , local_dedx_2;
+        float local_eta_1      , local_eta_2;
+        float local_momentum_1 , local_momentum_2;
+
+        float local_pt_1 , local_pt_2;
+        float local_ptError_1, local_ptError_2;
+        float local_dzError_1 , local_dzError_2;
+        float local_dxyError_1 , local_dxyError_2;
+        float local_dz_1, local_dz_2;
+        float local_dxy_1, local_dxy_2;
+
+        float local_pt;
+        float local_mass;
+
         TH1D* h_nEvt;
-        TH1D* h_BDTresponse;
+        TH1D* h_BDTresponse1;
+        TH1D* h_BDTresponse2;
         TH2D* h_masspt;
 
-        double mass;
-        double BDTresponse;
-        double pt;
+        double v_mass[12];
+        double v_BDTresponse[12];
+        double v_pt[12];
 
-        std::string weightFileName;
+        std::vector<std::string> v_weightFileName;
+        std::vector<double> pts = {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6};
 
-        TTree* phiKaonTree;
+        std::vector<TTree*> v_Trees;
+        //TTree* phiKaonTree;
         //TTree* BDTPhiTree;
 
         utility::tree_particle phiKaonCandidate;
