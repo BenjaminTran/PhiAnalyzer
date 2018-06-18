@@ -1,9 +1,9 @@
 from PhiAnalyzer.PhiAnalyzer.phianalysis_cfg import process, cms
 
-# process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
 
 #process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(200))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(500))
 
 process.source = cms.Source("PoolSource",
         fileNames = cms.untracked.vstring(
