@@ -71,8 +71,8 @@ PhiKaonTree::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     //Build Phis
-    Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm,true,100,5);
-    //Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm);
+    //Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm,true,100,50);
+    Phis = PhiMeson::EventCombinatorialPhi(bkgPKp,bkgPKm);
 
     for(PhiMeson phi : Phis)
     {
