@@ -116,13 +116,17 @@ BDTApp::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         {
             if(local_pt > pts[i] && local_pt < pts[i+1])
             {
-                v_mass[i] = local_mass;
+                v_mass.at(i) = local_mass;
                 v_pt[i] = local_pt;
                 v_BDTresponse[i] = reader->EvaluateMVA(Form("BDT_%.1f",pts[i]));
                 v_Trees[i]->Fill();
                 break;
             }
         }
+        kaon* dau1 = phi.getKaonDau(0);
+        kaon* dau2 = phi.getKaonDau(1);
+        h_dedxMom->Fill(dau1->getDedx(),dau1->getP());
+        h_dedxMom->Fill(dau2->getDedx(),dau2->getP());
         h_masspt->Fill(phi.getMass(),phi.getPt());
     }
 
@@ -134,28 +138,31 @@ BDTApp::beginJob()
     TH1::SetDefaultSumw2();
     edm::Service<TFileService> fs;
 
+    h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
+    h_masspt = fs->make<TH2D>("masspt","",100,1,1.05,200,0,20);
+    h_dedxMom = fs->make<TH2D>("dedx","Dedx vs Momentum",200,0,10,100,0,5);
+
     for(unsigned i=0; i<pts.size()-1; i++)
     {
+        // setup path to xml files
         std::ostringstream fipstr;
         std::string prefix = "PhiAnalyzer/PhiAnalyzer/data/Phi_BDT_BDT";
+        //std::string bkgtype = "MC";
+        std::string bkgtype = "Data";
         std::string suffix = ".weights.xml";
-        fipstr << prefix << pts[i] << "-" << pts[i+1] << suffix;
+        fipstr << prefix << bkgtype << pts[i] << "-" << pts[i+1] << suffix;
         edm::FileInPath tmpfip(fipstr.str().c_str());
 
         v_weightFileName.push_back(tmpfip.fullPath());
-    }
 
-    h_nEvt = fs->make<TH1D>("nEvt","",10,0,10);
-    h_masspt = fs->make<TH2D>("masspt","",100,1,1.05,200,0,20);
-
-    for(unsigned i=0; i<pts.size()-1; i++)
-    {
+        // Create Trees
         TTree* tmp = fs->make<TTree>(Form("BDTAppTree_%.1f",pts[i]),Form("BDTAppTree_%.1f",pts[i]));
         v_Trees.push_back(tmp);
-        v_Trees[i]->Branch("mass", &(v_mass[i]));
+        v_Trees[i]->Branch("mass", &(v_mass.at(i)));
         v_Trees[i]->Branch("pt", &(v_pt[i]));
         v_Trees[i]->Branch("BDTresponse", &(v_BDTresponse[i]));
     }
+
     //
     //Setup reader
     reader = new TMVA::Reader( "!Color:!Silent" );

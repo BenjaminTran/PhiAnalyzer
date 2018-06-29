@@ -101,6 +101,8 @@ PhiKaonTree::beginJob()
     phiKaonTree = fs->make<TTree>("PhiKaonTree","PhiKaonTree");
 
     phiKaonTree->Branch( "mass"       , &phiKaonCandidate.mass       );
+    phiKaonTree->Branch( "momentum" , &phiKaonCandidate.momentum);
+    phiKaonTree->Branch( "pt"       , &phiKaonCandidate.pt       );
     phiKaonTree->Branch( "momentum_1" , &phiKaonCandidate.momentum_1 );
     phiKaonTree->Branch( "pt_1"       , &phiKaonCandidate.pt_1       );
     phiKaonTree->Branch( "ptError_1"  , &phiKaonCandidate.ptError_1  );

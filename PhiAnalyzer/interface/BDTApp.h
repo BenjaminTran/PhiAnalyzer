@@ -18,6 +18,8 @@
 #include "PhiAnalyzer/PhiAnalyzer/interface/kaon.h"
 #include "PhiAnalyzer/PhiAnalyzer/interface/phi.h"
 
+
+
 class BDTApp : public edm::one::EDAnalyzer<edm::one::SharedResources> {
     public:
         explicit BDTApp(const edm::ParameterSet&);
@@ -58,17 +60,18 @@ class BDTApp : public edm::one::EDAnalyzer<edm::one::SharedResources> {
         TH1D* h_BDTresponse1;
         TH1D* h_BDTresponse2;
         TH2D* h_masspt;
+        TH2D* h_dedxMom;
 
-        double v_mass[12];
-        double v_BDTresponse[12];
-        double v_pt[12];
-
+        //std::vector<TH2D*> v_hdedxMom;
         std::vector<std::string> v_weightFileName;
-        std::vector<double> pts = {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6};
+        //std::vector<double> pts = {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6}; // For MC modeled bkg
+        std::vector<double> pts = {0,0.5,1,1.5,2,2.5,3,3.5,4}; // For data modeled bkg
+
+        std::vector<double> v_mass = std::vector<double> (pts.size()-1);
+        std::vector<double> v_BDTresponse = std::vector<double> (pts.size()-1);
+        std::vector<double> v_pt = std::vector<double> (pts.size()-1);
 
         std::vector<TTree*> v_Trees;
-        //TTree* phiKaonTree;
-        //TTree* BDTPhiTree;
 
         utility::tree_particle phiKaonCandidate;
 };
